@@ -1,7 +1,10 @@
-import sys
+"""Recover Twitter covid19 data in Cantabria."""
 import logging
-import tweepy
+import sys
+
 from decouple import config
+
+import tweepy
 
 
 class StreamListener(tweepy.StreamListener):
