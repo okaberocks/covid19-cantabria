@@ -9,6 +9,8 @@ import pandas as pd
 
 import tweepy
 
+from pyjstat import pyjstat
+
 # global variables TODO: extract to config, maybe
 
 status = {'altas': '',
@@ -96,3 +98,8 @@ for tweet_text, tweet_created_at in \
 
 results_df = pd.DataFrame(results_rows, columns=status.keys())
 print(results_df)
+results_df.to_csv('./resultados.csv')
+print(results_df[['fecha', 'altas']])
+results_dataset = pyjstat.Dataset.read(results_df[['fecha', 'altas']], value='altas') 
+print(results_dataset)
+print(results_dataset.write())

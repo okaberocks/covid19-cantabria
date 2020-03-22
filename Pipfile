@@ -23,6 +23,7 @@ xlrd = {index = "pypi",version = "*"}
 etlstat = {index = "pypi",version = "*"}
 scikit-learn = {index = "pypi",version = "*"}
 tweepy = {index = "pypi",version = "*"}
+pyjstat = {index = "pypi",version = "*"}
 
 [requires]
 python_version = "3.7.2"
