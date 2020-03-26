@@ -24,6 +24,7 @@ etlstat = {index = "pypi",version = "*"}
 scikit-learn = {index = "pypi",version = "*"}
 tweepy = {index = "pypi",version = "*"}
 pyjstat = {index = "pypi",version = "*"}
+beautifuldict = {index = "pypi",version = "*"}
 
 [requires]
 python_version = "3.7.2"
