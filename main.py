@@ -57,6 +57,12 @@ def put_lon(variable):
         return cfg.hospitals.get(variable)['lon']
 
 
+def write_to_file(json_data, file_name):
+    file = open(file_name, 'w')
+    file.write(json_data)
+    file.close()
+
+
 def generate_coords_df():
     
     rows = []
@@ -143,6 +149,13 @@ for tweet_text, tweet_created_at in \
 
 results_df = pd.DataFrame(results_rows, columns=status.keys())
 
+# CURRENT SITUATION
+current_sit_df = results_df[['fecha', 'hospitalizado',
+                             'domicilio', 'altas']].loc[[0]]
+current_sit_df = current_sit_df.melt(id_vars=['fecha'],
+                                     var_name='Variables')
+
+# HOSPITALS
 # extract first row as a dataframe
 hospitals_df = results_df[['valdecilla', 'uci_valdecilla',
                            'sierrallana', 'uci_sierrallana',
@@ -157,7 +170,8 @@ hospitals_df['Variables'] = hospitals_df['Variables'].apply(
 coords_df = generate_coords_df()
 
 hospitals_df = hospitals_df.append(coords_df, ignore_index=True)
-
+hospitals_df = hospitals_df[['Hospital', 'Variables', 'value']]
+hospitals_df.sort_values(by=['Hospital'], inplace=True)
 results_df.to_csv('./resultados.csv')
 
 # pd.melt(results_df, id_vars=['fecha']
@@ -166,4 +180,19 @@ hospitals_dataset = pyjstat.Dataset.read(hospitals_df,
                                          source=('Consejería de Sanidad del '
                                                  'Gobierno de Cantabria'),
                                          updated=date)
-print(hospitals_dataset.write())
+current_sit_dataset = pyjstat.Dataset.read(current_sit_df,
+                                           source=('Consejería de Sanidad del '
+                                                   'Gobierno de Cantabria'),
+                                           updated=date)
+print(hospitals_df)
+print(current_sit_df)
+hospitals_dataset["role"] = {"metric": ["Variables"]}
+current_sit_dataset["role"] = {"time": ["dia"], "metric": ["Variables"]}
+hospitals_json = hospitals_dataset.write()
+current_sit_json = current_sit_dataset.write()
+print(hospitals_json)
+print(current_sit_json)
+write_to_file(hospitals_json,
+              cfg.output.path + cfg.output.hospitals)
+write_to_file(current_sit_json,
+              cfg.output.path + cfg.output.current_situation)
