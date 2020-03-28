@@ -178,12 +178,10 @@ results_df.to_csv('./resultados.csv')
 
 hospitals_dataset = pyjstat.Dataset.read(hospitals_df,
                                          source=('Consejería de Sanidad del '
-                                                 'Gobierno de Cantabria'),
-                                         updated=date)
+                                                 'Gobierno de Cantabria'))
 current_sit_dataset = pyjstat.Dataset.read(current_sit_df,
                                            source=('Consejería de Sanidad del '
-                                                   'Gobierno de Cantabria'),
-                                           updated=date)
+                                                   'Gobierno de Cantabria'))
 print(hospitals_df)
 print(current_sit_df)
 hospitals_dataset["role"] = {"metric": ["Variables"]}
