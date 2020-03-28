@@ -1,5 +1,6 @@
 """Recover Twitter covid19 data in Cantabria."""
 
+import json
 import re
 from datetime import datetime
 
@@ -7,9 +8,12 @@ from cfg import cfg
 
 import pandas as pd
 
+from pyjstat import pyjstat
+
+import requests
+
 import tweepy
 
-from pyjstat import pyjstat
 
 # this dict is used in the code, so I'd rather not to extract it to config
 
@@ -80,7 +84,24 @@ def generate_coords_df():
     return pd.DataFrame(rows, columns=['Variables', 'value', 'Hospital'])
 
 
+def publish_gist(json_files):
+    # print headers,parameters,payload
+    headers = {'Authorization': f'token {cfg.github.api_token}'}
+    params = {'scope': 'gist'}
+    payload = {"description": "COVID19 hospital data in Cantabria",
+               "public": True,
+               "files": json_files
+               }
+
+    # make a request
+    res = requests.patch(cfg.github.api_url + cfg.github.gist_id,
+                         headers=headers,
+                         params=params,
+                         data=json.dumps(payload))
+    print(res)
+
 # MAIN SCRIPT
+
 
 # complete authorization and initialize API endpoint
 auth = tweepy.OAuthHandler(cfg.twitter.api_key, cfg.twitter.api_secret_key)
@@ -182,15 +203,27 @@ hospitals_dataset = pyjstat.Dataset.read(hospitals_df,
 current_sit_dataset = pyjstat.Dataset.read(current_sit_df,
                                            source=('Consejería de Sanidad del '
                                                    'Gobierno de Cantabria'))
-print(hospitals_df)
-print(current_sit_df)
+#print(hospitals_df)
+#print(current_sit_df)
 hospitals_dataset["role"] = {"metric": ["Variables"]}
 current_sit_dataset["role"] = {"time": ["dia"], "metric": ["Variables"]}
 hospitals_json = hospitals_dataset.write()
 current_sit_json = current_sit_dataset.write()
-print(hospitals_json)
-print(current_sit_json)
+#print(hospitals_json)
+#print(current_sit_json)
 write_to_file(hospitals_json,
               cfg.output.path + cfg.output.hospitals)
 write_to_file(current_sit_json,
               cfg.output.path + cfg.output.current_situation)
+
+files = {
+    cfg.output.hospitals: {
+        "content": hospitals_json
+    },
+    cfg.output.current_situation: {
+        "content": current_sit_json
+    }
+}
+
+print(files)
+publish_gist(files)
