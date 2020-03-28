@@ -151,6 +151,3 @@ Backup of *.doc*
 # Gedit
 *~
 
-# launcher script and config
-launcher.py
-cfg.py
