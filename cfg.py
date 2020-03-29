@@ -10,9 +10,14 @@ params = {
         'hospitals': 'hospitals.json',
         'current_situation': 'current-situation.json'
     },
+    'github': {
+        'api_url': 'https://api.github.com/gists/',
+        'api_token': config('API_TOKEN'),
+        'gist_id': 'bacd3c3d40bf9d63b66b150335f2073e'
+    },
     'twitter': {
-        'user_id': config('USER_ID'),
-        'covid_regex': config('COVID_REGEX'),
+        'user_id': 'saludcantabria',
+        'covid_regex': 'Situación #Covid19',
         'api_key': config('API_KEY'),
         'api_secret_key': config('API_SECRET_KEY'),
         'access_token': config('ACCESS_TOKEN'),
