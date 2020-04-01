@@ -14,6 +14,8 @@ import requests
 
 import tweepy
 
+import utils
+
 
 # this dict is used in the code, so I'd rather not to extract it to config
 
@@ -83,22 +85,6 @@ def generate_coords_df():
         rows.append(row)
     return pd.DataFrame(rows, columns=['Variables', 'value', 'Hospital'])
 
-
-def publish_gist(json_files):
-    # print headers,parameters,payload
-    headers = {'Authorization': f'token {cfg.github.api_token}'}
-    params = {'scope': 'gist'}
-    payload = {"description": "COVID19 hospital data in Cantabria",
-               "public": True,
-               "files": json_files
-               }
-
-    # make a request
-    res = requests.patch(cfg.github.api_url + cfg.github.gist_id,
-                         headers=headers,
-                         params=params,
-                         data=json.dumps(payload))
-    print(res)
 
 # MAIN SCRIPT
 
@@ -206,7 +192,9 @@ current_sit_dataset = pyjstat.Dataset.read(current_sit_df,
 #print(hospitals_df)
 #print(current_sit_df)
 hospitals_dataset["role"] = {"metric": ["Variables"]}
-current_sit_dataset["role"] = {"time": ["dia"], "metric": ["Variables"]}
+current_sit_dataset["role"] = {"time": ["fecha"], "metric": ["Variables"]}
+current_sit_dataset["note"] = [cfg.labels.current_sit_note]
+hospitals_dataset["note"] = [cfg.labels.current_sit_note]
 hospitals_json = hospitals_dataset.write()
 current_sit_json = current_sit_dataset.write()
 #print(hospitals_json)
@@ -226,4 +214,6 @@ files = {
 }
 
 print(files)
-publish_gist(files)
+utils.publish_gist(files,
+                   cfg.labels.hospitals_gist,
+                   cfg.github.hospitals_gist_id)

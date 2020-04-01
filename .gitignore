@@ -151,5 +151,5 @@ Backup of *.doc*
 # Gedit
 *~
 
-.data
+.data/*
 
