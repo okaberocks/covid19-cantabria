@@ -51,12 +51,15 @@ datasets = {}
 utils.initialize_firebase_db(cfg.firebase.creds_path, cfg.firebase.db_url)
 
 for key in cfg.output.totals:
+    data[key]['Fecha'] = pd.to_datetime(
+        data[key]['Fecha'], dayfirst=True).dt.strftime('%Y-%m-%d')
+
     datasets[key] = pyjstat.Dataset.read(data[key],
                                          source=('Consejería de Sanidad '
                                                  ' del Gobierno de '
                                                  'Cantabria'))
-    datasets[key]["role"] = {"time": ["fecha"], "metric": ["Variables"]}
+    datasets[key]["role"] = {"time": ["Fecha"], "metric": ["Variables"]}
     print(datasets[key].write())
     utils.publish_firebase('saludcantabria',
                            cfg.output.totals[key],
-                           datasets[key].write())
+                           datasets[key])

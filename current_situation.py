@@ -84,13 +84,14 @@ cases.columns = cases.columns.str.replace('Uci', 'UCI')
 cases.columns = cases.columns.str.replace('Pcr', 'PCR')
 cases.columns = cases.columns.str.replace('Hosp. ', '')
 cases.columns = cases.columns.str.replace('Humv', 'Valdecilla')
+cases.columns = cases.columns.str.replace('Dom.', 'Domiciliario')
 cases['Fecha'] = cases['Fecha'].str.replace('\*\*', '')
 
 cases.drop(cases.tail(3).index, inplace=True)
 
 data = {}
 
-data['general'] = cases[['Fecha', 'Aislamiento Dom.',
+data['general'] = cases[['Fecha', 'Aislamiento Domiciliario',
                          'Total Hospitalizados', 'Fallecidos',
                          'Curados']].tail(1)
 
@@ -146,4 +147,4 @@ for key in cfg.output.current_situation:
     print(datasets[key])
     utils.publish_firebase('saludcantabria',
                            cfg.output.current_situation[key],
-                           datasets[key].write())
+                           datasets[key])

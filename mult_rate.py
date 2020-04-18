@@ -19,6 +19,8 @@ mult_rates_ds = {}
 mult_rates_json = {}
 files = {}
 
+utils.initialize_firebase_db(cfg.firebase.creds_path, cfg.firebase.db_url)
+
 for key in cfg.github.mult_rate.keys():
     cases[key] = pd.read_csv(cfg.github.mult_rate[key].url)
     cases[key].drop(cases[key][cases[key].cod_ine != 6].index, inplace=True)
@@ -54,10 +56,7 @@ for key in cfg.github.mult_rate.keys():
                                                       'elaborados por '
                                                       'DATADISTA.COM  '))
     mult_rates_ds[key]["role"] = {"time": ["fecha"], "metric": ["Variables"]}
+    utils.publish_firebase('datadista',
+                           cfg.output.mult_rate[key],
+                           mult_rates_ds[key])
 
-    mult_rates_json[key] = mult_rates_ds[key].write()
-    files[cfg.output.mult_rate[key]] = {'content': mult_rates_json[key]}
-
-utils.publish_gist(files,
-                   cfg.labels.mult_rate_gist,
-                   cfg.github.mult_rate_gist_id)
