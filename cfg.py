@@ -9,25 +9,44 @@ params = {
         'results': 'resultados.csv',
         'hospitals': 'hospitals.json',
         'mult_rate': {
-            'cases': 'cases-mult-rate.json',
-            'deceased': 'deceased-mult-rate.json',
-            'discharged': 'discharged-mult-rate.json'
+            'cases': 'cases-mult-rate',
+            'deceased': 'deceased-mult-rate',
+            'discharged': 'discharged-mult-rate'
         },
         'municipalities': {
-            'cases': 'mun-cases.json',
-            'actives': 'mun-actives.json',
-            'deceased': 'mun-deceased.json',
-            'discharged': 'mun-discharged.json'
+            'cases': 'mun-cases',
+            'actives': 'mun-actives',
+            'deceased': 'mun-deceased',
+            'discharged': 'mun-discharged',
+            'cases_gross_rate': 'mun-cases-gross-rate',
+            'actives_gross_rate': 'mun-actives-gross-rate',
+            'deceased_gross_rate': 'mun-deceased-gross-rate',
+            'discharged_gross_rate': 'mun-discharged-gross-rate'
         },
-        'hospitalizations': 'hospitalizations.json',
-        'ucis': 'ucis.json',
-        'sanitarians': 'sanitarians.json',
-        'elder': 'elder.json',
-        'current_situation': 'current-situation.json'
+        'historical': {
+            'hospitalizations': 'hospitalizations',
+            'ucis': 'ucis',
+            'sanitarians': 'sanitarians',
+            'elder': 'elder',
+            'test': 'test'
+        },
+        'sma': 'sma.json',
+        'current_situation': {
+            'general': 'current-situation',
+            'hospitals': 'current-situation-hospitals'
+        },
+        'totals': {
+            'actives': 'total-actives',
+            'uci': 'total-uci',
+            'test': 'total-test'
+        }
     },
     'input': {
         'path': resource_filename(__name__, 'data/input/'),
-        'hospitals': 'covid19_historico.xls',
+         # 'scs_data': 'https://www.scsalud.es/documents/2162705/9255280/2020_covid19_historico.csv/',
+        'scs_data': 'https://www.scsalud.es/documents/2162705/9255280/2020_covid19_historico.csv/5d49eeb0-18b5-ba3a-164a-8c6e09fc1fa7',
+        'hospitals': 'covid19_historico.csv',
+        'population': 'poblacion_municipios.csv',
         'municipalities': 'https://services3.arcgis.com/JW6jblFaBSUw9ROV/ArcGIS/rest/services/MunicpiosCantabria_covid/FeatureServer/0/query?f=json&where=1=1&returnGeometry=false&outFields=*'
     },
     'github': {
@@ -58,6 +77,10 @@ params = {
         'access_token_secret': config('ACCESS_TOKEN_SECRET')
 
     },
+    'firebase': {
+        'creds_path': config('FIREBASE_CREDS_PATH'),
+        'db_url': 'https://covid19can-data.firebaseio.com/'
+    },
     'hospitals': {
         'valdecilla': {
             'name': 'Valdecilla',
@@ -78,6 +101,11 @@ params = {
             'name': 'Laredo',
             'lat': '43.414092',
             'lon': '-3.44198'
+        },
+        'liencres': {
+            'name': 'Liencres',
+            'lat': '43.4638654',
+            'lon': '-3.9135864'
         }
     },
     'labels': {
@@ -105,6 +133,22 @@ params = {
             'discharged': {
                 'original': 'NumeroCurados',
                 'final': 'Altas'
+            },
+            'cases_gross_rate': {
+                'original': 'Tasa bruta de casos',
+                'final': 'Tasa bruta de casos'
+            },
+            'actives_gross_rate': {
+                'original': 'Tasa bruta de activos',
+                'final': 'Tasa bruta de activos'
+            },
+            'deceased_gross_rate': {
+                'original': 'Tasa bruta de fallecidos',
+                'final': 'Tasa bruta de fallecidos'
+            },
+            'discharged_gross_rate': {
+                'original': 'Tasa bruta de altas',
+                'final': 'Tasa bruta de altas'
             }
         }
     }

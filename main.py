@@ -98,7 +98,7 @@ api = tweepy.API(auth)
 # retrieve tweets from the account providing the data
 tweets = api.user_timeline(screen_name=cfg.twitter.user_id,
                            include_rts=False,
-                           count=200,
+                           count=50,
                            # Necessary to keep full_text
                            # otherwise only the first 140 words are extracted
                            tweet_mode='extended'
@@ -128,7 +128,7 @@ for tweet_text, tweet_created_at in \
     tweet_text = deEmojify(tweet_text)
 
     # date extraction
-    date_match = re.search(r'\d{2}/\d{2}/\d{2}', tweet_text)
+    date_match = re.search(r'\d{1,2}/\d{1,2}/\d{2}', tweet_text)
     date = datetime.strptime(date_match.group(), '%d/%m/%y').date()
     status['last_created'] = tweet_created_at.strftime("%d/%m/%Y %H:%M:%S")
     status['fecha'] = date.strftime("%d/%m/%Y")
@@ -137,14 +137,24 @@ for tweet_text, tweet_created_at in \
     for fragment in tweet_text.split('\n'):
         if 'hospitalizado' in fragment:
             subfragments = re.split(':|,|y', fragment)
+            print(subfragments)
             for subfragment in subfragments:
                 if 'hospitalizado' in subfragment:
                     status['hospitalizado'] = re.findall('\d+', subfragment)[0]
+                    if 'valdecilla' in subfragment:
+                        values = re.findall('\d+', subfragment)
+                        status['valdecilla'] = values[1]
+                        status['uci_' +
+                               'valdecilla'] = values[2] if (len(values) == 3)\
+                            else ''
                 else:
                     for measure in cfg.hospitals.keys():
                         if measure in subfragment:
+                            print('SUBFRAGMENT', subfragment)
+                            print('MEASURE ', measure)
                             values = re.findall('\d+', subfragment)
                             status[measure] = values[0]
+                            print(status[measure])
                             status['uci_' +
                                    measure] = values[1] if (len(values) == 2)\
                                 else ''
@@ -167,7 +177,8 @@ current_sit_df = current_sit_df.melt(id_vars=['fecha'],
 hospitals_df = results_df[['valdecilla', 'uci_valdecilla',
                            'sierrallana', 'uci_sierrallana',
                            'tresmares', 'uci_tresmares',
-                           'laredo', 'uci_laredo']].loc[[0]]
+                           'laredo', 'uci_laredo',
+                           'liencres', 'uci_liencres']].loc[[0]]
 hospitals_df = hospitals_df.melt(var_name='Variables')
 hospitals_df['Hospital'] = hospitals_df['Variables'].apply(
     extract_hospital_value)
@@ -178,7 +189,8 @@ coords_df = generate_coords_df()
 
 hospitals_df = hospitals_df.append(coords_df, ignore_index=True)
 hospitals_df = hospitals_df[['Hospital', 'Variables', 'value']]
-hospitals_df.sort_values(by=['Hospital'], inplace=True)
+hospitals_df.sort_values(by=['Hospital', 'Variables'], inplace=True)
+print(hospitals_df)
 results_df.to_csv('./resultados.csv')
 
 # pd.melt(results_df, id_vars=['fecha']
@@ -214,6 +226,6 @@ files = {
 }
 
 print(files)
-utils.publish_gist(files,
+""" utils.publish_gist(files,
                    cfg.labels.hospitals_gist,
-                   cfg.github.hospitals_gist_id)
+                   cfg.github.hospitals_gist_id) """
