@@ -35,6 +35,12 @@ params = {
             'general': 'current-situation',
             'hospitals': 'current-situation-hospitals'
         },
+        'age_sex': {
+            'cases_age': 'cases-age',
+            'hospitalizations_age': 'hospitalizations-age',
+            'uci_age': 'uci-age',
+            'deceased_age': 'deceased-age'
+        },
         'totals': {
             'actives': 'total-actives',
             'uci': 'total-uci',
@@ -45,6 +51,7 @@ params = {
         'path': resource_filename(__name__, 'data/input/'),
          # 'scs_data': 'https://www.scsalud.es/documents/2162705/9255280/2020_covid19_historico.csv/',
         'scs_data': 'https://www.scsalud.es/documents/2162705/9255280/2020_covid19_historico.csv/5d49eeb0-18b5-ba3a-164a-8c6e09fc1fa7',
+        'scs_data_age_sex': 'https://www.scsalud.es/documents/2162705/9255280/2020_covid19_edad_sexo.csv/',
         'hospitals': 'covid19_historico.csv',
         'population': 'poblacion_municipios.csv',
         'municipalities': 'https://services3.arcgis.com/JW6jblFaBSUw9ROV/ArcGIS/rest/services/MunicpiosCantabria_covid/FeatureServer/0/query?f=json&where=1=1&returnGeometry=false&outFields=*'
