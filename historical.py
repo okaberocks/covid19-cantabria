@@ -9,35 +9,14 @@ from pyjstat import pyjstat
 import utils
 
 
-# cases = pd.read_csv(cfg.input.path + cfg.input.hospitals)
-cases = pd.read_csv(cfg.input.scs_data, na_filter=False,
-                    dtype={'CASOS RESIDENCIAS': object,
-                           'AISLAMIENTO DOM.': object,
-                           'TEST PCR': object,
-                           'PERSONAS TEST': object})
-""" cases = pd.read_excel(cfg.input.scs_data, na_filter=False,
-                      dtype={'CASOS RESIDENCIAS': object,
-                             'AISLAMIENTO DOM.': object,
-                             'TEST PCR': object,
-                             'PERSONAS TEST': object,
-                             'FECHAS': object}) """
-cases = cases.loc[:, ~cases.columns.str.contains('^Unnamed')]
-cases.columns = cases.columns.str.title()
-cases.columns = cases.columns.str.replace('Fecha\*', 'Fecha')
-cases.columns = cases.columns.str.replace('Uci', 'UCI')
-cases.columns = cases.columns.str.replace('Pcr', 'PCR')
-cases.columns = cases.columns.str.replace('Hosp. ', '')
-cases.columns = cases.columns.str.replace('Prof. ', '')
-cases.columns = cases.columns.str.replace('Humv', 'Valdecilla')
-cases['Fecha'] = cases['Fecha'].str.replace('\*\*', '')
-cases.drop(cases.tail(3).index, inplace=True)
+cases = utils.read_scs_csv(cfg.input.scs_data)
 
 data = {}
 
 data['elder'] = cases[['Fecha', 'Casos Residencias']]
 data['elder'] = data['elder'].melt(id_vars=['Fecha'], var_name='Variables')
 
-data['test'] = cases[['Fecha', 'Test PCR']]
+data['test'] = cases[['Fecha', 'Total Test']]
 data['test'] = data['test'].melt(id_vars=['Fecha'], var_name='Variables')
 
 data['sanitarians'] = cases[['Fecha', 'Sanitarios']]
@@ -83,7 +62,7 @@ utils.initialize_firebase_db(cfg.firebase.creds_path, cfg.firebase.db_url)
 for key in cfg.output.historical:
     data[key]['Fecha'] = pd.to_datetime(
         data[key]['Fecha'], dayfirst=True).dt.strftime('%Y-%m-%d')
-
+    data[key].sort_values(by=['Fecha', 'Variables'], inplace=True)
     datasets[key] = pyjstat.Dataset.read(data[key],
                                          source=('Consejería de Sanidad '
                                                  ' del Gobierno de '

@@ -58,36 +58,9 @@ def generate_coords_df():
         rows.append(row)
     return pd.DataFrame(rows, columns=['Variables', 'value', 'Hospital'])
 
+
 # READ DATA FROM CSV.
-# TODO: REFACTOR TO UTILS, SINCE THIS IS USED BY MORE MODULES
-
-
-cases = pd.read_csv(cfg.input.scs_data, na_filter=False,
-                    dtype={'CASOS RESIDENCIAS': object,
-                           'AISLAMIENTO DOM.': object,
-                           'TEST PCR': object,
-                           'PERSONAS TEST': object,
-                           'FECHAS': object})
-
-""" cases = pd.read_excel(cfg.input.scs_data, na_filter=False,
-                      dtype={'CASOS RESIDENCIAS': object,
-                             'AISLAMIENTO DOM.': object,
-                             'TEST PCR': object,
-                             'PERSONAS TEST': object,
-                             'FECHAS': object}) """
-
-cases = cases.loc[:, ~cases.columns.str.contains('^Unnamed')]
-
-cases.columns = cases.columns.str.title()
-cases.columns = cases.columns.str.replace('Fecha\*', 'Fecha')
-cases.columns = cases.columns.str.replace('Uci', 'UCI')
-cases.columns = cases.columns.str.replace('Pcr', 'PCR')
-cases.columns = cases.columns.str.replace('Hosp. ', '')
-cases.columns = cases.columns.str.replace('Humv', 'Valdecilla')
-cases.columns = cases.columns.str.replace('Dom.', 'Domiciliario')
-cases['Fecha'] = cases['Fecha'].str.replace('\*\*', '')
-
-cases.drop(cases.tail(3).index, inplace=True)
+cases = utils.read_scs_csv(cfg.input.scs_data)
 
 data = {}
 

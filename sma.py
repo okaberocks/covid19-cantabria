@@ -1,42 +1,15 @@
+"""Calculate 7-days simple moving average for relevant magnitudes."""
+from cfg import cfg
+
 import pandas as pd
 
 from pyjstat import pyjstat
 
-import requests
-
-import firebase_admin
-from firebase_admin import credentials
-from firebase_admin import db
-
-from cfg import cfg
-
 import utils
 
-cases = pd.read_csv(cfg.input.scs_data)
-# cases = pd.read_csv('https://www.scsalud.es/documents/2162705/9255280/2020_covid19_historico.csv', na_filter=False, dtype={'CASOS RESIDENCIAS': object, 'AISLAMIENTO DOM.': object, 'TEST PCR': object, 'PERSONAS TEST': object})
-""" cases = pd.read_excel(cfg.input.scs_data, na_filter=False,
-                      dtype={'CASOS RESIDENCIAS': object,
-                             'AISLAMIENTO DOM.': object,
-                             'TEST PCR': object,
-                             'PERSONAS TEST': object,
-                             'FECHA': object}) """
-
-cases = cases.loc[:, ~cases.columns.str.contains('^Unnamed')]
-#cases[cases.columns.difference(['FECHA*', 'CASOS RESIDENCIAS', 'AISLAMIENTO DOM.', 'TEST PCR', 'PERSONAS TEST'])] = cases[cases.columns.difference(['FECHA*', 'CASOS RESIDENCIAS', 'AISLAMIENTO DOM.', 'TEST PCR', 'PERSONAS TEST'])].apply(
-#    lambda x: pd.to_numeric(x, downcast='integer'))
-cases.columns = cases.columns.str.title()
-cases.columns = cases.columns.str.replace('Fecha\*', 'Fecha')
-cases.columns = cases.columns.str.replace('Uci', 'UCI')
-cases.columns = cases.columns.str.replace('Pcr', 'PCR')
-cases.columns = cases.columns.str.replace('HOSP. ', '')
-cases.columns = cases.columns.str.replace('Humv', 'Valdecilla')
-print(cases)
-cases['Fecha'] = cases['Fecha'].str.replace('**', '', regex=False)
-print(cases)
-cases.drop(cases.tail(3).index, inplace=True)
+cases = utils.read_scs_csv(cfg.input.scs_data)
 
 sma = cases[['Fecha', 'Casos Nuevos', 'Fallecidos', 'Curados']]
-
 
 sma['deaths_diff'] = sma['Fallecidos'].astype(float).diff()
 sma['recovered_diff'] = sma['Curados'].astype(float).diff()
