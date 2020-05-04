@@ -20,6 +20,7 @@ def to_json(df, id_vars, value_vars):
         var_name='Variables')
     id_vars.append('Variables')
     df = df.sort_values(by=id_vars)
+    df = df.groupby(['Rango_edad','Sexo'], as_index=False)['value'].sum()
     return df
 
 # READ DATA FROM CSV.
@@ -29,10 +30,13 @@ cases_age_sex = pd.read_csv(cfg.input.scs_data_age_sex, na_filter=False,
                     dtype={'Fecha': object,
                            'Rango_edad': object,
                            'Sexo': object,
-                           'Casos_confirmados': object,
-                           'Hospitalizados': object,
-                           'Ingresos_uci': object,
-                           'Fallecidos': object})
+                           'Casos_confirmados': int,
+                           'Hospitalizados': int,
+                           'Ingresos_uci': int,
+                           'Fallecidos': int})
+
+cases_age_sex['Rango_edad'] = cases_age_sex['Rango_edad'].replace('100 y +', '90 y +')
+cases_age_sex['Rango_edad'] = cases_age_sex['Rango_edad'].replace('90-99', '90 y +')
 
 data['cases_age'] = cases_age_sex[['Rango_edad', 'Sexo', 'Casos_confirmados']].copy()
 data['cases_age'] = to_json(data['cases_age'], ['Rango_edad', 'Sexo'], ['Casos_confirmados'])
