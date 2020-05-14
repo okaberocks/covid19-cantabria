@@ -66,7 +66,7 @@ data = {}
 
 data['general'] = cases[['Fecha', 'Aislamiento Domiciliario',
                          'Total Hospitalizados', 'Fallecidos',
-                         'Curados']].tail(1)
+                         'Recuperados']].tail(1)
 
 data['general'] = data['general'].melt(id_vars=['Fecha'], var_name='Variables')
 
