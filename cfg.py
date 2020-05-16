@@ -44,7 +44,7 @@ params = {
     'input': {
         'path': resource_filename(__name__, 'data/input/'),
          # 'scs_data': 'https://www.scsalud.es/documents/2162705/9255280/2020_covid19_historico.csv/',
-        'scs_data': 'https://www.scsalud.es/documents/2162705/9255280/2020_covid19_historico.csv/4d379a2d-0b97-507c-5204-92ba3aa9bd10',
+        'scs_data': 'https://www.scsalud.es/documents/2162705/9255280/2020_covid19_historico.csv/c47398e8-21d2-dbca-67b5-320e1de476e6',
         'hospitals': 'covid19_historico.csv',
         'population': 'poblacion_municipios.csv',
         'municipalities': 'https://services3.arcgis.com/JW6jblFaBSUw9ROV/ArcGIS/rest/services/MunicpiosCantabria_covid/FeatureServer/0/query?f=json&where=1=1&returnGeometry=false&outFields=*'
