@@ -68,5 +68,6 @@ def read_scs_csv(url):
     cases.columns = cases.columns.str.replace('Humv', 'Valdecilla')
     cases.columns = cases.columns.str.replace('Dom.', 'Domiciliario')
     cases['Fecha'] = cases['Fecha'].str.replace('\*\*', '')
+    cases['Fecha'] = cases['Fecha'].str.replace('\*', '')
     # cases.drop(cases.tail(3).index, inplace=True)
     return cases

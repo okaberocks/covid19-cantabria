@@ -16,8 +16,8 @@ cases = cases.tail(1)
 data = {}
 
 data['actives'] = cases[['Fecha']]
-data['actives']['Casos activos'] = cases['Total Casos'].astype(
-    int) - cases['Fallecidos'].astype(int) - cases['Curados'].astype(int)
+data['actives']['Casos activos'] = cases['Total Casos PCR+'].astype(
+    int) - cases['Fallecidos'].astype(int) - cases['Recuperados'].astype(int)
 data['actives'] = data['actives'].melt(id_vars=['Fecha'], var_name='Variables')
 
 data['uci'] = cases[['Fecha', 'Hospitalizados UCI']]
