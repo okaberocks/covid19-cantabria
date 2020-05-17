@@ -47,11 +47,12 @@ def publish_firebase(category, filename, content):
 def read_scs_csv(url):
     """Read CSV file with Cantabria's data from SCS."""
     # cases = pd.read_csv(cfg.input.path + cfg.input.hospitals)
-    cases = pd.read_csv(url, na_filter=False, skipfooter=3,
-                        dtype={'CASOS RESIDENCIAS': object,
-                               'AISLAMIENTO DOM.': object,
-                               'TOTAL TEST': object,
-                               'TEST PCR': object})
+    cases = pd.read_csv(url, na_filter=False, skipfooter=3)
+    #                     dtype={'CASOS RESIDENCIAS': object,
+    #                            'AISLAMIENTO DOM.': object,
+    #                            'TOTAL TEST': object,
+    #                            'TEST PCR': object})
+    print(cases.columns)
     """ cases = pd.read_excel(cfg.input.scs_data, na_filter=False,
                         dtype={'CASOS RESIDENCIAS': object,
                                 'AISLAMIENTO DOM.': object,

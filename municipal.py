@@ -14,6 +14,7 @@ response = requests.get(cfg.input.municipalities)
 json_data = response.json()
 
 rows = []
+print(json_data)
 for element in json_data['features']:
     rows.append(element['attributes'])
 data = pd.DataFrame(rows, columns=['OBJECTID_1', 'Codigo',
