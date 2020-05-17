@@ -18,13 +18,13 @@ sma['Casos'] = sma['Casos Nuevos'].rolling(7, center=True).mean().round()
 sma['Fallecidos'] = sma['deaths_diff'].rolling(7, center=True).mean().round()
 sma['Recuperados'] = sma['recovered_diff'].rolling(
     7, center=True).mean().round()
-print(sma)
+
 sma.drop(columns=['Casos Nuevos',
                   'deaths_diff',
                   'recovered_diff'], inplace=True)
 
 sma.dropna(inplace=True)
-print(sma)
+
 sma = sma.melt(id_vars=['Fecha'], var_name='Variables')
 
 sma['Fecha'] = pd.to_datetime(sma['Fecha'], dayfirst=True).dt.strftime('%Y-%m-%d')

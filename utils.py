@@ -45,7 +45,7 @@ def publish_firebase(category, filename, content):
 
 
 def read_scs_csv(url):
-    """Read CSV file with Cantabria's data from SCS."""
+    """Read CSV file with Cantabria's historical data from SCS."""
     # cases = pd.read_csv(cfg.input.path + cfg.input.hospitals)
     cases = pd.read_csv(url, na_filter=False, skipfooter=70,  # 3,
                         dtype={'CASOS RESIDENCIAS': object,
@@ -71,3 +71,23 @@ def read_scs_csv(url):
     cases['Fecha'] = cases['Fecha'].str.replace('\*\*', '')
     # cases.drop(cases.tail(3).index, inplace=True)
     return cases
+
+
+def read_scs_municipal(url):
+    """Read CSV file with Cantabria's municipal data from SCS."""
+    # cases = pd.read_csv(cfg.input.path + cfg.input.hospitals)
+    raw_data = pd.read_csv(url, na_filter=False, skipfooter=2,  # 3,
+                           dtype={'Código': object})
+
+    raw_data.columns = raw_data.columns.str.title()
+    raw_data.columns = raw_data.columns.str.replace('Código', 'Codigo')
+    raw_data.columns = raw_data.columns.str.replace('Municipio', 'Texto')
+    raw_data.columns = raw_data.columns.str.replace('Casos Pcr\+',
+                                                    'NumeroCasos')
+    raw_data.columns = raw_data.columns.str.replace('Activos',
+                                                    'NumeroCasosActivos')
+    raw_data.columns = raw_data.columns.str.replace('Recuperados',
+                                                    'NumeroCurados')
+    raw_data.columns = raw_data.columns.str.replace('Fallecidos',
+                                                    'NumeroFallecidos')
+    return raw_data
