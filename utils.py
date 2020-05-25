@@ -47,7 +47,7 @@ def publish_firebase(category, filename, content):
 def read_scs_csv(url):
     """Read CSV file with Cantabria's historical data from SCS."""
     # cases = pd.read_csv(cfg.input.path + cfg.input.hospitals)
-    cases = pd.read_csv(url, na_filter=False, skipfooter=70,  # 3,
+    cases = pd.read_csv(url, na_filter=False, skipfooter=1,  # 3,
                         dtype={'CASOS RESIDENCIAS': object,
                                'AISLAMIENTO DOM.': object,
                                'TOTAL TEST': object,
@@ -62,12 +62,15 @@ def read_scs_csv(url):
     cases.columns = cases.columns.str.title()
     cases.columns = cases.columns.str.replace('Fecha\*', 'Fecha')
     cases.columns = cases.columns.str.replace('Casos Nuevos\*', 'Casos Nuevos')
+    cases.columns = cases.columns.str.replace('Casos Nuevos Pcr\*', 'Casos Nuevos')
     cases.columns = cases.columns.str.replace('Uci', 'UCI')
+    cases.columns = cases.columns.str.replace('Hospitalizados UCI', 'UCI')
     cases.columns = cases.columns.str.replace('Pcr', 'PCR')
     cases.columns = cases.columns.str.replace('Hosp. ', '')
     cases.columns = cases.columns.str.replace('Prof. ', '')
     cases.columns = cases.columns.str.replace('Humv', 'Valdecilla')
     cases.columns = cases.columns.str.replace('Dom.', 'Domiciliario')
+    cases.columns = cases.columns.str.replace('Total Casos', 'Casos')
     cases['Fecha'] = cases['Fecha'].str.replace('\*\*', '')
     # cases.drop(cases.tail(3).index, inplace=True)
     return cases
@@ -76,18 +79,18 @@ def read_scs_csv(url):
 def read_scs_municipal(url):
     """Read CSV file with Cantabria's municipal data from SCS."""
     # cases = pd.read_csv(cfg.input.path + cfg.input.hospitals)
-    raw_data = pd.read_csv(url, na_filter=False, skipfooter=2,  # 3,
+    raw_data = pd.read_csv(url, na_filter=False, skipfooter=1,  # 3,
                            dtype={'Código': object})
 
     raw_data.columns = raw_data.columns.str.title()
     raw_data.columns = raw_data.columns.str.replace('Código', 'Codigo')
     raw_data.columns = raw_data.columns.str.replace('Municipio', 'Texto')
-    raw_data.columns = raw_data.columns.str.replace('Casos Pcr\+',
+    raw_data.columns = raw_data.columns.str.replace('Número De Casos',
                                                     'NumeroCasos')
-    raw_data.columns = raw_data.columns.str.replace('Activos',
+    raw_data.columns = raw_data.columns.str.replace('Número De Activos',
                                                     'NumeroCasosActivos')
-    raw_data.columns = raw_data.columns.str.replace('Recuperados',
+    raw_data.columns = raw_data.columns.str.replace('Número De Curados',
                                                     'NumeroCurados')
-    raw_data.columns = raw_data.columns.str.replace('Fallecidos',
+    raw_data.columns = raw_data.columns.str.replace('Número De Fallecidos',
                                                     'NumeroFallecidos')
     return raw_data

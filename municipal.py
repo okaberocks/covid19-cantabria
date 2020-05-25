@@ -18,6 +18,8 @@ population['Codigo'] = population['Codigo'].apply(str)
 print(data.dtypes)
 print(population.dtypes)
 data = pd.merge(data, population, on='Codigo')
+
+print(data)
 data['Tasa bruta de casos'] = (
     data['NumeroCasos'] / data['poblacion']) * 100000
 data['Tasa bruta de activos'] = (

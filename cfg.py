@@ -44,15 +44,20 @@ params = {
         'totals': {
             'actives': 'total-actives',
             'uci': 'total-uci',
-            'test': 'total-test'
+            'test': 'total-test',
+            'cases': 'total-cases',
+            'deceased': 'total-deceased',
+            'discharged': 'total-discharged'
+        },
+        'accumulated': {
+            'accumulated': 'accumulated'
         }
     },
     'input': {
         'path': resource_filename(__name__, 'data/input/'),
-         # 'scs_data': 'https://www.scsalud.es/documents/2162705/9255280/2020_covid19_historico.csv/',
-        'scs_data': 'https://www.scsalud.es/documents/2162705/9255280/2020_covid19_historico.csv/2f45dc75-bb04-60da-fe8b-9bd6bcff5673',
-        'scs_data_age_sex': 'https://www.scsalud.es/documents/2162705/9255280/2020_covid19_edad_sexo.csv/3b0ce75f-f858-e473-2600-6191d14c8a3c',
-        'scs_data_municipal': 'https://www.scsalud.es/documents/2162705/9255280/2020_covid19_municipal.csv/8b9d0529-c93b-36d3-6467-443dfa39e4ce',
+        'scs_data': 'https://www.scsalud.es/documents/2162705/9255280/2020_covid19_historico.csv/b6c3289b-fd93-38f8-5d09-d8fd7d3fd83a',
+        'scs_data_age_sex': 'https://www.scsalud.es/documents/2162705/9255280/2020_covid19_edad_sexo.csv/bbdc3207-d245-f689-27f8-30399f4718fc',
+        'scs_data_municipal': 'https://www.scsalud.es/documents/2162705/9255280/2020_covid19_municipal.csv/362e9958-fffb-c6e8-345b-2f06ddf266db',
         'hospitals': 'covid19_historico.csv',
         'population': 'poblacion_municipios.csv',
         'municipalities': 'https://services3.arcgis.com/JW6jblFaBSUw9ROV/ArcGIS/rest/services/MunicpiosCantabria_covid/FeatureServer/0/query?f=json&where=1=1&returnGeometry=false&outFields=*'

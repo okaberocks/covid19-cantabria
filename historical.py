@@ -16,7 +16,8 @@ data = {}
 data['elder'] = cases[['Fecha', 'Casos Residencias']]
 data['elder'] = data['elder'].melt(id_vars=['Fecha'], var_name='Variables')
 
-data['test'] = cases[['Fecha', 'Total Test']]
+print(data['elder'])
+data['test'] = cases[['Fecha', 'Test PCR', 'Test Anticuerpos']]
 data['test'] = data['test'].melt(id_vars=['Fecha'], var_name='Variables')
 
 data['sanitarians'] = cases[['Fecha', 'Sanitarios']]
