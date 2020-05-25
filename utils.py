@@ -52,12 +52,6 @@ def read_scs_csv(url):
                                'AISLAMIENTO DOM.': object,
                                'TOTAL TEST': object,
                                'TEST PCR': object})
-    """ cases = pd.read_excel(cfg.input.scs_data, na_filter=False,
-                        dtype={'CASOS RESIDENCIAS': object,
-                                'AISLAMIENTO DOM.': object,
-                                'TOTAL TEST': object,
-                                'TEST PCR': object,
-                                'FECHAS': object}) """
     cases = cases.loc[:, ~cases.columns.str.contains('^Unnamed')]
     cases.columns = cases.columns.str.title()
     cases.columns = cases.columns.str.replace('Fecha\*', 'Fecha')
@@ -71,6 +65,8 @@ def read_scs_csv(url):
     cases.columns = cases.columns.str.replace('Humv', 'Valdecilla')
     cases.columns = cases.columns.str.replace('Dom.', 'Domiciliario')
     cases.columns = cases.columns.str.replace('Total Casos', 'Casos')
+    cases.columns = cases.columns.str.replace('C. Resid. Activos', 'Residencias Activos')
+    cases.columns = cases.columns.str.replace('P. Sanit. Activos', 'Sanitarios Activos')
     cases['Fecha'] = cases['Fecha'].str.replace('\*\*', '')
     # cases.drop(cases.tail(3).index, inplace=True)
     return cases

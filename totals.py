@@ -14,9 +14,7 @@ cases = utils.read_scs_csv(cfg.input.scs_data)
 cases = cases.tail(1)
 data = {}
 
-data['actives'] = cases[['Fecha']]
-data['actives']['Casos activos'] = cases['Casos'].astype(
-    int) - cases['Fallecidos'].astype(int) - cases['Recuperados'].astype(int)
+data['actives'] = cases[['Fecha', 'Activos']]
 data['actives'] = data['actives'].melt(id_vars=['Fecha'], var_name='Variables')
 
 data['uci'] = cases[['Fecha', 'UCI']]
@@ -34,6 +32,14 @@ data['deceased'] = data['deceased'].melt(id_vars=['Fecha'], var_name='Variables'
 data['discharged'] = cases[['Fecha', 'Recuperados']]
 data['discharged'] = data['discharged'].melt(id_vars=['Fecha'], var_name='Variables')
 
+data['sanitarians'] = cases[['Fecha', 'Sanitarios Activos']]
+data['sanitarians'] = data['sanitarians'].melt(id_vars=['Fecha'], var_name='Variables')
+data['sanitarians']['value'] = data['sanitarians']['value'].astype(int)
+
+data['residences'] = cases[['Fecha', 'Residencias Activos']]
+data['residences'] = data['residences'].melt(id_vars=['Fecha'], var_name='Variables')
+data['residences']['value'] = data['residences']['value'].astype(int)
+
 # Generate and publish json-stat
 datasets = {}
 utils.initialize_firebase_db(cfg.firebase.creds_path, cfg.firebase.db_url)
@@ -47,7 +53,7 @@ for key in cfg.output.totals:
                                                  ' del Gobierno de '
                                                  'Cantabria'))
     datasets[key]["role"] = {"time": ["Fecha"], "metric": ["Variables"]}
-    # print(datasets[key].write())
+    # print(datasets[key])
     utils.publish_firebase('saludcantabria',
                            cfg.output.totals[key],
                            datasets[key])

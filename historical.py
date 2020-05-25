@@ -24,6 +24,14 @@ data['sanitarians'] = cases[['Fecha', 'Sanitarios']]
 data['sanitarians'] = data['sanitarians'].melt(
     id_vars=['Fecha'], var_name='Variables')
 
+data['active_sanitarians'] = cases[['Fecha', 'Sanitarios Activos']]
+data['active_sanitarians'] = data['active_sanitarians'].melt(
+    id_vars=['Fecha'], var_name='Variables')
+
+data['active_elder'] = cases[['Fecha', 'Residencias Activos']]
+data['active_elder'] = data['active_elder'].melt(
+    id_vars=['Fecha'], var_name='Variables')
+
 hospitals = {}
 ucis = {}
 for key in cfg.hospitals.keys():

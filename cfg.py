@@ -28,7 +28,9 @@ params = {
             'ucis': 'ucis',
             'sanitarians': 'sanitarians',
             'elder': 'elder',
-            'test': 'test'
+            'test': 'test',
+            'active_sanitarians': 'active-sanitarians',
+            'active_elder': 'active-elder'
         },
         'sma': 'sma.json',
         'current_situation': {
@@ -47,10 +49,17 @@ params = {
             'test': 'total-test',
             'cases': 'total-cases',
             'deceased': 'total-deceased',
-            'discharged': 'total-discharged'
+            'discharged': 'total-discharged',
+            'sanitarians': 'total-sanitarians',
+            'residences': 'total-residences'
         },
         'accumulated': {
             'accumulated': 'accumulated'
+        },
+        'daily': {
+            'daily_cases': 'daily-cases',
+            'daily_deceases': 'daily-deceases',
+            'daily_discharged': 'daily-discharged'
         }
     },
     'input': {
