@@ -13,16 +13,8 @@ cases = utils.read_scs_csv(cfg.input.scs_data)
 
 data = {}
 
-data['elder'] = cases[['Fecha', 'Casos Residencias']]
-data['elder'] = data['elder'].melt(id_vars=['Fecha'], var_name='Variables')
-
-print(data['elder'])
 data['test'] = cases[['Fecha', 'Test PCR', 'Test Anticuerpos']]
 data['test'] = data['test'].melt(id_vars=['Fecha'], var_name='Variables')
-
-data['sanitarians'] = cases[['Fecha', 'Sanitarios']]
-data['sanitarians'] = data['sanitarians'].melt(
-    id_vars=['Fecha'], var_name='Variables')
 
 data['active_sanitarians'] = cases[['Fecha', 'Sanitarios Activos']]
 data['active_sanitarians'] = data['active_sanitarians'].melt(
@@ -30,6 +22,16 @@ data['active_sanitarians'] = data['active_sanitarians'].melt(
 
 data['active_elder'] = cases[['Fecha', 'Residencias Activos']]
 data['active_elder'] = data['active_elder'].melt(
+    id_vars=['Fecha'], var_name='Variables')
+
+data['sanitarians'] = cases[['Fecha', 'Sanitarios', 'Sanitarios Activos']]
+data['sanitarians'] = data['sanitarians'].rename(columns={"Sanitarios": "Sanitarios Acumulados"})
+data['sanitarians'] = data['sanitarians'].melt(
+    id_vars=['Fecha'], var_name='Variables')
+
+data['elder'] = cases[['Fecha', 'Residencias Activos', 'Casos Residencias']]
+data['elder'] = data['elder'].rename(columns={"Casos Residencias": "Residencias Acumulados"})
+data['elder'] = data['elder'].melt(
     id_vars=['Fecha'], var_name='Variables')
 
 hospitals = {}

@@ -24,7 +24,20 @@ data['daily_deceases'] = cases[['Fecha', 'Fallecidos']]
 data['daily_deceases'] = data['daily_deceases'].melt(id_vars=['Fecha'], var_name='Variables')
 data['daily_deceases']['value'] = data['daily_deceases']['value'].diff()
 
-# Publish datasets into Firebase
+
+data['daily_types'] = cases[['Fecha', 'Casos', 'Casos Residencias', 'Sanitarios']]
+data['daily_types'] = data['daily_types'].iloc[17:]
+data['daily_types']['Casos'] = data['daily_types']['Casos'].diff()
+data['daily_types']['Casos Residencias'] = data['daily_types']['Casos Residencias'].astype(int)
+data['daily_types']['Casos Residencias'] = data['daily_types']['Casos Residencias'].diff()
+data['daily_types']['Sanitarios'] = data['daily_types']['Sanitarios'].diff()
+data['daily_types']['Otros'] = data['daily_types']['Casos'] -\
+                                data['daily_types']['Sanitarios'] -\
+                                data['daily_types']['Casos Residencias']
+data['daily_types'] = data['daily_types'][['Fecha', 'Otros', 'Casos Residencias', 'Sanitarios']]
+data['daily_types'] = data['daily_types'].rename(columns={"Casos Residencias": "Residencias"})
+data['daily_types'] = data['daily_types'].melt(id_vars=['Fecha'], var_name='Variables')
+
 datasets = {}
 utils.initialize_firebase_db(cfg.firebase.creds_path, cfg.firebase.db_url)
 

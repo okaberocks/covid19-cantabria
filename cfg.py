@@ -59,14 +59,15 @@ params = {
         'daily': {
             'daily_cases': 'daily-cases',
             'daily_deceases': 'daily-deceases',
-            'daily_discharged': 'daily-discharged'
+            'daily_discharged': 'daily-discharged',
+            'daily_types': 'daily-types'
         }
     },
     'input': {
         'path': resource_filename(__name__, 'data/input/'),
-        'scs_data': 'https://www.scsalud.es/documents/2162705/9255280/2020_covid19_historico.csv/b6c3289b-fd93-38f8-5d09-d8fd7d3fd83a',
-        'scs_data_age_sex': 'https://www.scsalud.es/documents/2162705/9255280/2020_covid19_edad_sexo.csv/bbdc3207-d245-f689-27f8-30399f4718fc',
-        'scs_data_municipal': 'https://www.scsalud.es/documents/2162705/9255280/2020_covid19_municipal.csv/362e9958-fffb-c6e8-345b-2f06ddf266db',
+        'scs_data': 'https://www.scsalud.es/documents/2162705/9255280/2020_covid19_historico.csv/5b9c0c55-fcac-3b50-cd54-fecc02862b28',
+        'scs_data_age_sex': 'https://www.scsalud.es/documents/2162705/9255280/2020_covid19_edad_sexo.csv/c518b1ac-955f-8abd-dec0-c0f239763275',
+        'scs_data_municipal': 'https://www.scsalud.es/documents/2162705/9255280/2020_covid19_municipal.csv/5047e6e6-54ca-d96e-bd99-79219d6241dd',
         'hospitals': 'covid19_historico.csv',
         'population': 'poblacion_municipios.csv',
         'municipalities': 'https://services3.arcgis.com/JW6jblFaBSUw9ROV/ArcGIS/rest/services/MunicpiosCantabria_covid/FeatureServer/0/query?f=json&where=1=1&returnGeometry=false&outFields=*'
