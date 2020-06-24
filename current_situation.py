@@ -110,14 +110,18 @@ data['hospitals']['Variables'] = data['hospitals']['Variables'].replace('uci',
 
 # GENERATE JSON DATASETS
 datasets = {}
-utils.initialize_firebase_db(cfg.firebase.creds_path, cfg.firebase.db_url)
+
+try:
+    utils.initialize_firebase_db(cfg.firebase.creds_path, cfg.firebase.db_url)
+except:
+    pass
 
 for key in cfg.output.current_situation:
     datasets[key] = pyjstat.Dataset.read(data[key], source=(
         'Consejería de Sanidad del Gobierno de Cantabria'))
     datasets[key]["role"] = {"time": ["fecha"], "metric": ["Variables"]}
-    datasets[key]["note"] = [cfg.labels.current_sit_note]
-    print(datasets[key])
+    # datasets[key]["note"] = [cfg.labels.current_sit_note]
     utils.publish_firebase('saludcantabria',
                            cfg.output.current_situation[key],
                            datasets[key])
+print('Current situation published')

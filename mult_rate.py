@@ -19,44 +19,51 @@ mult_rates_ds = {}
 mult_rates_json = {}
 files = {}
 
-utils.initialize_firebase_db(cfg.firebase.creds_path, cfg.firebase.db_url)
+try:
+    utils.initialize_firebase_db(cfg.firebase.creds_path, cfg.firebase.db_url)
+except:
+    pass
 
-for key in cfg.github.mult_rate.keys():
-    cases[key] = pd.read_csv(cfg.github.mult_rate[key].url)
-    cases[key].drop(cases[key][cases[key].cod_ine != 6].index, inplace=True)
-    cases[key].reset_index(inplace=True)
-    cases[key].drop('index', axis=1, inplace=True)
-    cases[key].drop('cod_ine', axis=1, inplace=True)
-    cases[key].drop('CCAA', axis=1, inplace=True)
+cases = utils.read_scs_csv(cfg.input.scs_data)
 
-# downsampling: get 1 record in 4 to avoid temporary effects
-    downsampling[key] = cases[key].iloc[list(range(len(cases[key])-1, 0, -4))]
-    downsampling[key]['mult_rate'] = downsampling[key]['total'] / \
-        downsampling[key]['total'].shift(-1)
+data = {}
+data['cases'] = cases[['Fecha', 'Casos']]
+data['cases'] = data['cases'].rename(columns={"Casos": "total"})
+data['cases'] = data['cases'].melt(id_vars=['Fecha'], var_name='Variables')
+data['deceased'] = cases[['Fecha', 'Fallecidos']]
+data['deceased'] = data['deceased'].rename(columns={"Fallecidos": "total"})
+data['deceased'] = data['deceased'].melt(id_vars=['Fecha'], var_name='Variables')
+data['discharged'] = cases[['Fecha', 'Recuperados']]
+data['discharged'] = data['discharged'].rename(columns={"Recuperados": "total"})
+data['discharged'] = data['discharged'].melt(id_vars=['Fecha'], var_name='Variables')
 
-# Format the dataframe for generating json-stat for stat-viewer
+datasets = {}
+for key in cfg.output.mult_rate:
+    data[key]['Fecha'] = pd.to_datetime(
+        data[key]['Fecha'], dayfirst=True).dt.strftime('%Y-%m-%d')
+    data[key].sort_values(by=['Fecha', 'Variables'], inplace=True)
+    
+    # downsampling: get 1 record in 4 to avoid temporary effects
+    data[key] = data[key].iloc[list(range(len(data[key])-1, 0, -4))]
+    data[key]['mult_rate'] = data[key]['value'] / \
+        data[key]['value'].shift(-1)
 
-    mult_rates[key] = downsampling[key].melt(
-        id_vars=['fecha'],
+    data[key] = data[key].melt(
+        id_vars=['Fecha'],
         value_vars=['mult_rate'],
         var_name='Variables'
     )
-    mult_rates[key]['Variables'].replace(cfg.labels, inplace=True)
-    mult_rates[key].sort_values(by=['fecha'], inplace=True)
-    mult_rates[key].replace([np.inf, -np.inf], np.nan, inplace=True)
+
+    data[key].sort_values(by=['Fecha', 'Variables'], inplace=True)
+    data[key]['Variables'].replace(cfg.labels, inplace=True)
+    data[key].replace([np.inf, -np.inf], np.nan, inplace=True)
+    data[key] = data[key].dropna()
     
-
-# Generate and publish json-stat
-
-    mult_rates_ds[key] = pyjstat.Dataset.read(mult_rates[key],
-                                              source=('Ministerio de Sanidad, '
-                                                      'Consumo y Bienestar '
-                                                      'Social. A partir de '
-                                                      'ficheros de datos '
-                                                      'elaborados por '
-                                                      'DATADISTA.COM  '))
-    mult_rates_ds[key]["role"] = {"time": ["fecha"], "metric": ["Variables"]}
-    utils.publish_firebase('datadista',
-                           cfg.output.mult_rate[key],
-                           mult_rates_ds[key])
-
+    # print(data[key])
+    datasets[key] = pyjstat.Dataset.read(data[key],
+                                         source=('Consejería de Sanidad '
+                                                 ' del Gobierno de '
+                                                 'Cantabria'))
+    datasets[key]["role"] = {"time": ["Fecha"], "metric": ["Variables"]}
+    utils.publish_firebase('saludcantabria', cfg.output.mult_rate[key], datasets[key])
+print('Mult rate published')

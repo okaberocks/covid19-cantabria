@@ -36,10 +36,12 @@ sma_dataset = pyjstat.Dataset.read(sma,
                                            'Cantabria'))
 sma_dataset["role"] = {"time": ["fecha"], "metric": ["Variables"]}
 
-print(sma_dataset)
-
-utils.initialize_firebase_db(cfg.firebase.creds_path, cfg.firebase.db_url)
+try:
+    utils.initialize_firebase_db(cfg.firebase.creds_path, cfg.firebase.db_url)
+except:
+    pass
 
 utils.publish_firebase('saludcantabria',
                        'sma',
                        sma_dataset)
+print('SMA published')

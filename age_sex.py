@@ -53,7 +53,11 @@ data['deceased_age'] = to_json(data['deceased_age'], ['Rango_edad', 'Sexo'], ['F
 
 # GENERATE JSON DATASETS
 datasets = {}
-utils.initialize_firebase_db(cfg.firebase.creds_path, cfg.firebase.db_url)
+try:
+    utils.initialize_firebase_db(cfg.firebase.creds_path, cfg.firebase.db_url)
+except:
+    pass
+
 for key in cfg.output.age_sex:
     datasets[key] = pyjstat.Dataset.read(data[key], source=(
         'Consejería de Sanidad del Gobierno de Cantabria'))
@@ -61,3 +65,4 @@ for key in cfg.output.age_sex:
     utils.publish_firebase('saludcantabria',
                            cfg.output.age_sex[key],
                            datasets[key])
+print('Age and sex published')

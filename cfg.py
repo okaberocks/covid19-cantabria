@@ -1,6 +1,7 @@
 from beautifuldict.baseconfig import Baseconfig
 from decouple import config
 from pkg_resources import resource_filename
+import urls
 
 params = {
     
@@ -65,16 +66,16 @@ params = {
     },
     'input': {
         'path': resource_filename(__name__, 'data/input/'),
-        'scs_data': 'https://www.scsalud.es/documents/2162705/9255280/2020_covid19_historico.csv/5b9c0c55-fcac-3b50-cd54-fecc02862b28',
-        'scs_data_age_sex': 'https://www.scsalud.es/documents/2162705/9255280/2020_covid19_edad_sexo.csv/c518b1ac-955f-8abd-dec0-c0f239763275',
-        'scs_data_municipal': 'https://www.scsalud.es/documents/2162705/9255280/2020_covid19_municipal.csv/5047e6e6-54ca-d96e-bd99-79219d6241dd',
+        'scs_data': urls.historico_url,
+        'scs_data_age_sex': urls.edad_url,
+        'scs_data_municipal': urls.municipal_url,
         'hospitals': 'covid19_historico.csv',
         'population': 'poblacion_municipios.csv',
         'municipalities': 'https://services3.arcgis.com/JW6jblFaBSUw9ROV/ArcGIS/rest/services/MunicpiosCantabria_covid/FeatureServer/0/query?f=json&where=1=1&returnGeometry=false&outFields=*'
     },
     'github': {
         'api_url': 'https://api.github.com/gists/',
-        'api_token': config('API_TOKEN'),
+        # 'api_token': config('API_TOKEN'),
         'hospitals_gist_id': 'bacd3c3d40bf9d63b66b150335f2073e',
         'mult_rate_gist_id': '4a622f00ea944085dde09d99def9b8cc',
         'hospitalizations_gist_id': 'ff0f50a499ed8a5832a21d505e20a06f',
@@ -94,10 +95,10 @@ params = {
     'twitter': {
         'user_id': 'saludcantabria',
         'covid_regex': 'Situación #Covid19',
-        'api_key': config('API_KEY'),
-        'api_secret_key': config('API_SECRET_KEY'),
-        'access_token': config('ACCESS_TOKEN'),
-        'access_token_secret': config('ACCESS_TOKEN_SECRET')
+        # 'api_key': config('API_KEY'),
+        # 'api_secret_key': config('API_SECRET_KEY'),
+        # 'access_token': config('ACCESS_TOKEN'),
+        # 'access_token_secret': config('ACCESS_TOKEN_SECRET')
 
     },
     'firebase': {
@@ -137,7 +138,8 @@ params = {
         'mult_rate_gist': 'COVID19 case multiplication rate in Cantabria',
         'hospitalizations_gist': 'COVID19 hospitalization and UCI data in Cantabria',
         'municipalities_absolute_gist': 'COVID19 absolute values by municipalities',
-        'current_sit_note': 'Los datos de situación actual corresponden al día anterior, debido a un desfase en las fuentes oficiales.' 
+        'current_sit_note': 'Los datos de situación actual corresponden al día anterior, debido a un desfase en las fuentes oficiales.' ,
+        'daily_note': 'Los datos están pendiente de revisión por parte del Servicio Cántabro de Salud'
     },
     'municipalities': {
         'measures': {

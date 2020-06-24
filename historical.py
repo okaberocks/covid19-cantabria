@@ -68,7 +68,10 @@ data['ucis'].drop('index', axis=1, inplace=True)
 
 # Publish datasets into Firebase
 datasets = {}
-utils.initialize_firebase_db(cfg.firebase.creds_path, cfg.firebase.db_url)
+try:
+    utils.initialize_firebase_db(cfg.firebase.creds_path, cfg.firebase.db_url)
+except:
+    pass
 
 for key in cfg.output.historical:
     data[key]['Fecha'] = pd.to_datetime(
@@ -79,8 +82,10 @@ for key in cfg.output.historical:
                                                  ' del Gobierno de '
                                                  'Cantabria'))
     datasets[key]["role"] = {"time": ["Fecha"], "metric": ["Variables"]}
-    print(datasets[key].write())
+    if key == "sanitarians":
+        datasets[key]["note"] = [cfg.labels.daily_note]
     utils.publish_firebase('saludcantabria',
                            cfg.output.historical[key],
                            datasets[key])
+print('Historical published')
 

@@ -26,7 +26,7 @@ tweepy = {index = "pypi",version = "*"}
 pyjstat = {index = "pypi",version = "*"}
 beautifuldict = {index = "pypi",version = "*"}
 firebase-admin = {index = "pypi",version = "*"}
+beautifulsoup4 = "*"
 
 [requires]
 python_version = "3.7.2"
-

@@ -42,7 +42,10 @@ data['residences']['value'] = data['residences']['value'].astype(int)
 
 # Generate and publish json-stat
 datasets = {}
-utils.initialize_firebase_db(cfg.firebase.creds_path, cfg.firebase.db_url)
+try:
+    utils.initialize_firebase_db(cfg.firebase.creds_path, cfg.firebase.db_url)
+except:
+    pass
 
 for key in cfg.output.totals:
     data[key]['Fecha'] = pd.to_datetime(
@@ -53,7 +56,7 @@ for key in cfg.output.totals:
                                                  ' del Gobierno de '
                                                  'Cantabria'))
     datasets[key]["role"] = {"time": ["Fecha"], "metric": ["Variables"]}
-    # print(datasets[key])
     utils.publish_firebase('saludcantabria',
                            cfg.output.totals[key],
                            datasets[key])
+print('Totals published')

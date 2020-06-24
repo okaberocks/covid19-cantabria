@@ -15,11 +15,8 @@ if data.at[52, 'Texto'] == '':
     data.at[52, 'Texto'] = 'Polaciones'
 
 population['Codigo'] = population['Codigo'].apply(str)
-print(data.dtypes)
-print(population.dtypes)
 data = pd.merge(data, population, on='Codigo')
 
-print(data)
 data['Tasa bruta de casos'] = (
     data['NumeroCasos'] / data['poblacion']) * 100000
 data['Tasa bruta de activos'] = (
@@ -28,13 +25,15 @@ data['Tasa bruta de altas'] = (
     data['NumeroCurados'] / data['poblacion']) * 100000
 data['Tasa bruta de fallecidos'] = (
     data['NumeroFallecidos'] / data['poblacion']) * 100000
-print(data)
 
 measures = {}
 datasets = {}
 jsonstat = {}
 
-utils.initialize_firebase_db(cfg.firebase.creds_path, cfg.firebase.db_url)
+try:
+    utils.initialize_firebase_db(cfg.firebase.creds_path, cfg.firebase.db_url)
+except:
+    pass
 
 for measure in cfg.municipalities.measures:
     measures[measure] = data[['Codigo',
@@ -58,4 +57,4 @@ for measure in cfg.municipalities.measures:
     utils.publish_firebase('saludcantabria',
                            cfg.output.municipalities[measure],
                            datasets[measure])
-    print(datasets[measure].write())
+print('Municipal published')

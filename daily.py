@@ -3,7 +3,6 @@
 from cfg import cfg
 
 import pandas as pd
-
 from pyjstat import pyjstat
 
 import utils
@@ -36,10 +35,21 @@ data['daily_types']['Otros'] = data['daily_types']['Casos'] -\
                                 data['daily_types']['Casos Residencias']
 data['daily_types'] = data['daily_types'][['Fecha', 'Otros', 'Casos Residencias', 'Sanitarios']]
 data['daily_types'] = data['daily_types'].rename(columns={"Casos Residencias": "Residencias"})
+# Set None if negative value
+# data['daily_types'].loc[(data['daily_types']['Otros'] < 0),
+#                     ['Otros', 'Residencias', 'Sanitarios']] = None
+# data['daily_types'].loc[(data['daily_types']['Residencias'] < 0),
+#                     ['Otros', 'Residencias', 'Sanitarios']] = None
+# data['daily_types'].loc[(data['daily_types']['Sanitarios'] < 0),
+#                     ['Otros', 'Residencias', 'Sanitarios']] = None
+
 data['daily_types'] = data['daily_types'].melt(id_vars=['Fecha'], var_name='Variables')
 
 datasets = {}
-utils.initialize_firebase_db(cfg.firebase.creds_path, cfg.firebase.db_url)
+try:
+    utils.initialize_firebase_db(cfg.firebase.creds_path, cfg.firebase.db_url)
+except:
+    pass
 
 for key in cfg.output.daily:
     data[key]['Fecha'] = pd.to_datetime(
@@ -50,8 +60,10 @@ for key in cfg.output.daily:
                                                  ' del Gobierno de '
                                                  'Cantabria'))
     datasets[key]["role"] = {"time": ["Fecha"], "metric": ["Variables"]}
-    # print(datasets[key].write())
+    if key == "daily_types":
+        datasets[key]["note"] = [cfg.labels.daily_note]
     utils.publish_firebase('saludcantabria',
                            cfg.output.daily[key],
                            datasets[key])
+print('Daily published')
 

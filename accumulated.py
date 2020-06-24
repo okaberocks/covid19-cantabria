@@ -8,7 +8,6 @@ from pyjstat import pyjstat
 
 import utils
 
-
 cases = utils.read_scs_csv(cfg.input.scs_data)
 
 data = {}
@@ -19,7 +18,10 @@ data['accumulated'].drop('index', axis=1, inplace=True)
 
 # Publish datasets into Firebase
 datasets = {}
-utils.initialize_firebase_db(cfg.firebase.creds_path, cfg.firebase.db_url)
+try:
+    utils.initialize_firebase_db(cfg.firebase.creds_path, cfg.firebase.db_url)
+except:
+    pass
 
 for key in cfg.output.accumulated:
     data[key]['Fecha'] = pd.to_datetime(
@@ -30,8 +32,8 @@ for key in cfg.output.accumulated:
                                                  ' del Gobierno de '
                                                  'Cantabria'))
     datasets[key]["role"] = {"time": ["Fecha"], "metric": ["Variables"]}
-    print(datasets[key].write())
     utils.publish_firebase('saludcantabria',
                            cfg.output.accumulated[key],
                            datasets[key])
 
+print('Accumulated published')
