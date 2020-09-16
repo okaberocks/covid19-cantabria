@@ -47,7 +47,7 @@ def publish_firebase(category, filename, content):
 def read_scs_csv(url):
     """Read CSV file with Cantabria's data from SCS."""
     # cases = pd.read_csv(cfg.input.path + cfg.input.hospitals)
-    cases = pd.read_csv(url, na_filter=False, skipfooter=3)
+    cases = pd.read_csv(url, na_filter=False, skipfooter=1)
     #                     dtype={'CASOS RESIDENCIAS': object,
     #                            'AISLAMIENTO DOM.': object,
     #                            'TOTAL TEST': object,

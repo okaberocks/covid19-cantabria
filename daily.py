@@ -60,8 +60,8 @@ for key in cfg.output.daily:
                                                  ' del Gobierno de '
                                                  'Cantabria'))
     datasets[key]["role"] = {"time": ["Fecha"], "metric": ["Variables"]}
-    if key == "daily_types":
-        datasets[key]["note"] = [cfg.labels.daily_note]
+    # if key == "daily_types":
+    #     datasets[key]["note"] = [cfg.labels.daily_note]
     utils.publish_firebase('saludcantabria',
                            cfg.output.daily[key],
                            datasets[key])

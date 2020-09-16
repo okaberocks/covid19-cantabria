@@ -26,15 +26,8 @@ def to_json(df, id_vars, value_vars):
 # READ DATA FROM CSV.
 # TODO: REFACTOR TO UTILS, SINCE THIS IS USED BY MORE MODULES
 data = {}
-cases_age_sex = pd.read_csv(cfg.input.scs_data_age_sex, na_filter=False,
-                    skipfooter=1,
-                    dtype={'Fecha': object,
-                           'Rango_edad': object,
-                           'Sexo': object,
-                           'Casos_confirmados': int,
-                           'Hospitalizados': int,
-                           'Ingresos_uci': int,
-                           'Fallecidos': int})
+
+cases_age_sex = utils.read_scs_age(cfg.input.scs_data_age_sex)
 
 cases_age_sex['Rango_edad'] = cases_age_sex['Rango_edad'].replace('100 y +', '90 y +')
 cases_age_sex['Rango_edad'] = cases_age_sex['Rango_edad'].replace('90-99', '90 y +')
@@ -50,7 +43,6 @@ data['uci_age'] = to_json(data['uci_age'], ['Rango_edad', 'Sexo'], ['Ingresos_uc
 
 data['deceased_age'] = cases_age_sex[['Rango_edad', 'Sexo', 'Fallecidos']].copy()
 data['deceased_age'] = to_json(data['deceased_age'], ['Rango_edad', 'Sexo'], ['Fallecidos'])
-
 # GENERATE JSON DATASETS
 datasets = {}
 try:

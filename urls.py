@@ -24,20 +24,20 @@ def getURL(page):
     url = page[start_quote + 1: end_quote]
     return url, end_quote
 
-historico_url='https://www.scsalud.es'
-municipal_url='https://www.scsalud.es'
+historico_url=''
+municipal_url=''
 edad_url='https://www.scsalud.es'
 while True:
     url, n = getURL(page)
     page = page[n:]
     if url:
-        x = re.search(".*covid.*historico.*\.csv", url) 
+        x = re.search(".*historico.*\.csv", url) 
         if x:
             historico_url += url
-        x = re.search(".*covid.*municipal.*\.csv", url) 
+        x = re.search(".*municipal.*\.csv", url) 
         if x:
             municipal_url += url
-        x = re.search(".*covid.*edad.*\.csv", url) 
+        x = re.search(".*edad.*\.csv", url) 
         if x:
             edad_url += url
     else:

@@ -24,6 +24,9 @@ params = {
             'deceased_gross_rate': 'mun-deceased-gross-rate',
             'discharged_gross_rate': 'mun-discharged-gross-rate'
         },
+        'municipalities_historic': {
+            'actives_gross_rate': 'mun-actives-gross-rate-historic'
+        },
         'historical': {
             'hospitalizations': 'hospitalizations',
             'ucis': 'ucis',
@@ -43,6 +46,9 @@ params = {
             'hospitalizations_age': 'hospitalizations-age',
             'uci_age': 'uci-age',
             'deceased_age': 'deceased-age'
+        },
+        'age_sex_historic': {
+            'age_sex_historic': 'age-sex-historic'
         },
         'totals': {
             'actives': 'total-actives',
@@ -174,6 +180,14 @@ params = {
             'discharged_gross_rate': {
                 'original': 'Tasa bruta de altas',
                 'final': 'Tasa bruta de altas'
+            }
+        }
+    },
+    'municipalities_historic': {
+        'measures': {
+            'actives_gross_rate': {
+                'original': 'Tasa bruta de activos',
+                'final': 'Tasa bruta de activos'
             }
         }
     }

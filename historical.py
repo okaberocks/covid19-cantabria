@@ -82,8 +82,8 @@ for key in cfg.output.historical:
                                                  ' del Gobierno de '
                                                  'Cantabria'))
     datasets[key]["role"] = {"time": ["Fecha"], "metric": ["Variables"]}
-    if key == "sanitarians":
-        datasets[key]["note"] = [cfg.labels.daily_note]
+    # if key == "sanitarians":
+    #     datasets[key]["note"] = [cfg.labels.daily_note]
     utils.publish_firebase('saludcantabria',
                            cfg.output.historical[key],
                            datasets[key])

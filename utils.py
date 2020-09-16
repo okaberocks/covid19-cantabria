@@ -11,6 +11,9 @@ import pandas as pd
 
 import requests
 
+import ssl
+
+ssl._create_default_https_context = ssl._create_unverified_context
 
 def publish_gist(json_files, description, gist_id):
     """Publish multiple files to Github gist."""
@@ -47,7 +50,8 @@ def publish_firebase(category, filename, content):
 def read_scs_csv(url):
     """Read CSV file with Cantabria's historical data from SCS."""
     # cases = pd.read_csv(cfg.input.path + cfg.input.hospitals)
-    cases = pd.read_csv(url, na_filter=False, skipfooter=1,  # 3,
+    cases = pd.read_csv(url, na_filter=False, skipfooter=0,
+                        sep=';',
                         dtype={'CASOS RESIDENCIAS': object,
                                'AISLAMIENTO DOM.': object,
                                'TOTAL TEST': object,
@@ -75,18 +79,54 @@ def read_scs_csv(url):
 def read_scs_municipal(url):
     """Read CSV file with Cantabria's municipal data from SCS."""
     # cases = pd.read_csv(cfg.input.path + cfg.input.hospitals)
-    raw_data = pd.read_csv(url, na_filter=False, skipfooter=1,  # 3,
-                           dtype={'Código': object})
-
+    raw_data = pd.read_csv(url, na_filter=False, sep=';',skipfooter=1,  # 3,
+                           dtype={'Codigo': object})
     raw_data.columns = raw_data.columns.str.title()
     raw_data.columns = raw_data.columns.str.replace('Código', 'Codigo')
     raw_data.columns = raw_data.columns.str.replace('Municipio', 'Texto')
-    raw_data.columns = raw_data.columns.str.replace('Número De Casos',
+    raw_data.columns = raw_data.columns.str.replace('Casos',
                                                     'NumeroCasos')
-    raw_data.columns = raw_data.columns.str.replace('Número De Activos',
+    raw_data.columns = raw_data.columns.str.replace('Activos',
                                                     'NumeroCasosActivos')
-    raw_data.columns = raw_data.columns.str.replace('Número De Curados',
+    raw_data.columns = raw_data.columns.str.replace('Curados',
                                                     'NumeroCurados')
-    raw_data.columns = raw_data.columns.str.replace('Número De Fallecidos',
+    raw_data.columns = raw_data.columns.str.replace('Fallecidos',
+                                                    'NumeroFallecidos')
+    return raw_data
+
+def read_scs_age(url):
+    """Read CSV file with Cantabria's municipal data from SCS."""
+    raw_data = pd.read_csv(url, na_filter=False,
+                    skipfooter=0,
+                    sep=';',
+                    dtype={'Fecha': object,
+                           'Rango_edad': object,
+                           'Sexo': object,
+                           'Casos_confirmados': int,
+                           'Hospitalizados': int,
+                           'Ingresos_uci': int,
+                           'Fallecidos': int})
+    return raw_data
+
+def read_scs_historic_age():
+    raw_data = pd.read_excel('./data/input/2020_historico_rangos_edad_sexo.xls', 
+                              sheet_name=None,
+                              na_filter=False,)
+    return raw_data
+
+def read_scs_historic_municipal():
+    raw_data = pd.read_excel('./data/input/covid19_municipalizado.xlsx', 
+                              na_filter=False,
+                              dtype={'Codigo': object})
+    raw_data.columns = raw_data.columns.str.title()
+    raw_data.columns = raw_data.columns.str.replace('Código', 'Codigo')
+    raw_data.columns = raw_data.columns.str.replace('Municipio', 'Texto')
+    raw_data.columns = raw_data.columns.str.replace('Casos',
+                                                    'NumeroCasos')
+    raw_data.columns = raw_data.columns.str.replace('Activos',
+                                                    'NumeroCasosActivos')
+    raw_data.columns = raw_data.columns.str.replace('Curados',
+                                                    'NumeroCurados')
+    raw_data.columns = raw_data.columns.str.replace('Fallecidos',
                                                     'NumeroFallecidos')
     return raw_data
