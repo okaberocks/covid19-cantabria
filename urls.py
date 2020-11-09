@@ -39,6 +39,6 @@ while True:
             municipal_url += url
         x = re.search(".*edad.*\.csv", url) 
         if x:
-            edad_url += url
+            edad_url = url
     else:
         break
