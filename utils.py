@@ -71,6 +71,8 @@ def read_scs_csv(url):
     cases.columns = cases.columns.str.replace('Total Casos', 'Casos')
     cases.columns = cases.columns.str.replace('C. Resid. Activos', 'Residencias Activos')
     cases.columns = cases.columns.str.replace('P. Sanit. Activos', 'Sanitarios Activos')
+    cases.columns = cases.columns.str.replace('Incidencia Ac 14', 'Incidencia 14 dias')
+    # cases.columns = cases.columns.str.replace('Total Hospitalizados', 'Hospitalizados activos')
     cases['Fecha'] = cases['Fecha'].str.replace('\*\*', '')
     # cases.drop(cases.tail(3).index, inplace=True)
     return cases

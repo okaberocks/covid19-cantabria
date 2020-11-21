@@ -1,7 +1,6 @@
 from beautifuldict.baseconfig import Baseconfig
 from decouple import config
 from pkg_resources import resource_filename
-import urls
 
 params = {
     
@@ -34,7 +33,10 @@ params = {
             'elder': 'elder',
             'test': 'test',
             'active_sanitarians': 'active-sanitarians',
-            'active_elder': 'active-elder'
+            'active_elder': 'active-elder',
+            'incidence': 'incidence',
+            'daily_test': 'daily-test',
+            'positivity': 'positivity'
         },
         'sma': 'sma.json',
         'current_situation': {
@@ -72,9 +74,9 @@ params = {
     },
     'input': {
         'path': resource_filename(__name__, 'data/input/'),
-        'scs_data': urls.historico_url,
-        'scs_data_age_sex': urls.edad_url,
-        'scs_data_municipal': urls.municipal_url,
+        'scs_data': 'https://serviweb.scsalud.es:10443/ficheros/COVID19_historico.csv',
+        'scs_data_age_sex': 'https://serviweb.scsalud.es:10443/ficheros/COVID19_edadysexo.csv',
+        'scs_data_municipal': 'https://serviweb.scsalud.es:10443/ficheros/COVID19_municipalizado.csv',
         'hospitals': 'covid19_historico.csv',
         'population': 'poblacion_municipios.csv',
         'municipalities': 'https://services3.arcgis.com/JW6jblFaBSUw9ROV/ArcGIS/rest/services/MunicpiosCantabria_covid/FeatureServer/0/query?f=json&where=1=1&returnGeometry=false&outFields=*'

@@ -47,8 +47,8 @@ try:
 except:
     pass
 
-indice_municipios = pd.DataFrame(columns=['Municipio', 'Incidencia acumulada'])
-indice_municipios7 = pd.DataFrame(columns=['Municipio', 'Incidencia acumulada'])
+incidencia_municipios14 = pd.DataFrame()
+incidencia_municipios7 = pd.DataFrame()
 reference_date = datetime.strptime(data.tail(1)['Fecha'].iloc[0], "%Y-%m-%d")
 reference_date = reference_date.strftime("%d-%m-%Y")
 
@@ -57,30 +57,53 @@ reference_date_df = pd.DataFrame(np.array([[reference_date, reference_date, refe
 
 for municipio in municipios:
     data_municipio = data.loc[data['Municipio'] == municipio]
-    casos_municipio = data_municipio[['Fecha', 'Municipio', 'NumeroCasos', 'poblacion']]
+    casos_municipio = data_municipio[['Fecha', 'Municipio', 'NumeroCasos', 'NumeroCasosActivos', 'NumeroFallecidos', 'poblacion']]
 
-    indice_acumulado = casos_municipio.tail(14).iloc[[0, -1]]
-    indice_acumulado['Casos nuevos'] = indice_acumulado['NumeroCasos'].diff().tail(1)
-    indice_acumulado['Incidencia acumulada'] = round((indice_acumulado['Casos nuevos'] / indice_acumulado['poblacion']) * 100000, 2)
-    indice_municipio = indice_acumulado[['Municipio', 'Incidencia acumulada']].tail(1)
-    indice_municipios = indice_municipios.append(indice_municipio,ignore_index=True,sort=False)
+    casos_municipio['Casos nuevos7'] = casos_municipio['NumeroCasos'].diff(periods=6)
+    casos_municipio['Casos nuevos14'] = casos_municipio['NumeroCasos'].diff(periods=13)
+    casos_municipio['Casos nuevos'] = casos_municipio['NumeroCasos'].diff()
+    casos_municipio['Fallecidos diarios'] = casos_municipio['NumeroFallecidos'].diff()
+    
+    casos_municipio['Incidencia acumulada 7 días'] = round((casos_municipio['Casos nuevos7'] / casos_municipio['poblacion']) * 100000, 2)
+    casos_municipio['Incidencia acumulada 14 días'] = round((casos_municipio['Casos nuevos14'] / casos_municipio['poblacion']) * 100000, 2)
 
-    indice_acumulado7 = casos_municipio.tail(7).iloc[[0, -1]]
-    indice_acumulado7['Casos nuevos'] = indice_acumulado7['NumeroCasos'].diff().tail(1)
-    indice_acumulado7['Incidencia acumulada'] = round((indice_acumulado7['Casos nuevos'] / indice_acumulado7['poblacion']) * 100000, 2)
-    indice_municipio7 = indice_acumulado7[['Municipio', 'Incidencia acumulada']].tail(1)
-    indice_municipios7 = indice_municipios7.append(indice_municipio7,ignore_index=True,sort=False)
+    incidencia_municipio14 = casos_municipio[['Municipio', 'Incidencia acumulada 14 días']].tail(1)
+    incidencia_municipios14 = incidencia_municipios14.append(incidencia_municipio14,ignore_index=True,sort=False)
+    
+    incidencia_municipio7 = casos_municipio[['Municipio', 'Incidencia acumulada 7 días']].tail(1)
+    incidencia_municipios7 = incidencia_municipios7.append(incidencia_municipio7,ignore_index=True,sort=False)
 
+    incidencia_municipio14 = casos_municipio[['Fecha', 'Municipio', 'Incidencia acumulada 14 días']]
+    incidencia_municipio7 = casos_municipio[['Fecha', 'Municipio', 'Incidencia acumulada 7 días']]
+    
+    casos_diarios_municipio = casos_municipio[['Fecha', 'Municipio', 'Casos nuevos']]
+    fallecidos_diarios_municipio = casos_municipio[['Fecha', 'Municipio', 'Fallecidos diarios']]
     activos_municipio = data_municipio[['Fecha', 'Municipio', 'NumeroCasosActivos']]
     tasa_municipio = data_municipio[['Fecha', 'Municipio', 'Tasa bruta de activos']]
+    incidencia_municipio14 = to_json(incidencia_municipio14,
+                                ['Fecha'], ['Incidencia acumulada 14 días'])
+    incidencia_municipio7 = to_json(incidencia_municipio7,
+                                ['Fecha'], ['Incidencia acumulada 7 días'])
+    casos_diarios_municipio = to_json(casos_diarios_municipio,
+                                ['Fecha', 'Municipio'],
+                                ['Casos nuevos'])
+    fallecidos_diarios_municipio = to_json(fallecidos_diarios_municipio,
+                                ['Fecha', 'Municipio'],
+                                ['Fallecidos diarios'])
     activos_municipio = to_json(activos_municipio,
                                 ['Fecha', 'Municipio'],
                                 ['NumeroCasosActivos'])
     tasa_municipio = to_json(tasa_municipio,
                                 ['Fecha', 'Municipio'],
                                 ['Tasa bruta de activos'])
-    # activos_municipio.drop(columns=['Variables', ], inplace=True)
-    # tasa_municipio.drop(columns=['Variables', ], inplace=True)
+    datasets['casos_diarios'] = pyjstat.Dataset.read(casos_diarios_municipio,
+                                             source=('Consejería de Sanidad'
+                                                     ' del Gobierno de '
+                                                     'Cantabria'))
+    datasets['fallecidos'] = pyjstat.Dataset.read(fallecidos_diarios_municipio,
+                                             source=('Consejería de Sanidad'
+                                                     ' del Gobierno de '
+                                                     'Cantabria'))
     datasets['activos'] = pyjstat.Dataset.read(activos_municipio,
                                              source=('Consejería de Sanidad'
                                                      ' del Gobierno de '
@@ -89,27 +112,52 @@ for municipio in municipios:
                                              source=('Consejería de Sanidad'
                                                      ' del Gobierno de '
                                                      'Cantabria'))
+    datasets['incidencia7'] = pyjstat.Dataset.read(incidencia_municipio7,
+                                             source=('Consejería de Sanidad'
+                                                     ' del Gobierno de '
+                                                     'Cantabria'))
+    datasets['incidencia14'] = pyjstat.Dataset.read(incidencia_municipio14,
+                                             source=('Consejería de Sanidad'
+                                                     ' del Gobierno de '
+                                                     'Cantabria'))
+    datasets['casos_diarios']["role"] = {"metric": ["Variables"]}
+    datasets['fallecidos']["role"] = {"metric": ["Variables"]}
     datasets['activos']["role"] = {"metric": ["Variables"]}
     datasets['tasa']["role"] = {"metric": ["Variables"]}
+    datasets['incidencia7']["role"] = {"metric": ["Variables"]}
+    datasets['incidencia14']["role"] = {"metric": ["Variables"]}
+    utils.publish_firebase('saludcantabria/municipios/' + municipio,
+                           'casos-diarios',
+                           datasets['casos_diarios'])
+    utils.publish_firebase('saludcantabria/municipios/' + municipio,
+                           'fallecidos',
+                           datasets['fallecidos'])
     utils.publish_firebase('saludcantabria/municipios/' + municipio,
                            'activos',
                            datasets['activos'])
     utils.publish_firebase('saludcantabria/municipios/' + municipio,
                            'tasa',
                            datasets['tasa'])
-indice_municipios = to_json(indice_municipios,
+    utils.publish_firebase('saludcantabria/municipios/' + municipio,
+                           'incidencia7',
+                           datasets['incidencia7'])
+    utils.publish_firebase('saludcantabria/municipios/' + municipio,
+                           'incidencia14',
+                           datasets['incidencia14'])
+
+incidencia_municipios14 = to_json(incidencia_municipios14,
                                 ['Municipio'],
-                                ['Incidencia acumulada'])
-datasets['Incidencia acumulada'] = pyjstat.Dataset.read(indice_municipios,
+                                ['Incidencia acumulada 14 días'])
+datasets['Incidencia acumulada'] = pyjstat.Dataset.read(incidencia_municipios14,
                                              source=('Consejería de Sanidad'
                                                      ' del Gobierno de '
                                                      'Cantabria'))
 datasets['Incidencia acumulada']["role"] = {"metric": ["Variables"]}
 utils.publish_firebase('saludcantabria', 'incidencia-acumulada', datasets['Incidencia acumulada'])
-indice_municipios7 = to_json(indice_municipios7,
+incidencia_municipios7 = to_json(incidencia_municipios7,
                                 ['Municipio'],
-                                ['Incidencia acumulada'])
-datasets['Incidencia acumulada 7'] = pyjstat.Dataset.read(indice_municipios7,
+                                ['Incidencia acumulada 7 días'])
+datasets['Incidencia acumulada 7'] = pyjstat.Dataset.read(incidencia_municipios7,
                                              source=('Consejería de Sanidad'
                                                      ' del Gobierno de '
                                                      'Cantabria'))

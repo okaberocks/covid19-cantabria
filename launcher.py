@@ -1,7 +1,7 @@
 import historical
 import current_situation
 import totals
-# import age_sex
+import age_sex
 import accumulated
 import daily
 import sma

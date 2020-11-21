@@ -13,8 +13,26 @@ cases = utils.read_scs_csv(cfg.input.scs_data)
 
 data = {}
 
+cases["Test PCR"] = pd.to_numeric(cases["Test PCR"])
+cases["Test Anticuerpos"] = pd.to_numeric(cases["Test Anticuerpos"])
+
+cases['Casos nuevos dia'] = cases['Casos'].diff()
+cases['Test PCR diarios'] = cases['Test PCR'].diff()
+cases['Test Anticuerpos diarios'] = cases['Test Anticuerpos'].diff()
+cases['Positividad'] = cases['Casos nuevos dia'] * 100 / cases['Test PCR diarios']
+cases['Positividad'] = cases['Positividad'].iloc[3:]
+
+data['daily_test'] = cases[['Fecha', 'Test PCR diarios', 'Test Anticuerpos diarios']]
+data['daily_test'] = data['daily_test'].melt(id_vars=['Fecha'], var_name='Variables')
+
+data['positivity'] = cases[['Fecha', 'Positividad']]
+data['positivity'] = data['positivity'].melt(id_vars=['Fecha'], var_name='Variables')
+
 data['test'] = cases[['Fecha', 'Test PCR', 'Test Anticuerpos']]
 data['test'] = data['test'].melt(id_vars=['Fecha'], var_name='Variables')
+
+data['incidence'] = cases[['Fecha', 'Incidencia 14 dias']]
+data['incidence'] = data['incidence'].melt(id_vars=['Fecha'], var_name='Variables')
 
 data['active_sanitarians'] = cases[['Fecha', 'Sanitarios Activos']]
 data['active_sanitarians'] = data['active_sanitarians'].melt(
