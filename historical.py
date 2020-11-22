@@ -49,8 +49,10 @@ data['sanitarians'] = data['sanitarians'].melt(
 
 data['elder'] = cases[['Fecha', 'Residencias Activos', 'Casos Residencias']]
 data['elder'] = data['elder'].rename(columns={"Casos Residencias": "Residencias Acumulados"})
+print(data['elder'])
 data['elder'] = data['elder'].melt(
     id_vars=['Fecha'], var_name='Variables')
+print(data['elder'])
 
 hospitals = {}
 ucis = {}
@@ -95,6 +97,8 @@ for key in cfg.output.historical:
     data[key]['Fecha'] = pd.to_datetime(
         data[key]['Fecha'], dayfirst=True).dt.strftime('%Y-%m-%d')
     data[key].sort_values(by=['Fecha', 'Variables'], inplace=True)
+    data[key]['Fecha'] = pd.to_datetime(
+        data[key]['Fecha'], dayfirst=True).dt.strftime('%d-%m-%Y')
     datasets[key] = pyjstat.Dataset.read(data[key],
                                          source=('Consejería de Sanidad '
                                                  ' del Gobierno de '

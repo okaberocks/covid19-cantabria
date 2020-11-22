@@ -27,6 +27,8 @@ for key in cfg.output.accumulated:
     data[key]['Fecha'] = pd.to_datetime(
         data[key]['Fecha'], dayfirst=True).dt.strftime('%Y-%m-%d')
     data[key].sort_values(by=['Fecha', 'Variables'], inplace=True)
+    data[key]['Fecha'] = pd.to_datetime(
+        data[key]['Fecha'], dayfirst=True).dt.strftime('%d-%m-%Y')
     datasets[key] = pyjstat.Dataset.read(data[key],
                                          source=('Consejería de Sanidad '
                                                  ' del Gobierno de '

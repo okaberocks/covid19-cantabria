@@ -74,7 +74,8 @@ data['general']['Fecha'] = pd.to_datetime(
     data['general']['Fecha'], dayfirst=True).dt.strftime('%Y-%m-%d')
 data['general']['value'] = data['general']['value'].astype(int)
 data['general'] = data['general'].sort_values('value', ascending=False)
-
+data['general']['Fecha'] = pd.to_datetime(
+    data['general']['Fecha'], dayfirst=True).dt.strftime('%d-%m-%Y')
 # Calculate current situation in hospitals
 
 cases.columns = cases.columns.str.lower()

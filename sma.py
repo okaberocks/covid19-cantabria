@@ -29,6 +29,7 @@ sma = sma.melt(id_vars=['Fecha'], var_name='Variables')
 
 sma['Fecha'] = pd.to_datetime(sma['Fecha'], dayfirst=True).dt.strftime('%Y-%m-%d')
 sma.sort_values(by=['Fecha', 'Variables'], inplace=True)
+sma['Fecha'] = pd.to_datetime(sma['Fecha'], dayfirst=True).dt.strftime('%d-%m-%Y')
 
 sma_dataset = pyjstat.Dataset.read(sma,
                                    source=('Consejería de Sanidad '
