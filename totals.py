@@ -14,6 +14,7 @@ cases = utils.read_scs_csv(cfg.input.scs_data)
 cases = cases.tail(1)
 data = {}
 
+cases["Test PCR"] = pd.to_numeric(cases["Test PCR"])
 data['actives'] = cases[['Fecha', 'Activos']]
 data['actives'] = data['actives'].melt(id_vars=['Fecha'], var_name='Variables')
 

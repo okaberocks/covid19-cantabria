@@ -131,4 +131,5 @@ def read_scs_historic_municipal():
                                                     'NumeroCurados')
     raw_data.columns = raw_data.columns.str.replace('Fallecidos',
                                                     'NumeroFallecidos')
+    raw_data['Fecha'] = raw_data['Fecha'].dt.strftime("%d-%m-%Y")
     return raw_data
