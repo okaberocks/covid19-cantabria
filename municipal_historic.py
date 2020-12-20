@@ -49,20 +49,35 @@ reference_date_df = pd.DataFrame(np.array([[reference_date, reference_date, refe
                    columns=['Fecha', 'Variables', 'value'])
 
 dates = data['Fecha'].unique().tolist()[::-1]
+incidence_all = pd.DataFrame()
 for date in dates:
     incidencia_municipios14 = pd.DataFrame()
     incidencia_municipios7 = pd.DataFrame()
     for municipio in municipios:
         data_municipio = data.loc[data['Municipio'] == municipio]
         casos_municipio = data_municipio[['Fecha', 'Municipio', 'NumeroCasos', 'NumeroCasosActivos', 'NumeroFallecidos', 'poblacion']]
+        poblacion_municipio = casos_municipio['poblacion'].tail(1).values[0]
 
         casos_municipio['Casos nuevos7'] = casos_municipio['NumeroCasos'].diff(periods=6)
         casos_municipio['Casos nuevos14'] = casos_municipio['NumeroCasos'].diff(periods=13)
         casos_municipio['Casos nuevos'] = casos_municipio['NumeroCasos'].diff()
         casos_municipio['Fallecidos diarios'] = casos_municipio['NumeroFallecidos'].diff()
-        
         casos_municipio['Incidencia acumulada 7 días'] = round((casos_municipio['Casos nuevos7'] / casos_municipio['poblacion']) * 100000, 2)
         casos_municipio['Incidencia acumulada 14 días'] = round((casos_municipio['Casos nuevos14'] / casos_municipio['poblacion']) * 100000, 2)
+
+        municipio_tocsv = casos_municipio[['Fecha', 'Municipio', 'Incidencia acumulada 14 días']].iloc[13:]
+        municipio_tocsv['Fecha'] = pd.to_datetime(municipio_tocsv['Fecha'], dayfirst=True).dt.strftime('%Y-%m-%d')
+        municipio_tocsv = municipio_tocsv.pivot(index='Municipio', columns='Fecha', values='Incidencia acumulada 14 días')
+        municipio_tocsv.insert(0, 'Municipio', municipio)
+
+        if (poblacion_municipio > 5000):
+            municipio_tocsv.insert(1, 'Poblacion', 'Más de 5000 habitantes')
+        elif (poblacion_municipio > 1000):
+            municipio_tocsv.insert(1, 'Poblacion', 'Entre 1000 y 5000 habitantes')
+        else:
+            municipio_tocsv.insert(1, 'Poblacion', 'Menos de 1000 habitantes')
+
+        incidence_all = incidence_all.append(municipio_tocsv,ignore_index=True,sort=False)
 
         incidencia_municipio14 = casos_municipio[['Municipio', 'Incidencia acumulada 14 días']].loc[casos_municipio['Fecha'] == date]
         incidencia_municipios14 = incidencia_municipios14.append(incidencia_municipio14,ignore_index=True,sort=False)
@@ -124,25 +139,25 @@ for date in dates:
         datasets['tasa']["role"] = {"metric": ["Variables"]}
         datasets['incidencia7']["role"] = {"metric": ["Variables"]}
         datasets['incidencia14']["role"] = {"metric": ["Variables"]}
-        # utils.publish_firebase('saludcantabria/municipios/' + municipio,
-        #                     'casos-diarios',
-        #                     datasets['casos_diarios'])
-        # utils.publish_firebase('saludcantabria/municipios/' + municipio,
-        #                     'fallecidos',
-        #                     datasets['fallecidos'])
-        # utils.publish_firebase('saludcantabria/municipios/' + municipio,
-        #                     'activos',
-        #                     datasets['activos'])
-        # utils.publish_firebase('saludcantabria/municipios/' + municipio,
-        #                     'tasa',
-        #                     datasets['tasa'])
-        # utils.publish_firebase('saludcantabria/municipios/' + municipio,
-        #                     'incidencia7',
-        #                     datasets['incidencia7'])
-        # utils.publish_firebase('saludcantabria/municipios/' + municipio,
-        #                     'incidencia14',
-        #                     datasets['incidencia14'])
-    print(date)
+        utils.publish_firebase('saludcantabria/municipios/' + municipio,
+                            'casos-diarios',
+                            datasets['casos_diarios'])
+        utils.publish_firebase('saludcantabria/municipios/' + municipio,
+                            'fallecidos',
+                            datasets['fallecidos'])
+        utils.publish_firebase('saludcantabria/municipios/' + municipio,
+                            'activos',
+                            datasets['activos'])
+        utils.publish_firebase('saludcantabria/municipios/' + municipio,
+                            'tasa',
+                            datasets['tasa'])
+        utils.publish_firebase('saludcantabria/municipios/' + municipio,
+                            'incidencia7',
+                            datasets['incidencia7'])
+        utils.publish_firebase('saludcantabria/municipios/' + municipio,
+                            'incidencia14',
+                            datasets['incidencia14'])
+    incidence_all.to_csv('incidence_all.csv')
     # Sale del bucle (solo se actualiza el último día)
     incidencia_municipios14 = to_json(incidencia_municipios14,
                                     ['Municipio'],

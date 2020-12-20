@@ -15,14 +15,18 @@ data = {}
 
 cases["Test PCR"] = pd.to_numeric(cases["Test PCR"])
 cases["Test Anticuerpos"] = pd.to_numeric(cases["Test Anticuerpos"])
+cases["Test Anticuerpos +"] = pd.to_numeric(cases["Test Anticuerpos +"])
+cases["Test Antigenos +"] = pd.to_numeric(cases["Test Antigenos +"])
+cases["Test Antigenos"] = pd.to_numeric(cases["Test Antigenos"])
 
 cases['Casos nuevos dia'] = cases['Casos'].diff()
 cases['Test PCR diarios'] = cases['Test PCR'].diff()
 cases['Test Anticuerpos diarios'] = cases['Test Anticuerpos'].diff()
+cases['Test Antigenos diarios'] = cases['Test Antigenos'].diff()
 cases['Positividad'] = cases['Casos nuevos dia'] * 100 / cases['Test PCR diarios']
 cases['Positividad'] = cases['Positividad'].iloc[3:]
 
-data['daily_test'] = cases[['Fecha', 'Test PCR diarios', 'Test Anticuerpos diarios']]
+data['daily_test'] = cases[['Fecha', 'Test PCR diarios', 'Test Anticuerpos diarios', 'Test Antigenos diarios']]
 data['daily_test'] = data['daily_test'].melt(id_vars=['Fecha'], var_name='Variables')
 
 data['positivity'] = cases[['Fecha', 'Positividad']]
@@ -49,10 +53,8 @@ data['sanitarians'] = data['sanitarians'].melt(
 
 data['elder'] = cases[['Fecha', 'Residencias Activos', 'Casos Residencias']]
 data['elder'] = data['elder'].rename(columns={"Casos Residencias": "Residencias Acumulados"})
-print(data['elder'])
 data['elder'] = data['elder'].melt(
     id_vars=['Fecha'], var_name='Variables')
-print(data['elder'])
 
 hospitals = {}
 ucis = {}

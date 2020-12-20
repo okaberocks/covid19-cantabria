@@ -37,6 +37,7 @@ data['discharged'] = cases[['Fecha', 'Recuperados']]
 data['discharged'] = data['discharged'].rename(columns={"Recuperados": "total"})
 data['discharged'] = data['discharged'].melt(id_vars=['Fecha'], var_name='Variables')
 
+
 datasets = {}
 for key in cfg.output.mult_rate:
     data[key]['Fecha'] = pd.to_datetime(
@@ -44,7 +45,7 @@ for key in cfg.output.mult_rate:
     data[key].sort_values(by=['Fecha', 'Variables'], inplace=True)
     
     # downsampling: get 1 record in 4 to avoid temporary effects
-    data[key] = data[key].iloc[list(range(len(data[key])-1, 0, -4))]
+    data[key] = data[key].iloc[list(range(len(data[key])-1, 0, -14))]
     data[key]['mult_rate'] = data[key]['value'] / \
         data[key]['value'].shift(-1)
 
@@ -58,8 +59,8 @@ for key in cfg.output.mult_rate:
     data[key]['Variables'].replace(cfg.labels, inplace=True)
     data[key].replace([np.inf, -np.inf], np.nan, inplace=True)
     data[key] = data[key].dropna()
-    
-    # print(data[key])
+    data[key] = data[key].iloc[2:]
+
     datasets[key] = pyjstat.Dataset.read(data[key],
                                          source=('Consejería de Sanidad '
                                                  ' del Gobierno de '
