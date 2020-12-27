@@ -1,3 +1,8 @@
+from datetime import datetime
+
+today = datetime.now()
+print("Today's date:", today)
+
 import historical
 import current_situation
 import totals
