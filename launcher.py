@@ -1,7 +1,9 @@
+import warnings
 from datetime import datetime
 
 today = datetime.now()
 print("Today's date:", today)
+warnings.filterwarnings("ignore")
 
 import historical
 import current_situation
