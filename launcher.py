@@ -14,5 +14,6 @@ import daily
 import sma
 import municipal
 import mult_rate
+import vaccine.py
 
 print('Finished')

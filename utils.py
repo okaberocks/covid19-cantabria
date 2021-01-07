@@ -133,3 +133,15 @@ def read_scs_historic_municipal():
                                                     'NumeroFallecidos')
     raw_data['Fecha'] = raw_data['Fecha'].dt.strftime("%d-%m-%Y")
     return raw_data
+
+
+def read_vaccine_csv(url):
+    """Read CSV file with Cantabria's historical data from SCS."""
+    vaccine = pd.read_csv(url, na_filter=False, skipfooter=0,
+                        sep=';',
+                        thousands=r'.',
+                        parse_dates=['Última fecha de actualización'],
+                        dayfirst=True)
+    vaccine.columns = vaccine.columns.str.replace('Última fecha de actualización', 'Fecha')
+    
+    return vaccine

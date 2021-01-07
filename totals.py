@@ -17,29 +17,39 @@ data = {}
 cases["Test PCR"] = pd.to_numeric(cases["Test PCR"])
 data['actives'] = cases[['Fecha', 'Activos']]
 data['actives'] = data['actives'].melt(id_vars=['Fecha'], var_name='Variables')
+data['actives']['value'] = data['actives']['value'].apply(lambda x : "{:,}".format(x).replace(',','.'))
 
 data['uci'] = cases[['Fecha', 'UCI']]
 data['uci'] = data['uci'].melt(id_vars=['Fecha'], var_name='Variables')
+data['uci']['value'] = data['uci']['value'].apply(lambda x : "{:,}".format(x).replace(',','.'))
 
 data['test'] = cases[['Fecha', 'Test PCR']]
 data['test'] = data['test'].melt(id_vars=['Fecha'], var_name='Variables')
+data['test']['value'] = data['test']['value'].apply(lambda x : "{:,}".format(x).replace(',','.'))
 
 data['cases'] = cases[['Fecha', 'Casos']]
 data['cases'] = data['cases'].melt(id_vars=['Fecha'], var_name='Variables')
+data['cases']['value'] = data['cases']['value'].apply(lambda x : "{:,}".format(x).replace(',','.'))
 
 data['deceased'] = cases[['Fecha', 'Fallecidos']]
 data['deceased'] = data['deceased'].melt(id_vars=['Fecha'], var_name='Variables')
+data['deceased']['value'] = data['deceased']['value'].apply(lambda x : "{:,}".format(x).replace(',','.'))
 
 data['discharged'] = cases[['Fecha', 'Recuperados']]
 data['discharged'] = data['discharged'].melt(id_vars=['Fecha'], var_name='Variables')
+data['discharged']['value'] = data['discharged']['value'].astype(int)
+data['discharged']['value'] = data['discharged']['value'].apply(lambda x : "{:,}".format(x).replace(',','.'))
 
 data['sanitarians'] = cases[['Fecha', 'Sanitarios Activos']]
 data['sanitarians'] = data['sanitarians'].melt(id_vars=['Fecha'], var_name='Variables')
 data['sanitarians']['value'] = data['sanitarians']['value'].astype(int)
+data['sanitarians']['value'] = data['sanitarians']['value'].apply(lambda x : "{:,}".format(x).replace(',','.'))
 
 data['residences'] = cases[['Fecha', 'Residencias Activos']]
 data['residences'] = data['residences'].melt(id_vars=['Fecha'], var_name='Variables')
 data['residences']['value'] = data['residences']['value'].astype(int)
+data['residences']['value'] = data['residences']['value'].apply(lambda x : "{:,}".format(x).replace(',','.'))
+
 
 # Generate and publish json-stat
 datasets = {}
