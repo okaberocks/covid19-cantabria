@@ -37,7 +37,7 @@ dosis_administradas = pd.DataFrame(np.array([[dosis_administradas, dosis_adminis
 
 data = {}
 
-data['dosis'] = vaccine[['Fecha', 'Dosis no administradas', 'Dosis administradas']]
+data['dosis'] = vaccine[['Fecha', 'Dosis administradas']]
 data['dosis'] = data['dosis'].melt(
     id_vars=['Fecha'], var_name='Variables')
 
@@ -68,11 +68,10 @@ datasets['Dosis administradas'] = pyjstat.Dataset.read(dosis_administradas,
 datasets['Dosis administradas']["role"] = {"metric": ["Variables"]}
 utils.publish_firebase('saludcantabria', 'dosis_administradas', datasets['Dosis administradas'])
 for key in cfg.output.vaccine:
-    data[key].sort_values(by=['Fecha', 'Variables'], inplace=True)
+    # data[key].sort_values(by=['Fecha', 'Variables'], inplace=True)
     datasets[key] = pyjstat.Dataset.read(data[key],
                                          source=('Ministerio de Sanidad'))
     datasets[key]["role"] = {"time": ["Fecha"], "metric": ["Variables"]}
-
     utils.publish_firebase('saludcantabria',
                            cfg.output.vaccine[key],
                            datasets[key])
