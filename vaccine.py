@@ -19,7 +19,7 @@ print(vaccine)
 
 last_vaccine = vaccine.tail(1)
 vaccine_reference_date = last_vaccine['Fecha'].iloc[0]
-vaccine_percentage = last_vaccine['% sobre entregadas'].iloc[0]
+vaccine_percentage = last_vaccine['sobre entregadas'].iloc[0]
 dosis_entregadas = last_vaccine['Dosis entregadas'].iloc[0]
 dosis_administradas = last_vaccine['Dosis administradas'].iloc[0]
 
