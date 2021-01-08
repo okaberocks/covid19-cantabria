@@ -1,19 +1,16 @@
 """Common utils for extraction modules."""
 import json
-
 from cfg import cfg
-
 import firebase_admin
 from firebase_admin import credentials
 from firebase_admin import db
-
 import pandas as pd
-
 import requests
-
 import ssl
+import warnings
 
 ssl._create_default_https_context = ssl._create_unverified_context
+warnings.filterwarnings("ignore")
 
 def publish_gist(json_files, description, gist_id):
     """Publish multiple files to Github gist."""
@@ -52,6 +49,7 @@ def read_scs_csv(url):
     # cases = pd.read_csv(cfg.input.path + cfg.input.hospitals)
     cases = pd.read_csv(url, na_filter=False, skipfooter=0,
                         sep=';',
+                        engine='python',
                         dtype={'CASOS RESIDENCIAS': object,
                                'AISLAMIENTO DOM.': object,
                                'TOTAL TEST': object,
@@ -81,7 +79,8 @@ def read_scs_csv(url):
 def read_scs_municipal(url):
     """Read CSV file with Cantabria's municipal data from SCS."""
     # cases = pd.read_csv(cfg.input.path + cfg.input.hospitals)
-    raw_data = pd.read_csv(url, na_filter=False, sep=';',skipfooter=1,  # 3,
+    raw_data = pd.read_csv(url, na_filter=False, sep=';',skipfooter=1,
+                           engine='python',
                            dtype={'Codigo': object})
     raw_data.columns = raw_data.columns.str.title()
     raw_data.columns = raw_data.columns.str.replace('Código', 'Codigo')
@@ -117,7 +116,8 @@ def read_scs_historic_age():
     return raw_data
 
 def read_scs_historic_municipal():
-    raw_data = pd.read_excel('./data/input/covid19_municipalizado.xlsx', 
+    raw_data = pd.read_excel('./data/input/covid19_municipalizado.xlsx',
+                              engine='openpyxl',
                               na_filter=False,
                               dtype={'Codigo': object})
     raw_data.columns = raw_data.columns.str.title()
