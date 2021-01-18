@@ -27,7 +27,8 @@ params = {
             'actives_gross_rate': 'mun-actives-gross-rate-historic'
         },
         'vaccine': {
-            'dosis': 'dosis'
+            'dosis': 'dosis',
+            'tipo_dosis': 'tipo_dosis'
         },
         'historical': {
             'hospitalizations': 'hospitalizations',
@@ -81,6 +82,7 @@ params = {
         'scs_data_age_sex': 'https://serviweb.scsalud.es:10443/ficheros/COVID19_edadysexo.csv',
         'scs_data_municipal': 'https://serviweb.scsalud.es:10443/ficheros/COVID19_municipalizado.csv',
         'vaccine_data': 'https://raw.githubusercontent.com/datadista/datasets/master/COVID%2019/ccaa_vacunas.csv',
+        'vaccine': 'covid19_vacunas.csv',
         'hospitals': 'covid19_historico.csv',
         'population': 'poblacion_municipios.csv',
         'municipalities': 'https://services3.arcgis.com/JW6jblFaBSUw9ROV/ArcGIS/rest/services/MunicpiosCantabria_covid/FeatureServer/0/query?f=json&where=1=1&returnGeometry=false&outFields=*'

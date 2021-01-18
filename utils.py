@@ -137,9 +137,7 @@ def read_scs_historic_municipal():
 
 def read_vaccine_csv(url):
     """Read CSV file with Cantabria's historical data from SCS."""
-    vaccine = pd.read_csv(url, na_filter=False, skipfooter=0,
-                        sep=',',
-                        thousands=r'.')
-    vaccine.columns = vaccine.columns.str.replace('Última fecha de actualización', 'Fecha')
-    
+    vaccine = pd.read_csv(cfg.input.path + cfg.input.vaccine, 
+                            na_filter=False,
+                            sep=';')
     return vaccine
