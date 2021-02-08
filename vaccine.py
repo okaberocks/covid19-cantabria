@@ -17,10 +17,20 @@ vaccine['Fecha'] = pd.to_datetime(
 vaccine['Dosis no administradas'] = vaccine['Dosis entregadas'] - \
     vaccine['Dosis administradas']
 
+population = 581078
+
+
 last_vaccine = vaccine.tail(1)
 vaccine_reference_date = last_vaccine['Fecha'].iloc[0]
 vaccine_percentage = last_vaccine['% sobre entregadas'].iloc[0] + '%'
 vaccine_acceptance = last_vaccine['Aceptación vacuna'].iloc[0] + '%'
+
+# pautas_completadas = int(last_vaccine['Sanitarias completadas'].iloc[0]) + int(last_vaccine['Residencia completadas'].iloc[0])
+# vaccine_population = (str(round(pautas_completadas * 100 / population, 2)) + '%').replace('.', ',')
+
+vaccine_population = vaccine['Dosis administradas'] * 100 / population
+vaccine_population = (str(round(vaccine_population.iloc[-1], 2)) + '%').replace('.', ',')
+
 vaccine_population = last_vaccine['Porcentaje población cántabra'].iloc[0] + '%'
 
 dosis_entregadas = last_vaccine[['Fecha', 'Dosis entregadas']]
@@ -31,7 +41,6 @@ dosis_administradas = dosis_administradas.melt(id_vars=['Fecha'], var_name='Vari
 
 vaccine_reference_date = pd.DataFrame(np.array([[vaccine_reference_date, vaccine_reference_date, vaccine_reference_date]]),
                                       columns=['Fecha', 'Variables', 'value'])
-
 vaccine_percentage = pd.DataFrame(np.array([[vaccine_percentage, vaccine_percentage, vaccine_percentage]]),
                                   columns=['Fecha', 'Variables', 'value'])
 

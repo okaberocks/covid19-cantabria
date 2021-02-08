@@ -29,7 +29,7 @@ data['Codigo'] = data['Codigo'].apply(str)
 population['Codigo'] = population['Codigo'].apply(str)
 data = pd.merge(data, population, on='Codigo')
 
-data['Tasa bruta de activos'] = round((data['NumeroCasosActivos'] / data['poblacion']) * 100000, 2)
+data['Tasa bruta de activos'] = (data['NumeroCasosActivos'] / data['poblacion']) * 100000
 measures = {}
 datasets = {}
 jsonstat = {}
@@ -51,6 +51,7 @@ reference_date_df = pd.DataFrame(np.array([[reference_date, reference_date, refe
 dates = data['Fecha'].unique().tolist()[::-1]
 incidence_all = pd.DataFrame()
 for date in dates:
+    print(date)
     incidencia_municipios14 = pd.DataFrame()
     incidencia_municipios7 = pd.DataFrame()
     for municipio in municipios:
@@ -58,12 +59,12 @@ for date in dates:
         casos_municipio = data_municipio[['Fecha', 'Municipio', 'NumeroCasos', 'NumeroCasosActivos', 'NumeroFallecidos', 'poblacion']]
         poblacion_municipio = casos_municipio['poblacion'].tail(1).values[0]
 
-        casos_municipio['Casos nuevos7'] = casos_municipio['NumeroCasos'].diff(periods=6)
-        casos_municipio['Casos nuevos14'] = casos_municipio['NumeroCasos'].diff(periods=13)
+        casos_municipio['Casos nuevos7'] = casos_municipio['NumeroCasos'].diff(periods=7)
+        casos_municipio['Casos nuevos14'] = casos_municipio['NumeroCasos'].diff(periods=14)
         casos_municipio['Casos nuevos'] = casos_municipio['NumeroCasos'].diff()
         casos_municipio['Fallecidos diarios'] = casos_municipio['NumeroFallecidos'].diff()
-        casos_municipio['Incidencia acumulada 7 días'] = round((casos_municipio['Casos nuevos7'] / casos_municipio['poblacion']) * 100000, 2)
-        casos_municipio['Incidencia acumulada 14 días'] = round((casos_municipio['Casos nuevos14'] / casos_municipio['poblacion']) * 100000, 2)
+        casos_municipio['Incidencia acumulada 7 días'] = (casos_municipio['Casos nuevos7'] / casos_municipio['poblacion']) * 100000
+        casos_municipio['Incidencia acumulada 14 días'] = (casos_municipio['Casos nuevos14'] / casos_municipio['poblacion']) * 100000
 
         municipio_tocsv = casos_municipio[['Fecha', 'Municipio', 'Incidencia acumulada 14 días']].iloc[13:]
         municipio_tocsv['Fecha'] = pd.to_datetime(municipio_tocsv['Fecha'], dayfirst=True).dt.strftime('%Y-%m-%d')
