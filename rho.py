@@ -11,8 +11,6 @@ import utils
 
 
 rho = utils.read_rho_csv(cfg.input.rho)
-rho = rho.iloc[3:]
-rho.drop(rho.tail(4).index,inplace=True) 
 
 rho = rho[['Fecha', 'Media (R)', 'Cuantil 0,025 (R)', 'Cuantil 0,975 (R)']]
  
