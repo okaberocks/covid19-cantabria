@@ -135,9 +135,23 @@ def read_scs_historic_municipal():
     return raw_data
 
 
-def read_vaccine_csv(url):
+def read_vaccine_csv():
     """Read CSV file with Cantabria's historical data from SCS."""
     vaccine = pd.read_csv(cfg.input.path + cfg.input.vaccine, 
                             na_filter=False,
                             sep=';')
     return vaccine
+
+def read_rho_csv(url):
+    """Read CSV file with Cantabria's historical data from SCS."""
+    rho = pd.read_csv(url, 
+                            na_filter=False,
+                            sep=';')
+    rho.columns = rho.columns.str.replace('Date', 'Fecha')
+    rho.columns = rho.columns.str.replace('Mean\(R\)', 'Media (R)')
+    rho.columns = rho.columns.str.replace('Quantile\.0\.025\(R\)', 'Cuantil 0,025 (R)')
+    rho.columns = rho.columns.str.replace('Quantile\.0\.975\(R\)', 'Cuantil 0,975 (R)')
+
+    rho = rho.apply(lambda x: x.str.replace(',','.'))
+
+    return rho

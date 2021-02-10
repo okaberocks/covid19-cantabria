@@ -10,7 +10,7 @@ import numpy as np
 import utils
 
 
-vaccine = utils.read_vaccine_csv(cfg.input.vaccine_data)
+vaccine = utils.read_vaccine_csv()
 # vaccine = vaccine.loc[vaccine['CCAA'] == 'Cantabria']
 vaccine['Fecha'] = pd.to_datetime(
     vaccine['Fecha'], dayfirst=True).dt.strftime('%d-%m-%Y')

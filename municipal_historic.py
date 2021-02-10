@@ -178,7 +178,7 @@ for date in dates:
                                                         'Cantabria'))
     datasets['Incidencia acumulada 7']["role"] = {"metric": ["Variables"]}
     utils.publish_firebase('saludcantabria/incidencia/' + date, 'incidencia-acumulada-7', datasets['Incidencia acumulada 7'])
-    # break
+    break
 
 datasets['Fecha'] = pyjstat.Dataset.read(reference_date_df,
                                              source=('Consejería de Sanidad'
