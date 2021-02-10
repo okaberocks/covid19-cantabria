@@ -15,5 +15,6 @@ import sma
 import municipal
 import mult_rate
 #import vaccine
+import rho
 
 print('Finished')
