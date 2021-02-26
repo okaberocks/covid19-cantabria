@@ -32,6 +32,7 @@ vaccine_population = vaccine['Dosis administradas'] * 100 / population
 vaccine_population = (str(round(vaccine_population.iloc[-1], 2)) + '%').replace('.', ',')
 
 vaccine_population = last_vaccine['Porcentaje población cántabra'].iloc[0] + '%'
+vaccine_population_complete = last_vaccine['Porcentaje población completa'].iloc[0] + '%'
 
 dosis_entregadas = last_vaccine[['Fecha', 'Dosis entregadas']]
 dosis_entregadas = dosis_entregadas.melt(id_vars=['Fecha'], var_name='Variables')
@@ -49,6 +50,8 @@ vaccine_acceptance = pd.DataFrame(np.array([[vaccine_acceptance, vaccine_accepta
 
 vaccine_population = pd.DataFrame(np.array([[vaccine_population, vaccine_population, vaccine_population]]),
                                       columns=['Fecha', 'Variables', 'value'])
+vaccine_population_complete = pd.DataFrame(np.array([[vaccine_population_complete, vaccine_population_complete, vaccine_population_complete]]),
+                                      columns=['Fecha', 'Variables', 'value'])
 
 data = {}
 
@@ -63,7 +66,7 @@ data['dosis']['Fecha'] = pd.to_datetime(
     data['dosis']['Fecha'], dayfirst=True).dt.strftime('%d-%m-%Y')
 
 data['tipo_dosis'] = vaccine[['Fecha', 'Dosis residencias',
-                         'Dosis instituciones sanitarias', 'Dosis otras instituciones']].iloc[6:].tail(1)
+                         'Dosis instituciones sanitarias', 'Dosis otras instituciones', 'Dependientes y +80 años']].iloc[6:].tail(1)
 data['tipo_dosis'] = data['tipo_dosis'].melt(
     id_vars=['Fecha'], var_name='Variables')
 # Publish datasets into Firebase
@@ -106,10 +109,13 @@ datasets['Poblacion']["role"] = {"metric": ["Variables"]}
 utils.publish_firebase(
     'saludcantabria', 'vaccine_population', datasets['Poblacion'])
 
-
-
-
-
+datasets['Poblacion completa'] = pyjstat.Dataset.read(vaccine_population_complete,
+                                              source=('Consejería de Sanidad '
+                                                 ' del Gobierno de '
+                                                 'Cantabria'))
+datasets['Poblacion completa']["role"] = {"metric": ["Variables"]}
+utils.publish_firebase(
+    'saludcantabria', 'vaccine_population_complete', datasets['Poblacion completa'])
 
 datasets['Dosis entregadas'] = pyjstat.Dataset.read(dosis_entregadas,
                                                     source=('Consejería de Sanidad '
