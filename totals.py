@@ -15,9 +15,9 @@ cases = cases.tail(1)
 data = {}
 
 cases["Test PCR"] = pd.to_numeric(cases["Test PCR"])
-data['actives'] = cases[['Fecha', 'Activos']]
-data['actives'] = data['actives'].melt(id_vars=['Fecha'], var_name='Variables')
-data['actives']['value'] = data['actives']['value'].apply(lambda x : "{:,}".format(x).replace(',','.'))
+# data['actives'] = cases[['Fecha', 'Activos']]
+# data['actives'] = data['actives'].melt(id_vars=['Fecha'], var_name='Variables')
+# data['actives']['value'] = data['actives']['value'].apply(lambda x : "{:,}".format(x).replace(',','.'))
 
 data['uci'] = cases[['Fecha', 'UCI']]
 data['uci'] = data['uci'].melt(id_vars=['Fecha'], var_name='Variables')
@@ -35,10 +35,10 @@ data['deceased'] = cases[['Fecha', 'Fallecidos']]
 data['deceased'] = data['deceased'].melt(id_vars=['Fecha'], var_name='Variables')
 data['deceased']['value'] = data['deceased']['value'].apply(lambda x : "{:,}".format(x).replace(',','.'))
 
-data['discharged'] = cases[['Fecha', 'Recuperados']]
-data['discharged'] = data['discharged'].melt(id_vars=['Fecha'], var_name='Variables')
-data['discharged']['value'] = data['discharged']['value'].astype(int)
-data['discharged']['value'] = data['discharged']['value'].apply(lambda x : "{:,}".format(x).replace(',','.'))
+# data['discharged'] = cases[['Fecha', 'Recuperados']]
+# data['discharged'] = data['discharged'].melt(id_vars=['Fecha'], var_name='Variables')
+# data['discharged']['value'] = data['discharged']['value'].astype(int)
+# data['discharged']['value'] = data['discharged']['value'].apply(lambda x : "{:,}".format(x).replace(',','.'))
 
 data['sanitarians'] = cases[['Fecha', 'Sanitarios Activos']]
 data['sanitarians'] = data['sanitarians'].melt(id_vars=['Fecha'], var_name='Variables')

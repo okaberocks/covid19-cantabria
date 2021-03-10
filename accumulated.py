@@ -11,7 +11,7 @@ import utils
 cases = utils.read_scs_csv(cfg.input.scs_data)
 
 data = {}
-data['accumulated'] = cases[['Fecha', 'Recuperados', 'Casos', 'UCI', 'Fallecidos']]
+data['accumulated'] = cases[['Fecha', 'Casos', 'UCI', 'Fallecidos']]
 data['accumulated'] = data['accumulated'].melt(id_vars=['Fecha'], var_name='Variables')
 data['accumulated'].reset_index(inplace=True)
 data['accumulated'].drop('index', axis=1, inplace=True)

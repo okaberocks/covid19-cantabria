@@ -9,19 +9,18 @@ import utils
 
 cases = utils.read_scs_csv(cfg.input.scs_data)
 
-sma = cases[['Fecha', 'Casos Nuevos', 'Fallecidos', 'Recuperados']]
+sma = cases[['Fecha', 'Casos Nuevos', 'Fallecidos']]
 
 sma['deaths_diff'] = sma['Fallecidos'].astype(float).diff()
-sma['recovered_diff'] = sma['Recuperados'].astype(float).diff()
+# sma['recovered_diff'] = sma['Recuperados'].astype(float).diff()
 
 sma['Casos'] = sma['Casos Nuevos'].rolling(7, center=True).mean().round()
 sma['Fallecidos'] = sma['deaths_diff'].rolling(7, center=True).mean().round()
-sma['Recuperados'] = sma['recovered_diff'].rolling(
-    7, center=True).mean().round()
+# sma['Recuperados'] = sma['recovered_diff'].rolling(
+#     7, center=True).mean().round()
 
 sma.drop(columns=['Casos Nuevos',
-                  'deaths_diff',
-                  'recovered_diff'], inplace=True)
+                  'deaths_diff'], inplace=True)
 
 sma.dropna(inplace=True)
 

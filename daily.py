@@ -15,14 +15,13 @@ data['daily_cases'] = cases[['Fecha', 'Casos']]
 data['daily_cases'] = data['daily_cases'].melt(id_vars=['Fecha'], var_name='Variables')
 data['daily_cases']['value'] = data['daily_cases']['value'].diff()
 
-data['daily_discharged'] = cases[['Fecha', 'Recuperados']]
-data['daily_discharged'] = data['daily_discharged'].melt(id_vars=['Fecha'], var_name='Variables')
-data['daily_discharged']['value'] = data['daily_discharged']['value'].diff()
+# data['daily_discharged'] = cases[['Fecha', 'Recuperados']]
+# data['daily_discharged'] = data['daily_discharged'].melt(id_vars=['Fecha'], var_name='Variables')
+# data['daily_discharged']['value'] = data['daily_discharged']['value'].diff()
 
 data['daily_deceases'] = cases[['Fecha', 'Fallecidos']]
 data['daily_deceases'] = data['daily_deceases'].melt(id_vars=['Fecha'], var_name='Variables')
 data['daily_deceases']['value'] = data['daily_deceases']['value'].diff()
-
 
 data['daily_types'] = cases[['Fecha', 'Casos', 'Casos Residencias', 'Sanitarios']]
 data['daily_types'] = data['daily_types'].iloc[17:]

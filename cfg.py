@@ -11,17 +11,17 @@ params = {
         'mult_rate': {
             'cases': 'cases-mult-rate',
             'deceased': 'deceased-mult-rate',
-            'discharged': 'discharged-mult-rate'
+            # 'discharged': 'discharged-mult-rate'
         },
         'municipalities': {
             'cases': 'mun-cases',
-            'actives': 'mun-actives',
+            # 'actives': 'mun-actives',
             'deceased': 'mun-deceased',
-            'discharged': 'mun-discharged',
+            # 'discharged': 'mun-discharged',
             'cases_gross_rate': 'mun-cases-gross-rate',
-            'actives_gross_rate': 'mun-actives-gross-rate',
+            # 'actives_gross_rate': 'mun-actives-gross-rate',
             'deceased_gross_rate': 'mun-deceased-gross-rate',
-            'discharged_gross_rate': 'mun-discharged-gross-rate'
+            # 'discharged_gross_rate': 'mun-discharged-gross-rate'
         },
         'municipalities_historic': {
             'actives_gross_rate': 'mun-actives-gross-rate-historic'
@@ -57,12 +57,12 @@ params = {
             'age_sex_historic': 'age-sex-historic'
         },
         'totals': {
-            'actives': 'total-actives',
+            # 'actives': 'total-actives',
             'uci': 'total-uci',
             'test': 'total-test',
             'cases': 'total-cases',
             'deceased': 'total-deceased',
-            'discharged': 'total-discharged',
+            # 'discharged': 'total-discharged',
             'sanitarians': 'total-sanitarians',
             'residences': 'total-residences'
         },
@@ -72,7 +72,7 @@ params = {
         'daily': {
             'daily_cases': 'daily-cases',
             'daily_deceases': 'daily-deceases',
-            'daily_discharged': 'daily-discharged',
+            # 'daily_discharged': 'daily-discharged',
             'daily_types': 'daily-types'
         }
     },
@@ -162,34 +162,34 @@ params = {
                 'original': 'NumeroCasos',
                 'final': 'Número de casos'
             },
-            'actives': {
-                'original': 'NumeroCasosActivos', 
-                'final': 'Casos activos'
-            },
+            # 'actives': {
+            #     'original': 'NumeroCasosActivos', 
+            #     'final': 'Casos activos'
+            # },
             'deceased': {
                 'original': 'NumeroFallecidos',
                 'final': 'Fallecidos'
             },
-            'discharged': {
-                'original': 'NumeroCurados',
-                'final': 'Altas'
-            },
+            # 'discharged': {
+            #     'original': 'NumeroCurados',
+            #     'final': 'Altas'
+            # },
             'cases_gross_rate': {
                 'original': 'Tasa bruta de casos',
                 'final': 'Tasa bruta de casos'
             },
-            'actives_gross_rate': {
-                'original': 'Tasa bruta de activos',
-                'final': 'Tasa bruta de activos'
-            },
+            # 'actives_gross_rate': {
+            #     'original': 'Tasa bruta de activos',
+            #     'final': 'Tasa bruta de activos'
+            # },
             'deceased_gross_rate': {
                 'original': 'Tasa bruta de fallecidos',
                 'final': 'Tasa bruta de fallecidos'
             },
-            'discharged_gross_rate': {
-                'original': 'Tasa bruta de altas',
-                'final': 'Tasa bruta de altas'
-            }
+            # 'discharged_gross_rate': {
+            #     'original': 'Tasa bruta de altas',
+            #     'final': 'Tasa bruta de altas'
+            # }
         }
     },
     'municipalities_historic': {

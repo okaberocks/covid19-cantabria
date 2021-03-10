@@ -16,10 +16,10 @@ population['Codigo'] = population['Codigo'].apply(str)
 data = pd.merge(data, population, on='Codigo')
 data['Tasa bruta de casos'] = (
     data['NumeroCasos'] / data['poblacion']) * 100000
-data['Tasa bruta de activos'] = (
-    data['NumeroCasosActivos'] / data['poblacion']) * 100000
-data['Tasa bruta de altas'] = (
-    data['NumeroCurados'] / data['poblacion']) * 100000
+# data['Tasa bruta de activos'] = (
+#     data['NumeroCasosActivos'] / data['poblacion']) * 100000
+# data['Tasa bruta de altas'] = (
+#     data['NumeroCurados'] / data['poblacion']) * 100000
 data['Tasa bruta de fallecidos'] = (
     data['NumeroFallecidos'] / data['poblacion']) * 100000
 

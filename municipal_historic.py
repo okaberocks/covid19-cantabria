@@ -28,7 +28,7 @@ data.reset_index(inplace=True)
 data['Codigo'] = data['Codigo'].apply(str)
 population['Codigo'] = population['Codigo'].apply(str)
 data = pd.merge(data, population, on='Codigo')
-
+data['NumeroCasosActivos'] = data['NumeroCasosActivos'].fillna(0)
 data['Tasa bruta de activos'] = (data['NumeroCasosActivos'] / data['poblacion']) * 100000
 measures = {}
 datasets = {}

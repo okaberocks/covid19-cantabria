@@ -118,7 +118,7 @@ def read_scs_historic_age():
 def read_scs_historic_municipal():
     raw_data = pd.read_excel('./data/input/covid19_municipalizado.xlsx',
                               engine='openpyxl',
-                              na_filter=False,
+                              na_values=None,
                               dtype={'Codigo': object})
     raw_data.columns = raw_data.columns.str.title()
     raw_data.columns = raw_data.columns.str.replace('Código', 'Codigo')

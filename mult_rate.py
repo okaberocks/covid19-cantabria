@@ -33,9 +33,9 @@ data['cases'] = data['cases'].melt(id_vars=['Fecha'], var_name='Variables')
 data['deceased'] = cases[['Fecha', 'Fallecidos']]
 data['deceased'] = data['deceased'].rename(columns={"Fallecidos": "total"})
 data['deceased'] = data['deceased'].melt(id_vars=['Fecha'], var_name='Variables')
-data['discharged'] = cases[['Fecha', 'Recuperados']]
-data['discharged'] = data['discharged'].rename(columns={"Recuperados": "total"})
-data['discharged'] = data['discharged'].melt(id_vars=['Fecha'], var_name='Variables')
+# data['discharged'] = cases[['Fecha', 'Recuperados']]
+# data['discharged'] = data['discharged'].rename(columns={"Recuperados": "total"})
+# data['discharged'] = data['discharged'].melt(id_vars=['Fecha'], var_name='Variables')
 
 
 datasets = {}
