@@ -155,3 +155,15 @@ def read_rho_csv(url):
     rho = rho.apply(lambda x: x.str.replace(',','.'))
 
     return rho
+
+def read_restimation(url):
+    """Read CSV file with Cantabria's historical data from SCS."""
+    estimation = pd.read_csv(url, 
+                            na_filter=False,
+                            sep=',')
+    estimation.columns = estimation.columns.str.replace('FECHA', 'Fecha')
+    # rho.columns = rho.columns.str.replace('Quantile\.0\.975\(R\)', 'Cuantil 0,975 (R)')
+
+    # arima = arima.apply(lambda x: x.str.replace(',','.'))
+
+    return estimation
