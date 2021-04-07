@@ -28,7 +28,8 @@ params = {
         },
         'vaccine': {
             'dosis': 'dosis',
-            'tipo_dosis': 'tipo_dosis'
+            'tipo_dosis': 'tipo_dosis',
+            'tipo_dosis_completa': 'tipo_dosis_completa'
         },
         'historical': {
             'hospitalizations': 'hospitalizations',

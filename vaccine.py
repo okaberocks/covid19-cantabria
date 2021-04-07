@@ -9,7 +9,6 @@ import numpy as np
 
 import utils
 
-
 vaccine = utils.read_vaccine_csv()
 # vaccine = vaccine.loc[vaccine['CCAA'] == 'Cantabria']
 vaccine['Fecha'] = pd.to_datetime(
@@ -19,13 +18,24 @@ vaccine['Dosis no administradas'] = vaccine['Dosis entregadas'] - \
 
 population = 581078
 
-
 last_vaccine = vaccine.tail(1)
+
+dosis_administradas = int(last_vaccine['Dosis administradas'].iloc[0])
+
+suma_dosis = int(last_vaccine['Residencias'].iloc[0]) + \
+                int(last_vaccine['Instituciones sanitarias'].iloc[0]) + \
+                int(last_vaccine['Otras instituciones'].iloc[0]) + \
+                int(last_vaccine['Dependientes y +80 años'].iloc[0]) + \
+                int(last_vaccine['Mayores de 70 años'].iloc[0])
+
+if (suma_dosis != dosis_administradas):
+    print('¡La suma no coincide!')
+
 vaccine_reference_date = last_vaccine['Fecha'].iloc[0]
 vaccine_percentage = last_vaccine['% sobre entregadas'].iloc[0] + '%'
 vaccine_acceptance = last_vaccine['Aceptación vacuna'].iloc[0] + '%'
 
-# pautas_completadas = int(last_vaccine['Sanitarias completadas'].iloc[0]) + int(last_vaccine['Residencia completadas'].iloc[0])
+# pautas_completadas = int(last_vaccine['Sanitarias completadas'].iloc[0]) + int(last_vaccine['Residencias completadas'].iloc[0])
 # vaccine_population = (str(round(pautas_completadas * 100 / population, 2)) + '%').replace('.', ',')
 
 vaccine_population = vaccine['Dosis administradas'] * 100 / population
@@ -36,9 +46,11 @@ vaccine_population_complete = last_vaccine['Porcentaje población completa'].ilo
 
 dosis_entregadas = last_vaccine[['Fecha', 'Dosis entregadas']]
 dosis_entregadas = dosis_entregadas.melt(id_vars=['Fecha'], var_name='Variables')
+dosis_entregadas['value'] = dosis_entregadas['value'].apply(lambda x : "{:,}".format(x).replace(',','.'))
 
 dosis_administradas = last_vaccine[['Fecha', 'Dosis administradas']]
 dosis_administradas = dosis_administradas.melt(id_vars=['Fecha'], var_name='Variables')
+dosis_administradas['value'] = dosis_administradas['value'].apply(lambda x : "{:,}".format(x).replace(',','.'))
 
 vaccine_reference_date = pd.DataFrame(np.array([[vaccine_reference_date, vaccine_reference_date, vaccine_reference_date]]),
                                       columns=['Fecha', 'Variables', 'value'])
@@ -65,9 +77,29 @@ data['dosis'].sort_values(by=['Fecha', 'Variables'], inplace=True)
 data['dosis']['Fecha'] = pd.to_datetime(
     data['dosis']['Fecha'], dayfirst=True).dt.strftime('%d-%m-%Y')
 
-data['tipo_dosis'] = vaccine[['Fecha', 'Dosis residencias',
-                         'Dosis instituciones sanitarias', 'Dosis otras instituciones', 'Dependientes y +80 años', 'Mayores de 70 años']].iloc[6:].tail(1)
+
+data['tipo_dosis'] = vaccine[['Fecha', 'Residencias',
+                         'Instituciones sanitarias', 'Otras instituciones', 'Dependientes y +80 años', 'Mayores de 70 años']].iloc[6:].tail(1)
+data['tipo_dosis']['Residencias'] = data['tipo_dosis']['Residencias'].astype(int)
+data['tipo_dosis']['Instituciones sanitarias'] = data['tipo_dosis']['Instituciones sanitarias'].astype(int)
+data['tipo_dosis']['Otras instituciones'] = data['tipo_dosis']['Otras instituciones'].astype(int)
+data['tipo_dosis']['Dependientes y +80 años'] = data['tipo_dosis']['Dependientes y +80 años'].astype(int)
+data['tipo_dosis']['Mayores de 70 años'] = data['tipo_dosis']['Mayores de 70 años'].astype(int)
 data['tipo_dosis'] = data['tipo_dosis'].melt(
+    id_vars=['Fecha'], var_name='Variables')
+
+data['tipo_dosis_completa'] = vaccine[['Fecha', 'Residencias completa',
+                         'Instituciones sanitarias completa', 'Otras instituciones completa', 'Dependientes y +80 años completa']].iloc[6:].tail(1)
+data['tipo_dosis_completa'] = data['tipo_dosis_completa'].rename(columns={"Residencias completa": "Residencias",
+                                                                             "Instituciones sanitarias completa": "Instituciones sanitarias",
+                                                                             "Otras instituciones completa": "Otras instituciones",
+                                                                             "Dependientes y +80 años completa": "Dependientes y +80 años"})
+data['tipo_dosis_completa']['Residencias'] = data['tipo_dosis_completa']['Residencias'].astype(int)
+data['tipo_dosis_completa']['Instituciones sanitarias'] = data['tipo_dosis_completa']['Instituciones sanitarias'].astype(int)
+data['tipo_dosis_completa']['Otras instituciones'] = data['tipo_dosis_completa']['Otras instituciones'].astype(int)
+data['tipo_dosis_completa']['Dependientes y +80 años'] = data['tipo_dosis_completa']['Dependientes y +80 años'].astype(int)
+
+data['tipo_dosis_completa'] = data['tipo_dosis_completa'].melt(
     id_vars=['Fecha'], var_name='Variables')
 # Publish datasets into Firebase
 datasets = {}
