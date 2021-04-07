@@ -12,10 +12,14 @@ import utils
 
 arima = utils.read_restimation(cfg.input.path + cfg.input.arima)
 
-print(arima)
 
 arima = arima[['Fecha', 'POSITIVOS', 'POSITIVOS_LI', 'POSITIVOS_LS']]
- 
+
+arima['Pronósticos'] = arima['POSITIVOS']
+arima.loc[arima.tail(14).index, 'POSITIVOS'] = None
+arima.loc[arima.head(len(arima) - 14).index, 'Pronósticos'] = None
+# arima.loc[arima.tail(14).index, 'Pronósticos'] = None
+
 arima = arima.melt(id_vars=['Fecha'], var_name='Variables')
 arima['Fecha'] = pd.to_datetime(arima['Fecha'], dayfirst=True).dt.strftime('%Y-%m-%d')
 arima.sort_values(by=['Fecha', 'Variables'], inplace=True)

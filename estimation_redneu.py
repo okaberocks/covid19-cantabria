@@ -12,10 +12,12 @@ import utils
 
 redneu = utils.read_restimation(cfg.input.path + cfg.input.redneu)
 
-print(redneu)
-
 redneu = redneu[['Fecha', 'POSITIVOS', 'POSITIVOS_LI', 'POSITIVOS_LS']]
  
+redneu['Pronósticos'] = redneu['POSITIVOS']
+redneu.loc[redneu.tail(14).index, 'POSITIVOS'] = None
+redneu.loc[redneu.head(len(redneu) - 14).index, 'Pronósticos'] = None
+
 redneu = redneu.melt(id_vars=['Fecha'], var_name='Variables')
 redneu['Fecha'] = pd.to_datetime(redneu['Fecha'], dayfirst=True).dt.strftime('%Y-%m-%d')
 redneu.sort_values(by=['Fecha', 'Variables'], inplace=True)

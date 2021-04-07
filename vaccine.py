@@ -66,7 +66,7 @@ data['dosis']['Fecha'] = pd.to_datetime(
     data['dosis']['Fecha'], dayfirst=True).dt.strftime('%d-%m-%Y')
 
 data['tipo_dosis'] = vaccine[['Fecha', 'Dosis residencias',
-                         'Dosis instituciones sanitarias', 'Dosis otras instituciones', 'Dependientes y +80 años']].iloc[6:].tail(1)
+                         'Dosis instituciones sanitarias', 'Dosis otras instituciones', 'Dependientes y +80 años', 'Mayores de 70 años']].iloc[6:].tail(1)
 data['tipo_dosis'] = data['tipo_dosis'].melt(
     id_vars=['Fecha'], var_name='Variables')
 # Publish datasets into Firebase

@@ -12,10 +12,12 @@ import utils
 
 loess = utils.read_restimation(cfg.input.path + cfg.input.loess)
 
-print(loess)
-
 loess = loess[['Fecha', 'POSITIVOS', 'POSITIVOS_LI', 'POSITIVOS_LS']]
  
+loess['Pronósticos'] = loess['POSITIVOS']
+loess.loc[loess.tail(14).index, 'POSITIVOS'] = None
+loess.loc[loess.head(len(loess) - 14).index, 'Pronósticos'] = None
+
 loess = loess.melt(id_vars=['Fecha'], var_name='Variables')
 loess['Fecha'] = pd.to_datetime(loess['Fecha'], dayfirst=True).dt.strftime('%Y-%m-%d')
 loess.sort_values(by=['Fecha', 'Variables'], inplace=True)
