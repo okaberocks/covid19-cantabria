@@ -26,9 +26,13 @@ suma_dosis = int(last_vaccine['Residencias'].iloc[0]) + \
                 int(last_vaccine['Instituciones sanitarias'].iloc[0]) + \
                 int(last_vaccine['Otras instituciones'].iloc[0]) + \
                 int(last_vaccine['Dependientes y +80 años'].iloc[0]) + \
-                int(last_vaccine['Mayores de 70 años'].iloc[0])
+                int(last_vaccine['Mayores de 70 años'].iloc[0]) + \
+                int(last_vaccine['60 a 65 años'].iloc[0]) + \
+                int(last_vaccine['Personas de muy alto riesgo'].iloc[0])
 
 if (suma_dosis != dosis_administradas):
+    print(suma_dosis)
+    print(dosis_administradas)
     print('¡La suma no coincide!')
 
 vaccine_reference_date = last_vaccine['Fecha'].iloc[0]
@@ -79,12 +83,14 @@ data['dosis']['Fecha'] = pd.to_datetime(
 
 
 data['tipo_dosis'] = vaccine[['Fecha', 'Residencias',
-                         'Instituciones sanitarias', 'Otras instituciones', 'Dependientes y +80 años', 'Mayores de 70 años']].iloc[6:].tail(1)
+                         'Instituciones sanitarias', 'Otras instituciones', 'Dependientes y +80 años', 'Mayores de 70 años', '60 a 65 años', 'Personas de muy alto riesgo']].iloc[6:].tail(1)
 data['tipo_dosis']['Residencias'] = data['tipo_dosis']['Residencias'].astype(int)
 data['tipo_dosis']['Instituciones sanitarias'] = data['tipo_dosis']['Instituciones sanitarias'].astype(int)
 data['tipo_dosis']['Otras instituciones'] = data['tipo_dosis']['Otras instituciones'].astype(int)
 data['tipo_dosis']['Dependientes y +80 años'] = data['tipo_dosis']['Dependientes y +80 años'].astype(int)
 data['tipo_dosis']['Mayores de 70 años'] = data['tipo_dosis']['Mayores de 70 años'].astype(int)
+data['tipo_dosis']['60 a 65 años'] = data['tipo_dosis']['60 a 65 años'].astype(int)
+data['tipo_dosis']['Personas de muy alto riesgo'] = data['tipo_dosis']['Personas de muy alto riesgo'].astype(int)
 data['tipo_dosis'] = data['tipo_dosis'].melt(
     id_vars=['Fecha'], var_name='Variables')
 
@@ -93,11 +99,13 @@ data['tipo_dosis_completa'] = vaccine[['Fecha', 'Residencias completa',
 data['tipo_dosis_completa'] = data['tipo_dosis_completa'].rename(columns={"Residencias completa": "Residencias",
                                                                              "Instituciones sanitarias completa": "Instituciones sanitarias",
                                                                              "Otras instituciones completa": "Otras instituciones",
-                                                                             "Dependientes y +80 años completa": "Dependientes y +80 años"})
+                                                                             "Dependientes y +80 años completa": "Dependientes y +80 años",
+                                                                             "Personas de muy alto riesgo": "Personas de muy alto riesgo"})
 data['tipo_dosis_completa']['Residencias'] = data['tipo_dosis_completa']['Residencias'].astype(int)
 data['tipo_dosis_completa']['Instituciones sanitarias'] = data['tipo_dosis_completa']['Instituciones sanitarias'].astype(int)
 data['tipo_dosis_completa']['Otras instituciones'] = data['tipo_dosis_completa']['Otras instituciones'].astype(int)
 data['tipo_dosis_completa']['Dependientes y +80 años'] = data['tipo_dosis_completa']['Dependientes y +80 años'].astype(int)
+
 
 data['tipo_dosis_completa'] = data['tipo_dosis_completa'].melt(
     id_vars=['Fecha'], var_name='Variables')
