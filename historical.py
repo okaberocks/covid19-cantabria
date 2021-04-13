@@ -108,8 +108,9 @@ for key in cfg.output.historical:
     datasets[key]["role"] = {"time": ["Fecha"], "metric": ["Variables"]}
     # if key == "sanitarians":
     #     datasets[key]["note"] = [cfg.labels.daily_note]
+    datasets[key]['dimension']['Variables']['category']['unit'] = cfg.output.historical[key].units
     utils.publish_firebase('saludcantabria',
-                           cfg.output.historical[key],
+                           cfg.output.historical[key].name,
                            datasets[key])
 print('Historical published')
 

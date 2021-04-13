@@ -121,7 +121,8 @@ for key in cfg.output.current_situation:
         'Consejería de Sanidad del Gobierno de Cantabria'))
     datasets[key]["role"] = {"time": ["fecha"], "metric": ["Variables"]}
     # datasets[key]["note"] = [cfg.labels.current_sit_note]
+    datasets[key]['dimension']['Variables']['category']['unit'] = cfg.output.current_situation[key].units
     utils.publish_firebase('saludcantabria',
-                           cfg.output.current_situation[key],
+                           cfg.output.current_situation[key].name,
                            datasets[key])
 print('Current situation published')

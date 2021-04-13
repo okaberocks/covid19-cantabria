@@ -63,8 +63,9 @@ for key in cfg.output.daily:
     datasets[key]["role"] = {"time": ["Fecha"], "metric": ["Variables"]}
     # if key == "daily_types":
     #     datasets[key]["note"] = [cfg.labels.daily_note]
+    datasets[key]['dimension']['Variables']['category']['unit'] = cfg.output.daily[key].units
     utils.publish_firebase('saludcantabria',
-                           cfg.output.daily[key],
+                           cfg.output.daily[key].name,
                            datasets[key])
 print('Daily published')
 
