@@ -10,13 +10,13 @@ import numpy as np
 import utils
 
 
-arima = utils.read_restimation(cfg.input.path + cfg.input.arima)
+arima = utils.read_restimation(cfg.input.arima)
 
 
-arima = arima[['Fecha', 'POSITIVOS', 'POSITIVOS_LI', 'POSITIVOS_LS']]
+arima = arima[['Fecha', 'Positivos', 'Positivos LI', 'Positivos LS']]
 
-arima['Pronósticos'] = arima['POSITIVOS']
-arima.loc[arima.tail(14).index, 'POSITIVOS'] = None
+arima['Pronósticos'] = arima['Positivos']
+arima.loc[arima.tail(14).index, 'Positivos'] = None
 arima.loc[arima.head(len(arima) - 14).index, 'Pronósticos'] = None
 # arima.loc[arima.tail(14).index, 'Pronósticos'] = None
 

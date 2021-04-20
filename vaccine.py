@@ -37,7 +37,7 @@ if (suma_dosis != dosis_administradas):
 
 vaccine_reference_date = last_vaccine['Fecha'].iloc[0]
 vaccine_percentage = last_vaccine['% sobre entregadas'].iloc[0] + '%'
-vaccine_acceptance = last_vaccine['Aceptación vacuna'].iloc[0] + '%'
+# vaccine_acceptance = last_vaccine['Aceptación vacuna'].iloc[0] + '%'
 
 # pautas_completadas = int(last_vaccine['Sanitarias completadas'].iloc[0]) + int(last_vaccine['Residencias completadas'].iloc[0])
 # vaccine_population = (str(round(pautas_completadas * 100 / population, 2)) + '%').replace('.', ',')
@@ -66,8 +66,8 @@ vaccine_reference_date = pd.DataFrame(np.array([[vaccine_reference_date, vaccine
 vaccine_percentage = pd.DataFrame(np.array([[vaccine_percentage, vaccine_percentage, vaccine_percentage]]),
                                   columns=['Fecha', 'Variables', 'value'])
 
-vaccine_acceptance = pd.DataFrame(np.array([[vaccine_acceptance, vaccine_acceptance, vaccine_acceptance]]),
-                                  columns=['Fecha', 'Variables', 'value'])
+# vaccine_acceptance = pd.DataFrame(np.array([[vaccine_acceptance, vaccine_acceptance, vaccine_acceptance]]),
+#                                   columns=['Fecha', 'Variables', 'value'])
 
 vaccine_population = pd.DataFrame(np.array([[vaccine_population, vaccine_population, vaccine_population]]),
                                   columns=['Fecha', 'Variables', 'value'])
@@ -89,20 +89,6 @@ data['dosis']['Fecha'] = pd.to_datetime(
 
 data['tipo_dosis'] = vaccine[['Fecha', 'Residencias',
                               'Instituciones sanitarias', 'Otras instituciones', 'Dependientes y +80 años', 'Mayores de 70 años', '60 a 65 años', 'Personas de muy alto riesgo']].iloc[6:].tail(1)
-data['tipo_dosis']['Residencias'] = data['tipo_dosis']['Residencias'].astype(
-    int)
-data['tipo_dosis']['Instituciones sanitarias'] = data['tipo_dosis']['Instituciones sanitarias'].astype(
-    int)
-data['tipo_dosis']['Otras instituciones'] = data['tipo_dosis']['Otras instituciones'].astype(
-    int)
-data['tipo_dosis']['Dependientes y +80 años'] = data['tipo_dosis']['Dependientes y +80 años'].astype(
-    int)
-data['tipo_dosis']['Mayores de 70 años'] = data['tipo_dosis']['Mayores de 70 años'].astype(
-    int)
-data['tipo_dosis']['60 a 65 años'] = data['tipo_dosis']['60 a 65 años'].astype(
-    int)
-data['tipo_dosis']['Personas de muy alto riesgo'] = data['tipo_dosis']['Personas de muy alto riesgo'].astype(
-    int)
 data['tipo_dosis'] = data['tipo_dosis'].melt(
     id_vars=['Fecha'], var_name='Variables')
 
@@ -113,18 +99,33 @@ data['tipo_dosis_completa'] = data['tipo_dosis_completa'].rename(columns={"Resid
                                                                           "Otras instituciones completa": "Otras instituciones",
                                                                           "Dependientes y +80 años completa": "Dependientes y +80 años",
                                                                           "Personas de muy alto riesgo": "Personas de muy alto riesgo"})
-data['tipo_dosis_completa']['Residencias'] = data['tipo_dosis_completa']['Residencias'].astype(
-    int)
-data['tipo_dosis_completa']['Instituciones sanitarias'] = data['tipo_dosis_completa']['Instituciones sanitarias'].astype(
-    int)
-data['tipo_dosis_completa']['Otras instituciones'] = data['tipo_dosis_completa']['Otras instituciones'].astype(
-    int)
-data['tipo_dosis_completa']['Dependientes y +80 años'] = data['tipo_dosis_completa']['Dependientes y +80 años'].astype(
-    int)
-
 
 data['tipo_dosis_completa'] = data['tipo_dosis_completa'].melt(
     id_vars=['Fecha'], var_name='Variables')
+
+data['daily_types_vaccine'] = vaccine[['Fecha', 'Residencias',
+                              'Instituciones sanitarias',
+                              'Otras instituciones',
+                              'Dependientes y +80 años',
+                              'Mayores de 70 años',
+                              '60 a 65 años',
+                              'Personas de muy alto riesgo']].iloc[5:]
+
+data['daily_types_vaccine'] = data['daily_types_vaccine'].fillna(value=np.nan)
+data['daily_types_vaccine']['Residencias'] = data['daily_types_vaccine']['Residencias'].diff()
+data['daily_types_vaccine']['Instituciones sanitarias'] = data['daily_types_vaccine']['Instituciones sanitarias'].diff()
+data['daily_types_vaccine']['Otras instituciones'] = data['daily_types_vaccine']['Otras instituciones'].diff()
+data['daily_types_vaccine']['Dependientes y +80 años'] = data['daily_types_vaccine']['Dependientes y +80 años'].diff()
+data['daily_types_vaccine']['Mayores de 70 años'] = data['daily_types_vaccine']['Mayores de 70 años'].diff()
+data['daily_types_vaccine']['60 a 65 años'] = data['daily_types_vaccine']['60 a 65 años'].diff()
+data['daily_types_vaccine']['Personas de muy alto riesgo'] = data['daily_types_vaccine']['Personas de muy alto riesgo'].diff()
+
+data['daily_types_vaccine'] = data['daily_types_vaccine'].iloc[1:]
+data['daily_types_vaccine']['Residencias'] = data['daily_types_vaccine']['Residencias'].clip(lower=0)
+data['daily_types_vaccine']['Dependientes y +80 años'] = data['daily_types_vaccine']['Dependientes y +80 años'].clip(lower=0)
+data['daily_types_vaccine'] = data['daily_types_vaccine'].melt(id_vars=['Fecha'], var_name='Variables')
+
+
 # Publish datasets into Firebase
 datasets = {}
 try:
@@ -148,13 +149,13 @@ datasets['Porcentaje']["role"] = {"metric": ["Variables"]}
 utils.publish_firebase(
     'saludcantabria', 'vaccine_percentage', datasets['Porcentaje'])
 
-datasets['Aceptacion'] = pyjstat.Dataset.read(vaccine_acceptance,
-                                              source=('Consejería de Sanidad '
-                                                      ' del Gobierno de '
-                                                      'Cantabria'))
-datasets['Aceptacion']["role"] = {"metric": ["Variables"]}
-utils.publish_firebase(
-    'saludcantabria', 'vaccine_acceptance', datasets['Aceptacion'])
+# datasets['Aceptacion'] = pyjstat.Dataset.read(vaccine_acceptance,
+#                                               source=('Consejería de Sanidad '
+#                                                       ' del Gobierno de '
+#                                                       'Cantabria'))
+# datasets['Aceptacion']["role"] = {"metric": ["Variables"]}
+# utils.publish_firebase(
+#     'saludcantabria', 'vaccine_acceptance', datasets['Aceptacion'])
 
 
 datasets['Poblacion'] = pyjstat.Dataset.read(vaccine_population,
@@ -191,6 +192,12 @@ datasets['Dosis administradas']["role"] = {"metric": ["Variables"]}
 utils.publish_firebase(
     'saludcantabria', 'dosis_administradas', datasets['Dosis administradas'])
 for key in cfg.output.vaccine:
+    data[key]['Fecha'] = pd.to_datetime(
+        data[key]['Fecha'], dayfirst=True).dt.strftime('%Y-%m-%d')
+    data[key].sort_values(by=['Fecha', 'Variables'], inplace=True)
+    data[key]['Fecha'] = pd.to_datetime(
+        data[key]['Fecha'], dayfirst=True).dt.strftime('%d-%m-%Y')
+
     # data[key].sort_values(by=['Fecha', 'Variables'], inplace=True)
     datasets[key] = pyjstat.Dataset.read(data[key],
                                          source=('Consejería de Sanidad '

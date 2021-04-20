@@ -10,12 +10,12 @@ import numpy as np
 import utils
 
 
-loess = utils.read_restimation(cfg.input.path + cfg.input.loess)
+loess = utils.read_restimation(cfg.input.loess)
 
-loess = loess[['Fecha', 'POSITIVOS', 'POSITIVOS_LI', 'POSITIVOS_LS']]
+loess = loess[['Fecha', 'Positivos', 'Positivos LI', 'Positivos LS']]
  
-loess['Pronósticos'] = loess['POSITIVOS']
-loess.loc[loess.tail(14).index, 'POSITIVOS'] = None
+loess['Pronósticos'] = loess['Positivos']
+loess.loc[loess.tail(14).index, 'Positivos'] = None
 loess.loc[loess.head(len(loess) - 14).index, 'Pronósticos'] = None
 
 loess = loess.melt(id_vars=['Fecha'], var_name='Variables')

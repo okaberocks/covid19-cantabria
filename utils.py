@@ -138,8 +138,8 @@ def read_scs_historic_municipal():
 def read_vaccine_csv():
     """Read CSV file with Cantabria's historical data from SCS."""
     vaccine = pd.read_csv(cfg.input.path + cfg.input.vaccine, 
-                            na_filter=False,
                             sep=';')
+    vaccine = vaccine.fillna(0)
     return vaccine
 
 def read_rho_csv(url):
@@ -162,6 +162,10 @@ def read_restimation(url):
                             na_filter=False,
                             sep=',')
     estimation.columns = estimation.columns.str.replace('FECHA', 'Fecha')
+    estimation.columns = estimation.columns.str.replace('CASOS.NUEVOS.PCR.', 'Positivos')
+    estimation.columns = estimation.columns.str.replace('POSITIVOS_LS', 'Positivos LS')
+    estimation.columns = estimation.columns.str.replace('POSITIVOS_LI', 'Positivos LI')
+    
     # rho.columns = rho.columns.str.replace('Quantile\.0\.975\(R\)', 'Cuantil 0,975 (R)')
 
     # arima = arima.apply(lambda x: x.str.replace(',','.'))

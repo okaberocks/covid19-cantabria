@@ -10,12 +10,12 @@ import numpy as np
 import utils
 
 
-redneu = utils.read_restimation(cfg.input.path + cfg.input.redneu)
+redneu = utils.read_restimation(cfg.input.redneu)
 
-redneu = redneu[['Fecha', 'POSITIVOS', 'POSITIVOS_LI', 'POSITIVOS_LS']]
+redneu = redneu[['Fecha', 'Positivos', 'Positivos LI', 'Positivos LS']]
  
-redneu['Pronósticos'] = redneu['POSITIVOS']
-redneu.loc[redneu.tail(14).index, 'POSITIVOS'] = None
+redneu['Pronósticos'] = redneu['Positivos']
+redneu.loc[redneu.tail(14).index, 'Positivos'] = None
 redneu.loc[redneu.head(len(redneu) - 14).index, 'Pronósticos'] = None
 
 redneu = redneu.melt(id_vars=['Fecha'], var_name='Variables')

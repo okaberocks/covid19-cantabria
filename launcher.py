@@ -16,5 +16,8 @@ import municipal
 import mult_rate
 #import vaccine
 import rho
+import estimation_arima
+import estimation_loess
+import estimation_redneu
 
 print('Finished')

@@ -47,6 +47,13 @@ params = {
                     'Residencias': {
                         'decimals': 0, 'label': 'Personas vacunadas'}
                 }
+            },
+            'daily_types_vaccine': {
+                'name':'daily_types_vaccine',
+                'units': {
+                    'Residencias': {
+                        'decimals': 0, 'label': 'Personas vacunadas'}
+                }
             }
         },
         'historical': {
@@ -190,9 +197,9 @@ params = {
         'scs_data_municipal': 'https://serviweb.scsalud.es:10443/ficheros/COVID19_municipalizado.csv',
         'vaccine_data': 'https://raw.githubusercontent.com/datadista/datasets/master/COVID%2019/ccaa_vacunas.csv',
         'rho': 'https://raw.githubusercontent.com/icane/covid19-rho/main/rho.csv',
-        'arima': 'resultado_arima.csv',
-        'loess': 'resultado_loess.csv',
-        'redneu': 'resultado_redneu.csv',
+        'arima': 'https://raw.githubusercontent.com/icane/covid19-rho/main/resultado_arima.csv',
+        'loess': 'https://raw.githubusercontent.com/icane/covid19-rho/main/resultado_loess.csv',
+        'redneu': 'https://raw.githubusercontent.com/icane/covid19-rho/main/resultado_redneu.csv',
         'vaccine': 'covid19_vacunas.csv',
         'hospitals': 'covid19_historico.csv',
         'population': 'poblacion_municipios.csv',
