@@ -3,7 +3,7 @@ from datetime import datetime
 
 today = datetime.now()
 print("Today's date:", today)
-warnings.filterwarnings("ignore")
+# warnings.filterwarnings("ignore")
 
 import historical
 import current_situation
@@ -13,7 +13,7 @@ import accumulated
 import daily
 import sma
 import municipal
-import mult_rate
+# import mult_rate
 #import vaccine
 import rho
 import estimation_arima
