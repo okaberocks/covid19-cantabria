@@ -142,6 +142,34 @@ def read_vaccine_csv():
     vaccine = vaccine.fillna(0)
     return vaccine
 
+def read_vaccine_general():
+    """Read CSV file with Cantabria's historical data from SCS."""
+    vaccine = pd.read_excel(cfg.input.path + cfg.input.vaccine_new, 
+                              sheet_name='general',
+                              na_filter=False,)
+    return vaccine
+
+def read_vaccine_week():
+    """Read CSV file with Cantabria's historical data from SCS."""
+    vaccine = pd.read_excel(cfg.input.path + cfg.input.vaccine_new, 
+                              sheet_name='semanas',
+                              na_filter=False,)
+    return vaccine
+
+def read_vaccine_age():
+    """Read CSV file with Cantabria's historical data from SCS."""
+    vaccine = pd.read_excel(cfg.input.path + cfg.input.vaccine_new, 
+                              sheet_name='edades',
+                              na_filter=False,)
+    return vaccine
+
+def read_vaccine_types():
+    """Read CSV file with Cantabria's historical data from SCS."""
+    vaccine = pd.read_excel(cfg.input.path + cfg.input.vaccine_new, 
+                              sheet_name='tipos',
+                              na_filter=False,)
+    return vaccine
+    
 def read_rho_csv(url):
     """Read CSV file with Cantabria's historical data from SCS."""
     rho = pd.read_csv(url, 

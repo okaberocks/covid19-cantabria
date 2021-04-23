@@ -26,6 +26,30 @@ params = {
         'municipalities_historic': {
             'actives_gross_rate': 'mun-actives-gross-rate-historic'
         },
+        'vaccine_new': {
+            'vaccine_age': {
+                'name': 'vaccine-age',
+                'units': {
+                    'Personas Inmunizadas': {
+                        'decimals': 0, 'label': '%'}
+                }
+            },
+            'vaccine_types': {
+                'name': 'vaccine-types',
+                'units': {
+                    'Personas Inmunizadas': {
+                        'decimals': 0, 'label': 'Dosis'}
+                }
+            },
+            'vaccine_week': {
+                'name': 'vaccine-week',
+                'units': {
+                    'Inmunizados': {
+                        'decimals': 0, 'label': 'Dosis'}
+                }
+            }
+            
+        },
         'vaccine': {
             'dosis': {
                 'name': 'dosis',
@@ -201,6 +225,7 @@ params = {
         'loess': 'https://raw.githubusercontent.com/icane/covid19-rho/main/resultado_loess.csv',
         'redneu': 'https://raw.githubusercontent.com/icane/covid19-rho/main/resultado_redneu.csv',
         'vaccine': 'covid19_vacunas.csv',
+        'vaccine_new': 'covid19_vacunas_nueva_serie.xlsx',
         'hospitals': 'covid19_historico.csv',
         'population': 'poblacion_municipios.csv',
         'municipalities': 'https://services3.arcgis.com/JW6jblFaBSUw9ROV/ArcGIS/rest/services/MunicpiosCantabria_covid/FeatureServer/0/query?f=json&where=1=1&returnGeometry=false&outFields=*'

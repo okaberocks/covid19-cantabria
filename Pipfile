@@ -24,6 +24,7 @@ pyjstat = {index = "pypi",version = "*"}
 beautifuldict = {index = "pypi",version = "*"}
 firebase-admin = {index = "pypi",version = "*"}
 beautifulsoup4 = "*"
+openpyxl = "*"
 
 [requires]
 python_version = "3.8.5"
