@@ -64,7 +64,7 @@ cases = utils.read_scs_csv(cfg.input.scs_data)
 
 data = {}
 
-data['general'] = cases[['Fecha', 'Aislamiento Domiciliario',
+data['general'] = cases[['Fecha', 
                          'Total Hospitalizados', 'Fallecidos']].tail(1)
 
 data['general'] = data['general'].melt(id_vars=['Fecha'], var_name='Variables')
