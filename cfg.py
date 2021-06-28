@@ -3,7 +3,7 @@ from decouple import config
 from pkg_resources import resource_filename
 
 params = {
-    
+    'cantabria_population': 581078,
     'output': {
         'path': resource_filename(__name__, 'data/output/'),
         'results': 'resultados.csv',
@@ -48,7 +48,7 @@ params = {
                         'decimals': 0, 'label': 'Dosis'}
                 }
             }
-            
+
         },
         'vaccine': {
             'dosis': {
@@ -59,21 +59,21 @@ params = {
                 }
             },
             'tipo_dosis': {
-                'name':'tipo_dosis',
+                'name': 'tipo_dosis',
                 'units': {
                     'Residencias': {
                         'decimals': 0, 'label': 'Personas vacunadas'}
                 }
             },
             'tipo_dosis_completa': {
-                'name':'tipo_dosis_completa',
+                'name': 'tipo_dosis_completa',
                 'units': {
                     'Residencias': {
                         'decimals': 0, 'label': 'Personas vacunadas'}
                 }
             },
             'daily_types_vaccine': {
-                'name':'daily_types_vaccine',
+                'name': 'daily_types_vaccine',
                 'units': {
                     'Residencias': {
                         'decimals': 0, 'label': 'Personas vacunadas'}
@@ -82,70 +82,70 @@ params = {
         },
         'historical': {
             'hospitalizations': {
-                'name':'hospitalizations',
+                'name': 'hospitalizations',
                 'units': {
                     'Laredo': {
                         'decimals': 0, 'label': 'Hospitalizados'}
                 }
             },
             'ucis': {
-                'name':'ucis',
+                'name': 'ucis',
                 'units': {
                     'UCI Valdecilla': {
                         'decimals': 0, 'label': 'Hospitalizados'}
                 }
             },
             'sanitarians': {
-                'name':'sanitarians',
+                'name': 'sanitarians',
                 'units': {
                     'Sanitarios Acumulados': {
                         'decimals': 0, 'label': 'Personas'}
                 }
             },
             'elder': {
-                'name':'elder',
+                'name': 'elder',
                 'units': {
                     'Residencias Acumulados': {
                         'decimals': 0, 'label': 'Personas'}
                 }
             },
             'test': {
-                'name':'test',
+                'name': 'test',
                 'units': {
                     'Test Anticuerpos diarios': {
                         'decimals': 0, 'label': 'Tests'}
                 }
             },
             'active_sanitarians': {
-                'name':'active-sanitarians',
+                'name': 'active-sanitarians',
                 'units': {
                     'Sanitarios Activos': {
                         'decimals': 0, 'label': 'Personas'}
                 }
             },
             'active_elder': {
-                'name':'active-elder',
+                'name': 'active-elder',
                 'units': {
                     'Residencias Activos': {
                         'decimals': 0, 'label': 'Personas'}
                 }
             },
             'incidence': {
-                'name':'incidence',
+                'name': 'incidence',
                 'units': {
                     'Incidencia 14 dias': {
                         'decimals': 0, 'label': 'Incidencia 14 dias'}
                 }
             },
             'daily_test': {
-                'name':'daily-test',
+                'name': 'daily-test',
                 'units': {
                     'Test Anticuerpos diarios': {
                         'decimals': 0, 'label': 'Tests'}
                 }
             },
             'positivity': {
-                'name':'positivity',
+                'name': 'positivity',
                 'units': {
                     'Positividad': {
                         'decimals': 0, 'label': 'Índice'}
@@ -155,14 +155,14 @@ params = {
         'sma': 'sma.json',
         'current_situation': {
             'general': {
-                'name':'current-situation',
+                'name': 'current-situation',
                 'units': {
                     'Aislamiento Domiciliario': {
                         'decimals': 0, 'label': 'Personas'}
                 }
             },
             'hospitals': {
-                'name':'current-situation-hospitals',
+                'name': 'current-situation-hospitals',
                 'units': {
                 }
             }
@@ -191,14 +191,14 @@ params = {
         },
         'daily': {
             'daily_cases': {
-                'name':'daily-cases',
+                'name': 'daily-cases',
                 'units': {
                     'Test Anticuerpos diarios': {
                         'decimals': 0, 'label': 'Personas'}
                 }
             },
             'daily_deceases': {
-                'name':'daily-deceases',
+                'name': 'daily-deceases',
                 'units': {
                     'Fallecidos': {
                         'decimals': 0, 'label': 'Personas'}
@@ -206,7 +206,7 @@ params = {
             },
             # 'daily_discharged': 'daily-discharged',
             'daily_types': {
-                'name':'daily-types',
+                'name': 'daily-types',
                 'units': {
                     'Sanitarios': {
                         'decimals': 0, 'label': 'Personas'}
@@ -295,7 +295,7 @@ params = {
         'mult_rate_gist': 'COVID19 case multiplication rate in Cantabria',
         'hospitalizations_gist': 'COVID19 hospitalization and UCI data in Cantabria',
         'municipalities_absolute_gist': 'COVID19 absolute values by municipalities',
-        'current_sit_note': 'Los datos de situación actual corresponden al día anterior, debido a un desfase en las fuentes oficiales.' ,
+        'current_sit_note': 'Los datos de situación actual corresponden al día anterior, debido a un desfase en las fuentes oficiales.',
         'daily_note': 'Los datos están pendiente de revisión por parte del Servicio Cántabro de Salud'
     },
     'municipalities': {
@@ -305,7 +305,7 @@ params = {
                 'final': 'Número de casos'
             },
             # 'actives': {
-            #     'original': 'NumeroCasosActivos', 
+            #     'original': 'NumeroCasosActivos',
             #     'final': 'Casos activos'
             # },
             'deceased': {

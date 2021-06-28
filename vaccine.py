@@ -9,9 +9,10 @@ import numpy as np
 
 import utils
 
+
 def to_json(df, id_vars, value_vars):
     """Export dataframe to JSON-Stat dataset.
-    
+
         id_vars (list): index columns
         value_vars (list): numeric variables (metrics)
     """
@@ -24,7 +25,8 @@ def to_json(df, id_vars, value_vars):
     # df = df.groupby(id_vars, as_index=False)['value'].sum()
     return df
 
-population = 581078
+
+population = cfg.cantabria_population
 
 vaccine = utils.read_vaccine_general()
 vaccine['Fecha'] = pd.to_datetime(
@@ -105,25 +107,25 @@ utils.publish_firebase(
     'saludcantabria', 'vaccine_population_complete', datasets['Poblacion completa'])
 
 datasets['Personas vacunadas'] = pyjstat.Dataset.read(personas_vacunadas,
-                                                    source=('Consejería de Sanidad '
-                                                            ' del Gobierno de '
-                                                            'Cantabria'))
+                                                      source=('Consejería de Sanidad '
+                                                              ' del Gobierno de '
+                                                              'Cantabria'))
 datasets['Personas vacunadas']["role"] = {"metric": ["Variables"]}
 utils.publish_firebase('saludcantabria', 'personas_vacunadas',
                        datasets['Personas vacunadas'])
 
 datasets['Personas inmunizadas'] = pyjstat.Dataset.read(personas_inmunizadas,
-                                                    source=('Consejería de Sanidad '
-                                                            ' del Gobierno de '
-                                                            'Cantabria'))
+                                                        source=('Consejería de Sanidad '
+                                                                ' del Gobierno de '
+                                                                'Cantabria'))
 datasets['Personas inmunizadas']["role"] = {"metric": ["Variables"]}
 utils.publish_firebase('saludcantabria', 'personas_inmunizadas',
                        datasets['Personas inmunizadas'])
 
 datasets['Vacunas administradas'] = pyjstat.Dataset.read(dosis_administradas,
-                                                       source=('Consejería de Sanidad '
-                                                               ' del Gobierno de '
-                                                               'Cantabria'))
+                                                         source=('Consejería de Sanidad '
+                                                                 ' del Gobierno de '
+                                                                 'Cantabria'))
 datasets['Vacunas administradas']["role"] = {"metric": ["Variables"]}
 utils.publish_firebase(
     'saludcantabria', 'dosis_administradas', datasets['Vacunas administradas'])
@@ -142,7 +144,8 @@ data['vaccine_types'] = to_json(vaccine_types, ['Vacuna', 'Tipo'], ['Dosis'])
 
 
 vaccine_week = utils.read_vaccine_week()
-data['vaccine_week'] = to_json(vaccine_week, ['Semana'], ['Inmunizados', '1ª dosis'])
+data['vaccine_week'] = to_json(vaccine_week, ['Semana'], [
+                               'Inmunizados', '1ª dosis'])
 
 
 for key in cfg.output.vaccine_new:
