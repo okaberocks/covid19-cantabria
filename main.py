@@ -70,7 +70,7 @@ def write_to_file(json_data, file_name):
 
 
 def generate_coords_df():
-    
+
     rows = []
     for key in cfg.hospitals.keys():
         row = {}
@@ -123,7 +123,7 @@ df['text'] = df['text'].str.lower()
 df['text'] = df['text'].str.replace(' ', '')
 
 for tweet_text, tweet_created_at in \
-  zip(df['text'].tolist(), df['created_at'].tolist()):
+        zip(df['text'].tolist(), df['created_at'].tolist()):
     # remove undesired characters
     tweet_text = deEmojify(tweet_text)
 
@@ -201,16 +201,16 @@ hospitals_dataset = pyjstat.Dataset.read(hospitals_df,
 current_sit_dataset = pyjstat.Dataset.read(current_sit_df,
                                            source=('Consejería de Sanidad del '
                                                    'Gobierno de Cantabria'))
-#print(hospitals_df)
-#print(current_sit_df)
+# print(hospitals_df)
+# print(current_sit_df)
 hospitals_dataset["role"] = {"metric": ["Variables"]}
 current_sit_dataset["role"] = {"time": ["fecha"], "metric": ["Variables"]}
 current_sit_dataset["note"] = [cfg.labels.current_sit_note]
 hospitals_dataset["note"] = [cfg.labels.current_sit_note]
 hospitals_json = hospitals_dataset.write()
 current_sit_json = current_sit_dataset.write()
-#print(hospitals_json)
-#print(current_sit_json)
+# print(hospitals_json)
+# print(current_sit_json)
 write_to_file(hospitals_json,
               cfg.output.path + cfg.output.hospitals)
 write_to_file(current_sit_json,

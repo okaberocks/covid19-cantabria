@@ -36,26 +36,30 @@ population_age = pd.read_csv(cfg.input.path + cfg.input.population_age)
 
 df = df.drop(['Sexo'], axis=1)
 
+df['Rango_edad'] = df['Rango_edad'].replace(['80 a 89'], 'Mayor de 80')
+df['Rango_edad'] = df['Rango_edad'].replace(['90 a 99'], 'Mayor de 80')
+df['Rango_edad'] = df['Rango_edad'].replace(['Mayor de 100'], 'Mayor de 80')
+
 df = df.groupby(['Fecha', 'Rango_edad'], as_index=False).sum()
 df['Fecha'] = pd.to_datetime(
     df['Fecha'], dayfirst=True).dt.strftime('%Y-%m-%d')
 df.sort_values(by=['Fecha', 'Rango_edad'], inplace=True)
 df['Casos'] = df['Casos'].astype(int)
-df['Casos nuevos14'] = df['Casos'].diff(periods=14*11)
-df['Casos nuevos7'] = df['Casos'].diff(periods=7*11)
-df['Casos nuevos'] = df['Casos'].diff(periods=1*11)
+df['Casos nuevos14'] = df['Casos'].diff(periods=14*9)
+df['Casos nuevos7'] = df['Casos'].diff(periods=7*9)
+df['Casos nuevos'] = df['Casos'].diff(periods=1*9)
 df = df.fillna(0)
 df['Casos nuevos'] = df['Casos nuevos'].astype(int)
 
 population = cfg.cantabria_population
 
 df = pd.merge(df, population_age,
-                        how="left", on=["Rango_edad"])
+              how="left", on=["Rango_edad"])
 
 df['IA 7 días'] = (df['Casos nuevos7'] / df['Población']) * 100000
 df['IA 14 días'] = (df['Casos nuevos14'] / df['Población']) * 100000
 
-df = df.iloc[14*11: , :]
+df = df.iloc[14*9:, :]
 df.to_csv('age_historic.csv')
 
 df_age_daily = df[['Fecha', 'Rango_edad', 'Casos nuevos']]
@@ -85,13 +89,12 @@ utils.publish_firebase(
     'saludcantabria', 'age_historic', datasets['Histórico_edad'])
 
 
-
 df_age_7['Fecha'] = pd.to_datetime(
     df_age_7['Fecha'], dayfirst=True).dt.strftime('%d-%m-%Y')
 datasets['Incidencia_7_edad'] = pyjstat.Dataset.read(df_age_7,
-                                                  source=('Consejería de Sanidad '
-                                                          ' del Gobierno de '
-                                                          'Cantabria'))
+                                                     source=('Consejería de Sanidad '
+                                                             ' del Gobierno de '
+                                                             'Cantabria'))
 datasets['Incidencia_7_edad']["role"] = {"metric": ["Variables"]}
 utils.publish_firebase(
     'saludcantabria', 'age_incidence_7', datasets['Incidencia_7_edad'])
@@ -100,9 +103,9 @@ utils.publish_firebase(
 df_age_14['Fecha'] = pd.to_datetime(
     df_age_14['Fecha'], dayfirst=True).dt.strftime('%d-%m-%Y')
 datasets['Incidencia_14_edad'] = pyjstat.Dataset.read(df_age_14,
-                                                  source=('Consejería de Sanidad '
-                                                          ' del Gobierno de '
-                                                          'Cantabria'))
+                                                      source=('Consejería de Sanidad '
+                                                              ' del Gobierno de '
+                                                              'Cantabria'))
 datasets['Incidencia_14_edad']["role"] = {"metric": ["Variables"]}
 utils.publish_firebase(
     'saludcantabria', 'age_incidence_14', datasets['Incidencia_14_edad'])

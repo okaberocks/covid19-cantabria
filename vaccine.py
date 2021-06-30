@@ -26,8 +26,6 @@ def to_json(df, id_vars, value_vars):
     return df
 
 
-population = cfg.cantabria_population
-
 vaccine = utils.read_vaccine_general()
 vaccine['Fecha'] = pd.to_datetime(
     vaccine['Fecha'], dayfirst=True).dt.strftime('%d-%m-%Y')
@@ -35,7 +33,6 @@ vaccine['Fecha'] = pd.to_datetime(
 vaccine_age = utils.read_vaccine_age()
 vaccine_age['Fecha'] = pd.to_datetime(
     vaccine_age['Fecha'], dayfirst=True).dt.strftime('%d-%m-%Y')
-
 last_vaccine = vaccine.tail(1)
 
 vaccine_reference_date = last_vaccine['Fecha'].iloc[0]
@@ -137,17 +134,24 @@ data['vaccine_age'] = to_json(vaccine_age, ['Edad', 'Tipo'], ['% Personas'])
 vaccine_types = utils.read_vaccine_types()
 vaccine_types['Fecha'] = pd.to_datetime(
     vaccine_types['Fecha'], dayfirst=True).dt.strftime('%d-%m-%Y')
+vaccine_types_historic = vaccine_types
 
 vaccine_types = vaccine_types.loc[vaccine_types['Fecha'] == today]
 vaccine_types = vaccine_types[['Vacuna', 'Tipo', 'Dosis']]
 data['vaccine_types'] = to_json(vaccine_types, ['Vacuna', 'Tipo'], ['Dosis'])
 
-
 vaccine_week = utils.read_vaccine_week()
 data['vaccine_week'] = to_json(vaccine_week, ['Semana'], [
                                'Inmunizados', '1ª dosis'])
 
+# vaccine_types_historic
+# vaccine_types_historic['Primera dosis diarios'] = vaccine_types_historic['Casos'].diff(periods=14*9)
+vaccine_first = vaccine_types_historic['Tipo'] == 'Personas 1ª dosis'
+vaccine_first = vaccine_types_historic.loc[vaccine_types_historic['Tipo']
+                                           == 'Personas 1ª dosis']
+vaccine_first['Dosis diarias'] = vaccine_first['Dosis'].diff(periods=4)
 
+print(vaccine_first)
 for key in cfg.output.vaccine_new:
 
     # data[key].sort_values(by=['Fecha', 'Variables'], inplace=True)

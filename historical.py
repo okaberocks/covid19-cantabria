@@ -23,20 +23,25 @@ cases['Casos nuevos dia'] = cases['Casos'].diff()
 cases['Test PCR diarios'] = cases['Test PCR'].diff()
 cases['Test Anticuerpos diarios'] = cases['Test Anticuerpos'].diff()
 cases['Test Antigenos diarios'] = cases['Test Antigenos'].diff()
-cases['Positividad'] = cases['Casos nuevos dia'] * 100 / cases['Test PCR diarios']
+cases['Positividad'] = cases['Casos nuevos dia'] * \
+    100 / cases['Test PCR diarios']
 cases['Positividad'] = cases['Positividad'].iloc[3:]
 
-data['daily_test'] = cases[['Fecha', 'Test PCR diarios', 'Test Anticuerpos diarios', 'Test Antigenos diarios']]
-data['daily_test'] = data['daily_test'].melt(id_vars=['Fecha'], var_name='Variables')
+data['daily_test'] = cases[['Fecha', 'Test PCR diarios',
+                            'Test Anticuerpos diarios', 'Test Antigenos diarios']]
+data['daily_test'] = data['daily_test'].melt(
+    id_vars=['Fecha'], var_name='Variables')
 
 data['positivity'] = cases[['Fecha', 'Positividad']]
-data['positivity'] = data['positivity'].melt(id_vars=['Fecha'], var_name='Variables')
+data['positivity'] = data['positivity'].melt(
+    id_vars=['Fecha'], var_name='Variables')
 
 data['test'] = cases[['Fecha', 'Test PCR', 'Test Anticuerpos']]
 data['test'] = data['test'].melt(id_vars=['Fecha'], var_name='Variables')
 
 data['incidence'] = cases[['Fecha', 'Incidencia 14 dias']]
-data['incidence'] = data['incidence'].melt(id_vars=['Fecha'], var_name='Variables')
+data['incidence'] = data['incidence'].melt(
+    id_vars=['Fecha'], var_name='Variables')
 
 data['active_sanitarians'] = cases[['Fecha', 'Sanitarios Activos']]
 data['active_sanitarians'] = data['active_sanitarians'].melt(
@@ -47,12 +52,14 @@ data['active_elder'] = data['active_elder'].melt(
     id_vars=['Fecha'], var_name='Variables')
 
 data['sanitarians'] = cases[['Fecha', 'Sanitarios', 'Sanitarios Activos']]
-data['sanitarians'] = data['sanitarians'].rename(columns={"Sanitarios": "Sanitarios Acumulados"})
+data['sanitarians'] = data['sanitarians'].rename(
+    columns={"Sanitarios": "Sanitarios Acumulados"})
 data['sanitarians'] = data['sanitarians'].melt(
     id_vars=['Fecha'], var_name='Variables')
 
 data['elder'] = cases[['Fecha', 'Residencias Activos', 'Casos Residencias']]
-data['elder'] = data['elder'].rename(columns={"Casos Residencias": "Residencias Acumulados"})
+data['elder'] = data['elder'].rename(
+    columns={"Casos Residencias": "Residencias Acumulados"})
 data['elder'] = data['elder'].melt(
     id_vars=['Fecha'], var_name='Variables')
 
@@ -63,7 +70,7 @@ for key in cfg.hospitals.keys():
                            [col for col in cases.columns
                                if cfg.hospitals[key].name in col
                                and 'UCI' not in col]]
-  
+
     ucis[key] = cases[['Fecha'] +
                       [col for col in cases.columns
                           if cfg.hospitals[key].name in col
@@ -113,4 +120,3 @@ for key in cfg.output.historical:
                            cfg.output.historical[key].name,
                            datasets[key])
 print('Historical published')
-

@@ -124,9 +124,9 @@ def read_scs_historic_age():
 
 def read_scs_historic_municipal():
     raw_data = pd.read_csv('./data/input/covid19_municipalizado.csv',
-                             na_values=None,
-                             sep=';',
-                             dtype={'Codigo': object})
+                           na_values=None,
+                           sep=';',
+                           dtype={'Codigo': object})
     raw_data.columns = raw_data.columns.str.title()
     raw_data.columns = raw_data.columns.str.replace('Código', 'Codigo')
     raw_data.columns = raw_data.columns.str.replace('Municipio', 'Texto')
@@ -138,7 +138,8 @@ def read_scs_historic_municipal():
                                                     'NumeroCurados')
     raw_data.columns = raw_data.columns.str.replace('Fallecidos',
                                                     'NumeroFallecidos')
-    raw_data['Fecha'] = pd.to_datetime(raw_data['Fecha'], errors='coerce')
+    raw_data['Fecha'] = pd.to_datetime(
+        raw_data['Fecha'], format='%d/%m/%Y', errors='coerce')
     raw_data['Fecha'] = raw_data['Fecha'].dt.strftime("%d-%m-%Y")
     return raw_data
 

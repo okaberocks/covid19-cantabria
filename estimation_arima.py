@@ -21,15 +21,17 @@ arima.loc[arima.head(len(arima) - 14).index, 'Pronósticos'] = None
 # arima.loc[arima.tail(14).index, 'Pronósticos'] = None
 
 arima = arima.melt(id_vars=['Fecha'], var_name='Variables')
-arima['Fecha'] = pd.to_datetime(arima['Fecha'], dayfirst=True).dt.strftime('%Y-%m-%d')
+arima['Fecha'] = pd.to_datetime(
+    arima['Fecha'], dayfirst=True).dt.strftime('%Y-%m-%d')
 arima.sort_values(by=['Fecha', 'Variables'], inplace=True)
-arima['Fecha'] = pd.to_datetime(arima['Fecha'], dayfirst=True).dt.strftime('%d-%m-%Y')
+arima['Fecha'] = pd.to_datetime(
+    arima['Fecha'], dayfirst=True).dt.strftime('%d-%m-%Y')
 
 
 arima_dataset = pyjstat.Dataset.read(arima,
-                                   source=('Consejería de Sanidad '
-                                           ' del Gobierno de '
-                                           'Cantabria'))
+                                     source=('Consejería de Sanidad '
+                                             ' del Gobierno de '
+                                             'Cantabria'))
 arima_dataset["role"] = {"time": ["fecha"], "metric": ["Variables"]}
 try:
     utils.initialize_firebase_db(cfg.firebase.creds_path, cfg.firebase.db_url)

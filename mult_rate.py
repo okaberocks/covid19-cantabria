@@ -32,7 +32,8 @@ data['cases'] = data['cases'].rename(columns={"Casos": "total"})
 data['cases'] = data['cases'].melt(id_vars=['Fecha'], var_name='Variables')
 data['deceased'] = cases[['Fecha', 'Fallecidos']]
 data['deceased'] = data['deceased'].rename(columns={"Fallecidos": "total"})
-data['deceased'] = data['deceased'].melt(id_vars=['Fecha'], var_name='Variables')
+data['deceased'] = data['deceased'].melt(
+    id_vars=['Fecha'], var_name='Variables')
 # data['discharged'] = cases[['Fecha', 'Recuperados']]
 # data['discharged'] = data['discharged'].rename(columns={"Recuperados": "total"})
 # data['discharged'] = data['discharged'].melt(id_vars=['Fecha'], var_name='Variables')
@@ -43,7 +44,7 @@ for key in cfg.output.mult_rate:
     data[key]['Fecha'] = pd.to_datetime(
         data[key]['Fecha'], dayfirst=True).dt.strftime('%Y-%m-%d')
     data[key].sort_values(by=['Fecha', 'Variables'], inplace=True)
-    
+
     # downsampling: get 1 record in 4 to avoid temporary effects
     data[key] = data[key].iloc[list(range(len(data[key])-1, 0, -14))]
     data[key]['mult_rate'] = data[key]['value'] / \
@@ -66,5 +67,6 @@ for key in cfg.output.mult_rate:
                                                  ' del Gobierno de '
                                                  'Cantabria'))
     datasets[key]["role"] = {"time": ["Fecha"], "metric": ["Variables"]}
-    utils.publish_firebase('saludcantabria', cfg.output.mult_rate[key], datasets[key])
+    utils.publish_firebase(
+        'saludcantabria', cfg.output.mult_rate[key], datasets[key])
 print('Mult rate published')
