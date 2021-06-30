@@ -21,7 +21,7 @@ pipeline {
             }
             steps{
                 sh "ls"
-                sh "docker build . --build-arg FIREBASE_CREDS_PATH=${FIREBASE_CREDS_PATH} --no-cache -t covid19update:latest ."
+                sh "docker build --build-arg FIREBASE_CREDS_PATH=${FIREBASE_CREDS_PATH} --no-cache -t covid19update:latest ."
             }
         }
     }

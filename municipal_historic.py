@@ -28,8 +28,6 @@ data.reset_index(inplace=True)
 data['Codigo'] = data['Codigo'].apply(str)
 population['Codigo'] = population['Codigo'].apply(str)
 data = pd.merge(data, population, on='Codigo')
-data['NumeroCasosActivos'] = data['NumeroCasosActivos'].fillna(0)
-data['Tasa bruta de activos'] = (data['NumeroCasosActivos'] / data['poblacion']) * 100000
 measures = {}
 datasets = {}
 jsonstat = {}
@@ -56,7 +54,7 @@ for date in dates:
     incidencia_municipios7 = pd.DataFrame()
     for municipio in municipios:
         data_municipio = data.loc[data['Municipio'] == municipio]
-        casos_municipio = data_municipio[['Fecha', 'Municipio', 'NumeroCasos', 'NumeroCasosActivos', 'NumeroFallecidos', 'poblacion']]
+        casos_municipio = data_municipio[['Fecha', 'Municipio', 'NumeroCasos', 'NumeroFallecidos', 'poblacion']]
         poblacion_municipio = casos_municipio['poblacion'].tail(1).values[0]
 
         casos_municipio['Casos nuevos7'] = casos_municipio['NumeroCasos'].diff(periods=7)
@@ -91,8 +89,6 @@ for date in dates:
         
         casos_diarios_municipio = casos_municipio[['Fecha', 'Municipio', 'Casos nuevos']]
         fallecidos_diarios_municipio = casos_municipio[['Fecha', 'Municipio', 'Fallecidos diarios']]
-        activos_municipio = data_municipio[['Fecha', 'Municipio', 'NumeroCasosActivos']]
-        tasa_municipio = data_municipio[['Fecha', 'Municipio', 'Tasa bruta de activos']]
         incidencia_municipio14 = to_json(incidencia_municipio14,
                                     ['Fecha'], ['Incidencia acumulada 14 días'])
         incidencia_municipio7 = to_json(incidencia_municipio7,
@@ -103,26 +99,12 @@ for date in dates:
         fallecidos_diarios_municipio = to_json(fallecidos_diarios_municipio,
                                     ['Fecha', 'Municipio'],
                                     ['Fallecidos diarios'])
-        activos_municipio = to_json(activos_municipio,
-                                    ['Fecha', 'Municipio'],
-                                    ['NumeroCasosActivos'])
-        tasa_municipio = to_json(tasa_municipio,
-                                    ['Fecha', 'Municipio'],
-                                    ['Tasa bruta de activos'])
         
         datasets['casos_diarios'] = pyjstat.Dataset.read(casos_diarios_municipio,
                                                 source=('Consejería de Sanidad'
                                                         ' del Gobierno de '
                                                         'Cantabria'))
         datasets['fallecidos'] = pyjstat.Dataset.read(fallecidos_diarios_municipio,
-                                                source=('Consejería de Sanidad'
-                                                        ' del Gobierno de '
-                                                        'Cantabria'))
-        datasets['activos'] = pyjstat.Dataset.read(activos_municipio,
-                                                source=('Consejería de Sanidad'
-                                                        ' del Gobierno de '
-                                                        'Cantabria'))
-        datasets['tasa'] = pyjstat.Dataset.read(tasa_municipio,
                                                 source=('Consejería de Sanidad'
                                                         ' del Gobierno de '
                                                         'Cantabria'))
@@ -136,8 +118,6 @@ for date in dates:
                                                         'Cantabria'))
         datasets['casos_diarios']["role"] = {"metric": ["Variables"]}
         datasets['fallecidos']["role"] = {"metric": ["Variables"]}
-        datasets['activos']["role"] = {"metric": ["Variables"]}
-        datasets['tasa']["role"] = {"metric": ["Variables"]}
         datasets['incidencia7']["role"] = {"metric": ["Variables"]}
         datasets['incidencia14']["role"] = {"metric": ["Variables"]}
         utils.publish_firebase('saludcantabria/municipios/' + municipio,
@@ -147,18 +127,12 @@ for date in dates:
                             'fallecidos',
                             datasets['fallecidos'])
         utils.publish_firebase('saludcantabria/municipios/' + municipio,
-                            'activos',
-                            datasets['activos'])
-        utils.publish_firebase('saludcantabria/municipios/' + municipio,
-                            'tasa',
-                            datasets['tasa'])
-        utils.publish_firebase('saludcantabria/municipios/' + municipio,
                             'incidencia7',
                             datasets['incidencia7'])
         utils.publish_firebase('saludcantabria/municipios/' + municipio,
                             'incidencia14',
                             datasets['incidencia14'])
-    incidence_all.to_csv('incidence_all.csv')
+    # incidence_all.to_csv('incidence_all.csv')
     # Sale del bucle (solo se actualiza el último día)
     incidencia_municipios14 = to_json(incidencia_municipios14,
                                     ['Municipio'],

@@ -3,7 +3,7 @@ from decouple import config
 from pkg_resources import resource_filename
 
 params = {
-    'cantabria_population': 581078,
+    'cantabria_population': 582905,
     'output': {
         'path': resource_filename(__name__, 'data/output/'),
         'results': 'resultados.csv',
@@ -224,10 +224,10 @@ params = {
         'arima': 'https://raw.githubusercontent.com/icane/covid19-rho/main/resultado_arima.csv',
         'loess': 'https://raw.githubusercontent.com/icane/covid19-rho/main/resultado_loess.csv',
         'redneu': 'https://raw.githubusercontent.com/icane/covid19-rho/main/resultado_redneu.csv',
-        'vaccine': 'covid19_vacunas.csv',
-        'vaccine_new': 'covid19_vacunas_nueva_serie.xlsx',
+        'vaccine': 'covid19_vacunas.xlsx',
         'hospitals': 'covid19_historico.csv',
         'population': 'poblacion_municipios.csv',
+        'population_age': 'poblacion_edad.csv',
         'municipalities': 'https://services3.arcgis.com/JW6jblFaBSUw9ROV/ArcGIS/rest/services/MunicpiosCantabria_covid/FeatureServer/0/query?f=json&where=1=1&returnGeometry=false&outFields=*'
     },
     'github': {

@@ -191,7 +191,7 @@ hospitals_df = hospitals_df.append(coords_df, ignore_index=True)
 hospitals_df = hospitals_df[['Hospital', 'Variables', 'value']]
 hospitals_df.sort_values(by=['Hospital', 'Variables'], inplace=True)
 print(hospitals_df)
-results_df.to_csv('./resultados.csv')
+# results_df.to_csv('./resultados.csv')
 
 # pd.melt(results_df, id_vars=['fecha']
 

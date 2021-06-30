@@ -118,14 +118,14 @@ def read_scs_age(url):
 
 def read_scs_historic_age():
     raw_data = pd.read_csv('./data/input/covid19_edad_sexo.csv',
-                           sep=',')
+                           sep=';')
     return raw_data
 
 
 def read_scs_historic_municipal():
-    raw_data = pd.read_excel('./data/input/covid19_municipalizado.xlsx',
-                             engine='openpyxl',
+    raw_data = pd.read_csv('./data/input/covid19_municipalizado.csv',
                              na_values=None,
+                             sep=';',
                              dtype={'Codigo': object})
     raw_data.columns = raw_data.columns.str.title()
     raw_data.columns = raw_data.columns.str.replace('Código', 'Codigo')
@@ -138,6 +138,7 @@ def read_scs_historic_municipal():
                                                     'NumeroCurados')
     raw_data.columns = raw_data.columns.str.replace('Fallecidos',
                                                     'NumeroFallecidos')
+    raw_data['Fecha'] = pd.to_datetime(raw_data['Fecha'], errors='coerce')
     raw_data['Fecha'] = raw_data['Fecha'].dt.strftime("%d-%m-%Y")
     return raw_data
 
@@ -152,7 +153,7 @@ def read_vaccine_csv():
 
 def read_vaccine_general():
     """Read CSV file with Cantabria's historical data from SCS."""
-    vaccine = pd.read_excel(cfg.input.path + cfg.input.vaccine_new,
+    vaccine = pd.read_excel(cfg.input.path + cfg.input.vaccine,
                             sheet_name='general',
                             na_filter=False,)
     return vaccine
@@ -160,7 +161,7 @@ def read_vaccine_general():
 
 def read_vaccine_week():
     """Read CSV file with Cantabria's historical data from SCS."""
-    vaccine = pd.read_excel(cfg.input.path + cfg.input.vaccine_new,
+    vaccine = pd.read_excel(cfg.input.path + cfg.input.vaccine,
                             sheet_name='semanas',
                             na_filter=False,)
     return vaccine
@@ -168,7 +169,7 @@ def read_vaccine_week():
 
 def read_vaccine_age():
     """Read CSV file with Cantabria's historical data from SCS."""
-    vaccine = pd.read_excel(cfg.input.path + cfg.input.vaccine_new,
+    vaccine = pd.read_excel(cfg.input.path + cfg.input.vaccine,
                             sheet_name='edades',
                             na_filter=False,)
     return vaccine
@@ -176,7 +177,7 @@ def read_vaccine_age():
 
 def read_vaccine_types():
     """Read CSV file with Cantabria's historical data from SCS."""
-    vaccine = pd.read_excel(cfg.input.path + cfg.input.vaccine_new,
+    vaccine = pd.read_excel(cfg.input.path + cfg.input.vaccine,
                             sheet_name='tipos',
                             na_filter=False,)
     return vaccine
