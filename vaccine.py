@@ -144,14 +144,32 @@ vaccine_week = utils.read_vaccine_week()
 data['vaccine_week'] = to_json(vaccine_week, ['Semana'], [
                                'Inmunizados', '1ª dosis'])
 
-# vaccine_types_historic
-# vaccine_types_historic['Primera dosis diarios'] = vaccine_types_historic['Casos'].diff(periods=14*9)
 vaccine_first = vaccine_types_historic['Tipo'] == 'Personas 1ª dosis'
 vaccine_first = vaccine_types_historic.loc[vaccine_types_historic['Tipo']
                                            == 'Personas 1ª dosis']
+vaccine_first['Fecha'] = pd.to_datetime(
+    vaccine_first['Fecha'], dayfirst=True).dt.strftime('%Y-%m-%d')
+vaccine_first.sort_values(by=['Fecha', 'Vacuna'], inplace=True)
 vaccine_first['Dosis diarias'] = vaccine_first['Dosis'].diff(periods=4)
+vaccine_first = vaccine_first[['Fecha', 'Vacuna', 'Dosis diarias']]
+vaccine_first = vaccine_first.pivot(index='Fecha', columns='Vacuna', values='Dosis diarias')
+vaccine_first = vaccine_first.reset_index()
+data['daily_types_first'] = vaccine_first.melt(
+    id_vars=['Fecha'], var_name='Variables')
 
-print(vaccine_first)
+vaccine_second = vaccine_types_historic['Tipo'] == 'Personas Inmunizadas'
+vaccine_second = vaccine_types_historic.loc[vaccine_types_historic['Tipo']
+                                           == 'Personas Inmunizadas']
+vaccine_second['Fecha'] = pd.to_datetime(
+    vaccine_second['Fecha'], dayfirst=True).dt.strftime('%Y-%m-%d')
+vaccine_second.sort_values(by=['Fecha', 'Vacuna'], inplace=True)
+vaccine_second['Dosis diarias'] = vaccine_second['Dosis'].diff(periods=4)
+vaccine_second = vaccine_second[['Fecha', 'Vacuna', 'Dosis diarias']]
+vaccine_second = vaccine_second.pivot(index='Fecha', columns='Vacuna', values='Dosis diarias')
+vaccine_second = vaccine_second.reset_index()
+data['daily_types_second'] = vaccine_second.melt(
+    id_vars=['Fecha'], var_name='Variables')
+
 for key in cfg.output.vaccine_new:
 
     # data[key].sort_values(by=['Fecha', 'Variables'], inplace=True)

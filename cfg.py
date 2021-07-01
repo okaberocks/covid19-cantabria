@@ -47,6 +47,20 @@ params = {
                     'Inmunizados': {
                         'decimals': 0, 'label': 'Dosis'}
                 }
+            },
+            'daily_types_first': {
+                'name': 'daily_types_first',
+                'units': {
+                    'Residencias': {
+                        'decimals': 0, 'label': 'Primera dosis'}
+                }
+            },
+            'daily_types_second': {
+                'name': 'daily_types_second',
+                'units': {
+                    'Residencias': {
+                        'decimals': 0, 'label': 'Segunda dosis'}
+                }
             }
 
         },

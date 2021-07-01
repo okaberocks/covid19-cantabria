@@ -29,9 +29,10 @@ cases['Positividad'] = cases['Positividad'].iloc[3:]
 
 data['daily_test'] = cases[['Fecha', 'Test PCR diarios',
                             'Test Anticuerpos diarios', 'Test Antigenos diarios']]
+print(data['daily_test'])
 data['daily_test'] = data['daily_test'].melt(
     id_vars=['Fecha'], var_name='Variables')
-
+print(data['daily_test'])
 data['positivity'] = cases[['Fecha', 'Positividad']]
 data['positivity'] = data['positivity'].melt(
     id_vars=['Fecha'], var_name='Variables')
