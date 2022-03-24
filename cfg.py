@@ -154,7 +154,7 @@ params = {
             'daily_test': {
                 'name': 'daily-test',
                 'units': {
-                    'Test Anticuerpos diarios': {
+                    'Test PCR diarios': {
                         'decimals': 0, 'label': 'Tests'}
                 }
             },
