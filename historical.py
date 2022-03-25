@@ -9,7 +9,7 @@ from pyjstat import pyjstat
 import utils
 
 
-cases = utils.read_scs_csv("/home/lca16890/Documentos/COVID19_historico.csv")
+cases = utils.read_scs_csv(cfg.input.scs_data)
 
 data = {}
 
