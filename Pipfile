@@ -20,6 +20,7 @@ python-decouple = {index = "pypi",version = "*"}
 pandas = {index = "pypi",version = "*"}
 etlstat = {index = "pypi",version = "*"}
 pyjstat = {index = "pypi",version = "*"}
+pyaxis = {index = "pypi",version = "*"}
 beautifuldict = {index = "pypi",version = "*"}
 firebase-admin = {index = "pypi",version = "*"}
 openpyxl = "*"

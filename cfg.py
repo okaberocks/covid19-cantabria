@@ -200,6 +200,16 @@ params = {
             'sanitarians': 'total-sanitarians',
             'residences': 'total-residences'
         },
+        'totals-new': {
+            'IA 14d ≥60a': 'ia14-60',
+            'IA 7d ≥60a': 'ia7-60',
+            'Casos AYER ≥60a': 'cases-last-day-60',
+            'Casos 7d ≥60a': 'cases-7-60',
+            'Casos 14d ≥60a': 'cases-14-60',
+            'Fallecidos AYER': 'total-deceased-60-lastday',
+            'Fallecidos 7d': 'total-deceased-7-60',
+            'Fallecidos': 'total-deceased-60'
+        },
         'accumulated': {
             'accumulated': 'accumulated'
         },
@@ -233,6 +243,8 @@ params = {
         'scs_data': 'https://serviweb.scsalud.es:10443/ficheros/COVID19_historico.csv',
         'scs_data_age_sex': 'https://serviweb.scsalud.es:10443/ficheros/COVID19_edadysexo.csv',
         'scs_data_municipal': 'https://serviweb.scsalud.es:10443/ficheros/COVID19_municipalizado.csv',
+        'new_indicadors': 'actualizacion_protocolo/indicadores.xlsx',
+        'new_ia': 'actualizacion_protocolo/incidencia14.xlsx',
         'vaccine_data': 'https://raw.githubusercontent.com/datadista/datasets/master/COVID%2019/ccaa_vacunas.csv',
         'rho': 'https://raw.githubusercontent.com/icane/covid19-rho/main/rho.csv',
         'arima': 'https://raw.githubusercontent.com/icane/covid19-rho/main/resultado_arima.csv',
