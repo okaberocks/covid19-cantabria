@@ -15,10 +15,8 @@ cases = pd.read_excel(cfg.input.path + cfg.input.new_indicadors,
                             na_filter=False,
                             skiprows=[0])
 data = {}
-print(cases)
 cases = cases.pivot_table('Nivel actual', ['Nivel actual']).T
 cases['Fecha'] = pd.to_datetime("today").strftime('%d-%m-%Y')
-print(cases)
 for column in cases:
     if (column != "Fecha"):
         data[column] = cases[["Fecha", column]]

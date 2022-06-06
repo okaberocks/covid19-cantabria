@@ -16,11 +16,9 @@ cases = pd.read_excel(cfg.input.path + cfg.input.new_ia,
 data = {}
 
 # cases = cases.pivot_table('Riesgo Controlado', ['Nivel actual']).T
-print(cases)
 
 key = 'Incidencia acumulada 14d ≥ 60a'
 data[key] = cases.melt(id_vars=['Fecha'], var_name='Variables')
-print(data[key])
 datasets = {}
 try:
     utils.initialize_firebase_db(cfg.firebase.creds_path, cfg.firebase.db_url)
