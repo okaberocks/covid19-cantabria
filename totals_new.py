@@ -17,11 +17,14 @@ cases = pd.read_excel(cfg.input.path + cfg.input.new_indicadors,
 data = {}
 cases = cases.pivot_table('Nivel actual', ['Nivel actual']).T
 cases['Fecha'] = pd.to_datetime("today").strftime('%d-%m-%Y')
+
+cases['Fallecidos AYER'] = 0
+cases['Fallecidos 7d'] = 0
+
 for column in cases:
     if (column != "Fecha"):
         data[column] = cases[["Fecha", column]]
         data[column] = data[column].melt(id_vars=['Fecha'], var_name='Variables')
-
 datasets = {}
 try:
     utils.initialize_firebase_db(cfg.firebase.creds_path, cfg.firebase.db_url)

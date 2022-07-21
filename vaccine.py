@@ -142,7 +142,7 @@ data['vaccine_types'] = to_json(vaccine_types, ['Vacuna', 'Tipo'], ['Dosis'])
 
 vaccine_week = utils.read_vaccine_week()
 data['vaccine_week'] = to_json(vaccine_week, ['Semana'], [
-                               '2ª dosis', '1ª dosis', '3ª dosis'])
+                               '2ª dosis', '1ª dosis', '3ª dosis',  '4ª dosis'])
 
 vaccine_first = vaccine_types_historic['Tipo'] == 'Personas 1ª dosis'
 vaccine_first = vaccine_types_historic.loc[vaccine_types_historic['Tipo']
